@@ -1,15 +1,8 @@
 ﻿using Autofac;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
 using Polimer.Autofac;
 using Polimer.View;
-using Polimer.ViewModel;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace Polimer
 {
@@ -27,12 +20,12 @@ namespace Polimer
             var builderBase = new ContainerBuilder();
 
             builderBase.RegisterModule(new DataModule());
+            builderBase.RegisterModule(new ViewModelModule());
+            builderBase.RegisterModule(new WindowModule());
 
             var containerBase = builderBase.Build();
 
-            var viewmodelBase = new AuthorizationViewModel();
-
-            var viewBase = new AuthorizationWindow() { DataContext = viewmodelBase };
+            var viewBase = containerBase.Resolve<AuthorizationWindow>();
 
             viewBase.Show();
         }

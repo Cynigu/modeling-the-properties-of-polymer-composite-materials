@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace Polimer.View
 {
     /// <summary>
-    /// Логика взаимодействия для ComputeWindow.xaml
+    /// Логика взаимодействия для AdminWindow.xaml
     /// </summary>
-    public partial class ComputeWindow : Window
+    public partial class AdminWindow : Window
     {
-        public ComputeWindow()
+        public AdminWindow()
         {
             InitializeComponent();
         }
