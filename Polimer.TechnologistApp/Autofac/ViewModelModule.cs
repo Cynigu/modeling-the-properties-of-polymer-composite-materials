@@ -1,8 +1,8 @@
 ﻿using Autofac;
-using PolimerAdministratorApp.ViewModel.Admin;
-using PolimerAdministratorApp.ViewModel.Authorization;
+using Polimer.TechnologistApp.ViewModel.Admin;
+using Polimer.TechnologistApp.ViewModel.Authorization;
 
-namespace PolimerAdministratorApp.Autofac;
+namespace Polimer.TechnologistApp.Autofac;
 
 internal class ViewModelModule : Module
 {
@@ -13,7 +13,7 @@ internal class ViewModelModule : Module
             .AsSelf();
 
         builder
-            .RegisterType<AdminViewModel>()
+            .RegisterType<TechnologistViewModel>()
             .AsSelf();
     }
 }

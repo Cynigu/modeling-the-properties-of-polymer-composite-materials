@@ -1,9 +1,9 @@
 ﻿using Autofac;
-using PolimerAdministratorApp.View;
-using PolimerAdministratorApp.ViewModel.Admin;
-using PolimerAdministratorApp.ViewModel.Authorization;
+using Polimer.TechnologistApp.View;
+using Polimer.TechnologistApp.ViewModel.Admin;
+using Polimer.TechnologistApp.ViewModel.Authorization;
 
-namespace PolimerAdministratorApp.Autofac;
+namespace Polimer.TechnologistApp.Autofac;
 
 internal class WindowModule : Module
 {
@@ -14,7 +14,7 @@ internal class WindowModule : Module
             .AsSelf();
 
         builder
-            .Register(c => new AdminWindow() { DataContext = c.Resolve<AdminViewModel>() })
+            .Register(c => new TechnologistWindow() { DataContext = c.Resolve<TechnologistViewModel>() })
             .AsSelf();
     }
 

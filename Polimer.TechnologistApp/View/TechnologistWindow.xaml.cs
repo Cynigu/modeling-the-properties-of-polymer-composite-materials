@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Polimer.View
+namespace Polimer.TechnologistApp.View
 {
     /// <summary>
     /// Логика взаимодействия для TechnologistWindow.xaml

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace PolimerAdministratorApp.ViewModel
+namespace Polimer.TechnologistApp.ViewModel
 {
     public class ViewModelBase : INotifyPropertyChanged
     {

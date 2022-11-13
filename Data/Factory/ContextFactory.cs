@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.IO;
 
-namespace Polimer.Data.factory
+namespace Polimer.Data.Factory
 {
     internal class ContextFactory : IDbContextFactory<DataContext>
     {

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace PolimerAdministratorApp.View
+namespace Polimer.TechnologistApp.View
 {
     /// <summary>
     /// Логика взаимодействия для AuthorizationWindow.xaml

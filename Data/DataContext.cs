@@ -1,14 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Polimer.Data.Models;
 
 namespace Polimer.Data
 {
-    internal sealed class DataContext : DbContext
+    public sealed class DataContext : DbContext
     {
+        public DbSet<UserEntity> Users { get; set; } = null!;
         public DataContext(DbContextOptions options) : base(options)
         {
             Database.EnsureCreated();
