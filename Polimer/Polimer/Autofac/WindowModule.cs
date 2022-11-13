@@ -1,21 +1,15 @@
 ﻿using Autofac;
-using PolimerAdministratorApp.View;
-using PolimerAdministratorApp.ViewModel.Admin;
-using PolimerAdministratorApp.ViewModel.Authorization;
+using Polimer.App.View;
+using Polimer.App.View.Factories;
 
-namespace PolimerAdministratorApp.Autofac;
+namespace Polimer.App.Autofac;
 
 internal class WindowModule : Module
 {
     protected override void Load(ContainerBuilder builder)
     {
-        builder
-            .Register(c => new AuthorizationWindow() { DataContext = c.Resolve<AuthorizationViewModel>() })
-            .AsSelf();
-
-        builder
-            .Register(c => new AdminWindow() { DataContext = c.Resolve<AdminViewModel>() })
-            .AsSelf();
+        builder.RegisterType<AuthorizationWindowFactory>().As<IWindowFactory<AuthorizationWindow>>();
+        builder.RegisterType<AdminWindowFactory>().As<IWindowFactory<AdminWindow>>();
     }
 
 }

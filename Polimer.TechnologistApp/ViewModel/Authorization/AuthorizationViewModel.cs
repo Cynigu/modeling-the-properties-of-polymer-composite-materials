@@ -15,14 +15,12 @@ namespace Polimer.TechnologistApp.ViewModel.Authorization
             _adminWindow = adminWindow ?? throw new ArgumentNullException(nameof(adminWindow));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
 
-            UserModel = new UserModel();
-
             LogInCommand = new AsyncCommand(LogInMethodAsync, CanLogIn);
         }
 
         #region Fields
 
-        private UserModel _userModel;
+        private UserModel _userModel = new();
 
         #endregion
 

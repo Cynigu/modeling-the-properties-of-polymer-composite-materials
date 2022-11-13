@@ -1,11 +1,12 @@
 ﻿using System.Windows;
 using System.Windows.Threading;
 using Autofac;
-using PolimerAdministratorApp.Autofac;
-using PolimerAdministratorApp.View;
+using Polimer.App.Autofac;
+using Polimer.App.View;
+using Polimer.App.View.Factories;
 using Polimer.Data.Autofac;
 
-namespace PolimerAdministratorApp
+namespace Polimer.App
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -27,7 +28,7 @@ namespace PolimerAdministratorApp
 
             var containerBase = builderBase.Build();
 
-            var viewBase = containerBase.Resolve<AuthorizationWindow>();
+            var viewBase = containerBase.Resolve<IWindowFactory<AuthorizationWindow>>().CreateWindow();
 
             viewBase.Show();
         }

@@ -1,6 +1,7 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 
-namespace PolimerAdministratorApp.View
+namespace Polimer.App.View
 {
     /// <summary>
     /// Логика взаимодействия для AdminWindow.xaml
@@ -11,5 +12,22 @@ namespace PolimerAdministratorApp.View
         {
             InitializeComponent();
         }
+
+        public bool? OpenView()
+        {
+            return this.ShowDialog();
+        }
+
+        public void CloseView()
+        {
+            this.Close();
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            this.Visibility = Visibility.Collapsed;
+            e.Cancel = true;
+        }
     }
+
 }

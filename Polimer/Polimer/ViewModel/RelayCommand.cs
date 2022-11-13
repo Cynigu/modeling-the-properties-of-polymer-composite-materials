@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace PolimerAdministratorApp.ViewModel
+namespace Polimer.App.ViewModel
 {
     public class RelayCommand : ICommand
     {

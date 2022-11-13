@@ -2,10 +2,11 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace PolimerAdministratorApp.ViewModel
+namespace Polimer.App.ViewModel
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)

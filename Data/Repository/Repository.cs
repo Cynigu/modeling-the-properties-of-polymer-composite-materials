@@ -18,7 +18,7 @@ namespace Polimer.Data.Repository
             UserInfo userInfo;
             using ( var context = await _dbContextFactory.CreateDbContextAsync())
             {
-                UserEntity? user = await context.Users.FirstAsync(u => u.Login == login && u.Password == password);
+                UserEntity? user = await context.Users.FirstOrDefaultAsync(u => u.Login == login && u.Password == password);
 
                 userInfo = new UserInfo()
                 {

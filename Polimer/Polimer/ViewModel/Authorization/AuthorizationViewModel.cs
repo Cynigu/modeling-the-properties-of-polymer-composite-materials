@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Polimer.App.View;
+using Polimer.App.View.Factories;
 using Polimer.Data.Repository;
-using PolimerAdministratorApp.View;
 
-namespace PolimerAdministratorApp.ViewModel.Authorization
+namespace Polimer.App.ViewModel.Authorization
 {
     public class AuthorizationViewModel : ViewModelBase
     {
-        private readonly AdminWindow _adminWindow;
+        private readonly IWindowFactory<AdminWindow> _adminWindow;
         private readonly Repository _repository;
 
-        public AuthorizationViewModel(AdminWindow adminWindow, Repository repository)
+        public AuthorizationViewModel(IWindowFactory<AdminWindow> adminWindow, Repository repository)
         {
             _adminWindow = adminWindow ?? throw new ArgumentNullException(nameof(adminWindow));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-
-            UserModel = new UserModel();
 
             LogInCommand = new AsyncCommand(LogInMethodAsync, CanLogIn);
         }
 
         #region Fields
 
-        private UserModel _userModel;
+        private UserModel _userModel = new();
 
         #endregion
 
@@ -42,7 +42,7 @@ namespace PolimerAdministratorApp.ViewModel.Authorization
         #endregion
 
         #region Commands
-        public AsyncCommand LogInCommand { get; set; }
+        public ICommand LogInCommand { get; set; }
 
         public bool CanLogIn() =>
             !string.IsNullOrWhiteSpace(UserModel.Login) && !string.IsNullOrWhiteSpace(UserModel.Password); 
@@ -63,12 +63,13 @@ namespace PolimerAdministratorApp.ViewModel.Authorization
 
             if (user.Success == false)
             {
-                throw new Exception("Пользователя не существует");
+                throw new Exception("Пользователя не существует!");
             }
 
             if (user.Role == "Администратор")
             {
-                _adminWindow.Show();
+                 var window = _adminWindow.CreateWindow();
+                 window.Show();
             }
             else
             {

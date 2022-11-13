@@ -1,4 +1,4 @@
-﻿namespace PolimerAdministratorApp.ViewModel.Admin;
+﻿namespace Polimer.App.ViewModel.Admin;
 
 public class AdminViewModel : ViewModelBase
 {

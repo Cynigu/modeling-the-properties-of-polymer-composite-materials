@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace PolimerAdministratorApp.ViewModel
+namespace Polimer.App.ViewModel
 {
     public interface IAsyncCommand : ICommand
     {

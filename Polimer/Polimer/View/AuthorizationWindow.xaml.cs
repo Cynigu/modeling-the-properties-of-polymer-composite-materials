@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace PolimerAdministratorApp.View
+namespace Polimer.App.View
 {
     /// <summary>
     /// Логика взаимодействия для AuthorizationWindow.xaml
@@ -10,6 +10,8 @@ namespace PolimerAdministratorApp.View
         public AuthorizationWindow()
         {
             InitializeComponent();
+            // This line should fix it:
+            this.Closed += (sender, e) => this.Dispatcher.InvokeShutdown();
         }
     }
 }

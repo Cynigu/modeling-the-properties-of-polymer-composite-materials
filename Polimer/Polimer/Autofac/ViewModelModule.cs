@@ -1,8 +1,8 @@
 ﻿using Autofac;
-using PolimerAdministratorApp.ViewModel.Admin;
-using PolimerAdministratorApp.ViewModel.Authorization;
+using Polimer.App.ViewModel.Admin;
+using Polimer.App.ViewModel.Authorization;
 
-namespace PolimerAdministratorApp.Autofac;
+namespace Polimer.App.Autofac;
 
 internal class ViewModelModule : Module
 {
