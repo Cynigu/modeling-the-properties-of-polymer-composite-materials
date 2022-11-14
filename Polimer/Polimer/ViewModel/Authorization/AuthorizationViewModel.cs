@@ -9,12 +9,12 @@ namespace Polimer.App.ViewModel.Authorization
 {
     public class AuthorizationViewModel : ViewModelBase
     {
-        private readonly IWindowFactory<AdminWindow> _adminWindow;
+        private readonly IWindowFactory<AdminWindow> _adminWindowFactory;
         private readonly Repository _repository;
 
         public AuthorizationViewModel(IWindowFactory<AdminWindow> adminWindow, Repository repository)
         {
-            _adminWindow = adminWindow ?? throw new ArgumentNullException(nameof(adminWindow));
+            _adminWindowFactory = adminWindow ?? throw new ArgumentNullException(nameof(adminWindow));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
 
             LogInCommand = new AsyncCommand(LogInMethodAsync, CanLogIn);
@@ -68,12 +68,16 @@ namespace Polimer.App.ViewModel.Authorization
 
             if (user.Role == "Администратор")
             {
-                 var window = _adminWindow.CreateWindow();
+                 var window = _adminWindowFactory.CreateWindow();
                  window.Show();
+            }
+            else if (user.Role == "Технолог")
+            {
+                throw new InvalidOperationException("Технолога пока нет!");
             }
             else
             {
-                throw new InvalidOperationException("Пользователя-админимтратора не существует!");
+                throw new InvalidOperationException("Пользователя не существует!");
             }
         }
         

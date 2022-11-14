@@ -12,22 +12,6 @@ namespace Polimer.App.View
         {
             InitializeComponent();
         }
-
-        public bool? OpenView()
-        {
-            return this.ShowDialog();
-        }
-
-        public void CloseView()
-        {
-            this.Close();
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            this.Visibility = Visibility.Collapsed;
-            e.Cancel = true;
-        }
     }
 
 }

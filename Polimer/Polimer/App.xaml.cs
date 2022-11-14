@@ -23,8 +23,8 @@ namespace Polimer.App
             var builderBase = new ContainerBuilder();
 
             builderBase.RegisterModule(new DataModule());
-            builderBase.RegisterModule(new ViewModelModule());
-            builderBase.RegisterModule(new WindowModule());
+            builderBase.RegisterModule(new ViewModelFactoriesModule());
+            builderBase.RegisterModule(new WindowFactoriesModule());
 
             var containerBase = builderBase.Build();
 

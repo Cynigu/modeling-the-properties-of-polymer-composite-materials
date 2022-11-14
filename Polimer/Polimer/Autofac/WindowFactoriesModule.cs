@@ -4,7 +4,7 @@ using Polimer.App.View.Factories;
 
 namespace Polimer.App.Autofac;
 
-internal class WindowModule : Module
+internal class WindowFactoriesModule : Module
 {
     protected override void Load(ContainerBuilder builder)
     {

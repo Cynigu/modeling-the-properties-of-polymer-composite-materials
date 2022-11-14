@@ -10,8 +10,6 @@ namespace Polimer.App.View
         public AuthorizationWindow()
         {
             InitializeComponent();
-            // This line should fix it:
-            this.Closed += (sender, e) => this.Dispatcher.InvokeShutdown();
         }
     }
 }
