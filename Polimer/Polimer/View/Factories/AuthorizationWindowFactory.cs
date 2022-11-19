@@ -14,7 +14,7 @@ namespace Polimer.App.View.Factories
         public AuthorizationWindow CreateWindow()
         {
             var window = AuthorizationWindow.CreateInstance();
-            window.DataContext = _authViewModel.CreateViewModel();
+            window.DataContext = _authViewModel.CreateViewModel(window);
             return window;
         }
     }

@@ -13,6 +13,7 @@ namespace Polimer.Data.Autofac
             builder.Register(c => new ContextFactory(@"Data Source = polim.db", @"logs.txt"))
                 .As<IDbContextFactory<DataContext>>();
             builder.RegisterType<UserRepository>().AsSelf();
+            builder.RegisterType<MaterialRepository>().AsSelf();
         }
     }
 }

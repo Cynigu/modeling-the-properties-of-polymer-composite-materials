@@ -5,38 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Окно администратора" Height="400" Width="670">
+        Title="Окно администратора" Height="500" Width="800">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <Style TargetType="StackPanel">
             <Setter Property="Margin" Value="3"></Setter>
         </Style>
         <Style TargetType="Button">
-            <Setter Property="Width" Value="200"></Setter>
+            <!--<Setter Property="Width" Value="200"></Setter>-->
             <Setter Property="Height" Value="30"></Setter>
             <Setter Property="Margin" Value="0 3"></Setter>
         </Style>
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="0 3"></Setter>
-            <Setter Property="Width" Value="70"></Setter>
+            <!--<Setter Property="Width" Value="70"></Setter>-->
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
         </Style>
         <Style TargetType="TextBox">
             <Setter Property="Margin" Value="0 3"></Setter>
-            <Setter Property="Width" Value="130"></Setter>
+            <!--<Setter Property="Width" Value="130"></Setter>-->
             <Setter Property="Height" Value="25"></Setter>
         </Style>
         <Style TargetType="ComboBox">
             <Setter Property="Margin" Value="0 3"></Setter>
-            <Setter Property="Width" Value="130"></Setter>
+            <!--<Setter Property="Width" Value="130"></Setter>-->
         </Style>
         <Style TargetType="CheckBox">
             <Setter Property="Margin" Value="0 3"></Setter>
             <Setter Property="Width" Value="auto"></Setter>
         </Style>
         <Style TargetType="DataGrid">
-            <Setter Property="Width" Value="400"></Setter>
-            <Setter Property="Height" Value="270"></Setter>
+            <!--<Setter Property="Width" Value="400"></Setter>-->
+            <!--<Setter Property="Height" Value="270"></Setter>-->
             <Setter Property="ColumnWidth" Value="*"></Setter>
         </Style>
         <Style TargetType="wpfx:IntegerUpDown">
@@ -48,93 +48,91 @@
             <Setter Property="Height" Value="auto"></Setter>
             <Setter Property="Margin" Value="0 3"></Setter>
         </Style>
+        <Style TargetType="DockPanel">
+            <Setter Property="Margin" Value="3"></Setter>
+        </Style>
     </Window.Resources>
-    <StackPanel>
-        
-        <TabControl>
-            <TabItem Header="Пользователи">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Логин: "></TextBlock>
-                                <TextBox Text="{Binding UsersVM.ChangingModel.Login}"></TextBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Пароль: "></TextBlock>
-                                <TextBox Text="{Binding UsersVM.ChangingModel.Password}"></TextBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Роль: "></TextBlock>
-                                <ComboBox ItemsSource="{Binding UsersVM.Roles}" 
-                                          SelectedItem="{Binding UsersVM.ChangingModel.Role}">
-                                </ComboBox>
-                            </StackPanel>
+    <DockPanel>
+        <DockPanel Height="400" DockPanel.Dock="Top" LastChildFill="False">
+            <TabControl DockPanel.Dock="Top" Height="400">
+                <TabItem Header="Пользователи">
+                    <DockPanel>
+                        <DockPanel>
+                            <DockPanel  DockPanel.Dock="Top" Width="200">
+                                <DockPanel DockPanel.Dock="Top">
+                                    <TextBlock Width="70" Text="Логин: "></TextBlock>
+                                    <TextBox Text="{Binding UsersVM.ChangingModel.Login}"></TextBox>
+                                </DockPanel>
+                                <DockPanel DockPanel.Dock="Top">
+                                    <TextBlock  Width="70" Text="Пароль: "></TextBlock>
+                                    <TextBox Text="{Binding UsersVM.ChangingModel.Password}"></TextBox>
+                                </DockPanel>
+                                <DockPanel DockPanel.Dock="Top">
+                                    <TextBlock  Width="70" Text="Роль: "></TextBlock>
+                                    <ComboBox ItemsSource="{Binding UsersVM.Roles}" 
+                                              SelectedItem="{Binding UsersVM.ChangingModel.Role}">
+                                    </ComboBox>
+                                </DockPanel>
+                            </DockPanel>
                             <StackPanel>
                                 <Button Content="Добавить" Command="{Binding UsersVM.AddCommand}"></Button>
                                 <Button Content="Удалить" Command="{Binding UsersVM.RemoveCommand}"></Button>
                                 <Button Content="Изменить" Command="{Binding UsersVM.EditCommand}"></Button>
                             </StackPanel>
-                        </StackPanel>
-                        <StackPanel>
-                            <DataGrid ItemsSource ="{Binding UsersVM.Models}"
-                                      SelectedItem="{Binding UsersVM.SelectedModel}"
-                                      CanUserDeleteRows="False" CanUserAddRows="False" 
-                                      IsReadOnly="True" AutoGenerateColumns="False">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Width="*" Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
-                                    <DataGridTextColumn Width="*" Header="Логин" Binding="{Binding Login}"/>
-                                    <DataGridTextColumn Width="*" Header="Пароль" Binding="{Binding Password}"></DataGridTextColumn>
-                                    <DataGridTextColumn Width="*" Header="Роль" Binding="{Binding Role}"></DataGridTextColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </StackPanel>
-                    </StackPanel>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Пользователи">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Логин: "></TextBlock>
-                                <TextBox Text="{Binding UsersVM.Login}"></TextBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Пароль: "></TextBlock>
-                                <TextBox Text="{Binding UsersVM.Password}"></TextBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Роль: "></TextBlock>
-                                <ComboBox ItemsSource="{Binding UsersVM.Roles}" 
-                                          SelectedItem="{Binding UsersVM.SelectedRole}">
-                                </ComboBox>
-                            </StackPanel>
+                        </DockPanel>
+                        <DataGrid ItemsSource ="{Binding UsersVM.Models}"
+                                  SelectedItem="{Binding UsersVM.SelectedModel}"
+                                  CanUserDeleteRows="False" CanUserAddRows="False" 
+                                  IsReadOnly="True" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="40" Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
+                                <DataGridTextColumn Width="*" Header="Логин" Binding="{Binding Login}"/>
+                                <DataGridTextColumn Width="*" Header="Пароль" Binding="{Binding Password}"></DataGridTextColumn>
+                                <DataGridTextColumn Width="*" Header="Роль" Binding="{Binding Role}"></DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </TabItem>
+                <TabItem Header="Материалы">
+                    <DockPanel>
+                        <DockPanel Width="200">
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock Width="83" Text="Русское наим. "></TextBlock>
+                                <TextBox Text="{Binding MaterialsVM.ChangingModel.RussianName}"></TextBox>
+                            </DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock Width="83" Text="Краткое наим."></TextBlock>
+                                <TextBox Text="{Binding MaterialsVM.ChangingModel.QuickName}"></TextBox>
+                            </DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock Width="83" Text="Англ. наим.: "></TextBlock>
+                                <TextBox Text="{Binding MaterialsVM.ChangingModel.EnglishName}"></TextBox>
+                            </DockPanel>
                             <StackPanel>
-                                <Button Content="Добавить" Command="{Binding UserVM.AddUserCommand}"></Button>
-                                <Button Content="Удалить"></Button>
-                                <Button Content="Изменить"></Button>
+                                <Button Content="Добавить" Command="{Binding MaterialsVM.AddCommand}"></Button>
+                                <Button Content="Удалить" Command="{Binding MaterialsVM.RemoveCommand}"></Button>
+                                <Button Content="Изменить" Command="{Binding MaterialsVM.EditCommand}"></Button>
                             </StackPanel>
-                        </StackPanel>
-                        <StackPanel>
-                            <DataGrid ItemsSource ="{Binding UsersVM.Users}"
-                                      SelectedItem="{Binding UsersVM.SelectedUser}"
+                        </DockPanel>
+                        <DockPanel>
+                            <DataGrid ItemsSource ="{Binding MaterialsVM.Models}"
+                                      SelectedItem="{Binding MaterialsVM.SelectedModel}"
                                       CanUserDeleteRows="False" CanUserAddRows="False" 
                                       IsReadOnly="True" AutoGenerateColumns="False">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Width="*" Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
-                                    <DataGridTextColumn Width="*" Header="Логин" Binding="{Binding Login}"/>
-                                    <DataGridTextColumn Width="*" Header="Пароль" Binding="{Binding Password}"></DataGridTextColumn>
-                                    <DataGridTextColumn Width="*" Header="Роль" Binding="{Binding Role}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="40" Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="*" Header="Русское наим." Binding="{Binding RussianName}"/>
+                                    <DataGridTextColumn Width="*" Header="Краткое наим." Binding="{Binding QuickName}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="*" Header="Англ. наим." Binding="{Binding EnglishName}"></DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                        </StackPanel>
-                    </StackPanel>
-                </StackPanel>
-            </TabItem>
-        </TabControl>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Width="600" Content="Обновить" Command="{Binding UpdateTablesCommand}"></Button>
-        </StackPanel>
-    </StackPanel>
+                        </DockPanel>
+                    </DockPanel>
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top">
+            <Button  Content="Обновить" Command="{Binding UpdateTablesCommand}"></Button>
+        </DockPanel>
+    </DockPanel>
 </Window>

@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Polimer.Data.Models;
 
-namespace Polimer.Data.Repository
+namespace Polimer.Data.Repository.Abstract
 {
-    public class RepositoryBase<TEntity> 
-        where TEntity : class
+    public abstract class RepositoryBase<TEntity>
+        where TEntity : class, IEntity
     {
         protected readonly IDbContextFactory<DataContext> _dbContextFactory;
 
@@ -38,7 +39,7 @@ namespace Polimer.Data.Repository
         public virtual async Task<ICollection<TEntity>> GetEntitiesByFilterAsync(Func<TEntity, bool> predicate)
         {
             await using var context = await _dbContextFactory.CreateDbContextAsync();
-            var result =  context.Set<TEntity>().Where(predicate).ToList();
+            var result = context.Set<TEntity>().Where(predicate).ToList();
 
             return result;
         }

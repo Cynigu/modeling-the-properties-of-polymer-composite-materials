@@ -4,16 +4,16 @@ using Polimer.Data.Models;
 
 namespace Polimer.App.Profilers
 {
-    internal class UserProfiler : Profile
+    internal class UserProfiler : Profile, IAdminEntityProfile
     {
         public UserProfiler()
         {
-            MapUserModelToUserentity();
-            MapUserEntityToModel();
+            MapEntityToModel();
+            MapModelToEntity();
             MapModelToModel();
         }
 
-        private void MapModelToModel()
+        public void MapModelToModel()
         {
             CreateMap<UserModel, UserModel>()
                 .ForMember(
@@ -38,7 +38,7 @@ namespace Polimer.App.Profilers
                 );
         }
 
-        private void MapUserEntityToModel()
+        public void MapEntityToModel()
         {
             CreateMap<UserEntity, UserModel>()
                 .ForMember(
@@ -63,7 +63,7 @@ namespace Polimer.App.Profilers
                 );
         }
 
-        private void MapUserModelToUserentity()
+        public void MapModelToEntity()
         {
             CreateMap<UserModel, UserEntity>()
                 .ForMember(

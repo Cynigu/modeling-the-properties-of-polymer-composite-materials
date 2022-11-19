@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using AutoMapper;
 using Polimer.Data.Models;
+using Polimer.App.ViewModel.Admin.Abstract;
 
 namespace Polimer.App.ViewModel.Admin
 {
@@ -21,12 +22,7 @@ namespace Polimer.App.ViewModel.Admin
             return new UsersViewModel(userRepository, mapper);
         }
 
-        #region Fields
         private ObservableCollection<string> _roles;
-
-        #endregion
-
-        #region Properties
 
         public ObservableCollection<string> Roles
         {
@@ -34,16 +30,10 @@ namespace Polimer.App.ViewModel.Admin
             set => SetField(ref _roles, value);
         }
 
-        #endregion
-
-
-        #region Override Methods
 
         protected override async Task<bool> CheckingForExistenceAsync()
         {
-            if (SelectedModel == null)
-                throw new ArgumentException("Нет данных!");
-            var user = await _repository.GetEntityByFilterFirstOrDefaultAsync(u => u.Login == SelectedModel.Login);
+            var user = await _repository.GetEntityByFilterFirstOrDefaultAsync(u => u.Login == ChangingModel.Login);
             return user == null;
         }
 
@@ -51,7 +41,6 @@ namespace Polimer.App.ViewModel.Admin
                                             && !string.IsNullOrWhiteSpace(ChangingModel?.Password) 
                                             && !string.IsNullOrWhiteSpace(ChangingModel?.Role);
 
-        #endregion
 
     }
 

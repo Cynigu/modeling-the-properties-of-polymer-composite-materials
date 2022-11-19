@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Polimer.Data.Models;
+using Polimer.Data.Repository.Abstract;
 
 namespace Polimer.Data.Repository
 {

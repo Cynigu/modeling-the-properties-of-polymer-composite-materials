@@ -10,17 +10,26 @@ namespace Polimer.App.ViewModel.Admin;
 public class AdminViewModel : ViewModelBase
 {
     private UsersViewModel _usersVm;
+    private MaterialsViewModel _materialsVm;
 
-    private AdminViewModel(UserRepository userRepository, IMapper mapper)
+    private AdminViewModel(IMapper mapper, UserRepository userRepository, MaterialRepository materialRepository)
     {
         _usersVm = UsersViewModel.CreateInstance(userRepository, mapper);
+        _materialsVm = MaterialsViewModel.CreateInstance(materialRepository, mapper);
         UpdateTablesCommand = new AsyncCommand(UpdateTablesAsync, () => true);
         UpdateTablesAsync();
     }
 
-    public static AdminViewModel CreateInstance(UserRepository userRepository, IMapper mapper)
+    internal static AdminViewModel CreateInstance(IMapper mapper, UserRepository userRepository, MaterialRepository materialRepository)
     {
-        return new AdminViewModel(userRepository, mapper);
+        return new AdminViewModel(mapper, userRepository, materialRepository);
+    }
+
+
+    public MaterialsViewModel MaterialsVM
+    {
+        get => _materialsVm;
+        set => SetField(ref _materialsVm, value);
     }
 
     public UsersViewModel UsersVM
@@ -34,5 +43,6 @@ public class AdminViewModel : ViewModelBase
     private async Task UpdateTablesAsync()
     {
         await UsersVM.UpdateEntitiesAsync();
+        await MaterialsVM.UpdateEntitiesAsync();
     }
 }

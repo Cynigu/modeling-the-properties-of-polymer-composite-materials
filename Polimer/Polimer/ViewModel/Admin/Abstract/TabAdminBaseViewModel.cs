@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using AutoMapper;
 using Polimer.Data.Models;
-using Polimer.Data.Repository;
+using Polimer.Data.Repository.Abstract;
 
-namespace Polimer.App.ViewModel.Admin;
+namespace Polimer.App.ViewModel.Admin.Abstract;
 
 public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModelBase
     where TEntity : class, IEntity
@@ -49,7 +49,7 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
                 ChangingModel = _mapper.Map<TModelAsEntity>(_selectedModel);
                 ChangingModel.Id = null;
             }
-           
+
         }
     }
 
@@ -77,7 +77,7 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
             throw new ArgumentNullException("Поля должны быть заполнены!");
         }
 
-        if (await CheckingForExistenceAsync())
+        if (!await CheckingForExistenceAsync())
         {
             throw new ArgumentException("Такая сущность уже существует!");
         }
@@ -92,11 +92,11 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
     {
         if (!CanEdit())
         {
-            throw 
+            throw
                 new ArgumentNullException($"Поля должны быть заполнены и выбрана строка для редактирования!");
         }
 
-        if (await CheckingForExistenceAsync())
+        if (!await CheckingForExistenceAsync())
         {
             throw new ArgumentException("Такая сущность уже существует!");
         }
@@ -124,7 +124,7 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
     /// <returns></returns>
     public async Task UpdateEntitiesAsync()
     {
-        var models = (await _repository.GetEntitiesAsync()).Select(x 
+        var models = (await _repository.GetEntitiesAsync()).Select(x
             => _mapper.Map<TModelAsEntity>(x));
 
         Models = new ObservableCollection<TModelAsEntity>(models);
@@ -158,7 +158,7 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
     /// </summary>
     /// <returns></returns>
     protected virtual bool CanEdit() => SelectedModel != null && CanAdd();
-        
+
     #endregion
 
 }

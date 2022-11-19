@@ -4,6 +4,7 @@ using Polimer.App.ViewModel.Authorization.Models;
 using Polimer.Data.Repository;
 using System;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Polimer.App.ViewModel.Authorization
@@ -12,18 +13,19 @@ namespace Polimer.App.ViewModel.Authorization
     {
         private readonly IWindowFactory<AdminWindow> _adminWindowFactory;
         private readonly UserRepository _userRepository;
-
-        private AuthorizationViewModel(IWindowFactory<AdminWindow> adminWindow, UserRepository userRepository)
+        private readonly Window? _currentWindow;
+        private AuthorizationViewModel(IWindowFactory<AdminWindow> adminWindow, UserRepository userRepository, Window? currentWindow = null)
         {
             _adminWindowFactory = adminWindow ?? throw new ArgumentNullException(nameof(adminWindow));
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _currentWindow = currentWindow ?? throw new ArgumentNullException(nameof(currentWindow));
 
             LogInCommand = new AsyncCommand(LogInMethodAsync, CanLogIn);
         }
 
-        internal static AuthorizationViewModel CreateInstance(IWindowFactory<AdminWindow> adminWindow, UserRepository userRepository)
+        internal static AuthorizationViewModel CreateInstance(IWindowFactory<AdminWindow> adminWindow, UserRepository userRepository, Window? currentWindow = null)
         {
-            return new AuthorizationViewModel(adminWindow, userRepository);
+            return new AuthorizationViewModel(adminWindow, userRepository, currentWindow);
         }
 
         #region Fields
@@ -77,6 +79,7 @@ namespace Polimer.App.ViewModel.Authorization
             {
                  var window = _adminWindowFactory.CreateWindow();
                  window.Show();
+                 _currentWindow?.Close();
             }
             else if (user.Role == "Технолог")
             {
