@@ -12,6 +12,7 @@ internal class AutoMapperModule : Module
         {
             cfg.AddProfile(new UserProfiler());
             cfg.AddProfile(new MaterialProfile());
+            cfg.AddProfile(new AdditiveProfiler());
         }));
         builder.Register(ctx => ctx.Resolve<MapperConfiguration>().CreateMapper()).As<IMapper>().InstancePerLifetimeScope();
     }

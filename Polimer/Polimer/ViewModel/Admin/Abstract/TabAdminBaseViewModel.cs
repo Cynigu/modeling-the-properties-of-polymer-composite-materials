@@ -19,6 +19,7 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
     private ObservableCollection<TModelAsEntity>? _models;
     private TModelAsEntity? _selectedModel;
     private TModelAsEntity _changingModel;
+    private string _nameTab;
 
     protected TabAdminBaseViewModel(RepositoryBase<TEntity> repository, IMapper mapper)
     {
@@ -31,6 +32,12 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
     }
 
     #region Properties
+
+    public string NameTab
+    {
+        get => _nameTab;
+        set => SetField(ref _nameTab, value);
+    }
 
     public ObservableCollection<TModelAsEntity>? Models
     {

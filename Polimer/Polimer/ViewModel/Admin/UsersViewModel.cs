@@ -13,6 +13,7 @@ namespace Polimer.App.ViewModel.Admin
     {
         private UsersViewModel(UserRepository userRepository, IMapper mapper) : base(userRepository, mapper)
         {
+            NameTab = "Пользователи";
             Roles = new ObservableCollection<string>() {"Администратор", "Технолог"};
             ChangingModel = new UserModel();
         }
@@ -43,5 +44,4 @@ namespace Polimer.App.ViewModel.Admin
 
 
     }
-
 }

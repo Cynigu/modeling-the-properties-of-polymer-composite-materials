@@ -16,6 +16,7 @@ namespace Polimer.App.ViewModel.Admin
     {
         private MaterialsViewModel(MaterialRepository repository, IMapper mapper) : base(repository, mapper)
         {
+            NameTab = "Материалы";
             ChangingModel = new MaterialModel();
         }
 

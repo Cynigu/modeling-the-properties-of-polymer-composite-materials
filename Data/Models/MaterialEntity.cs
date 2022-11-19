@@ -23,4 +23,12 @@ public record MaterialEntity : IEntity
     [Column("english_name")]
     [Required]
     public string? EnglishName { get; init; }
+
+    public ICollection<PropertyMaterialEntity>? MaterialProperties { get; init; }
+
+    [InverseProperty("FirstMaterial")]
+    public ICollection<CompatibilityMaterialEntity>? MaterialsFirst{ get; init; }
+
+    [InverseProperty("SecondMaterial")]
+    public ICollection<CompatibilityMaterialEntity>? MaterialsSecond { get; init; }
 }

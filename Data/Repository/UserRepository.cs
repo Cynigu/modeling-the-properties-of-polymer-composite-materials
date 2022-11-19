@@ -9,5 +9,6 @@ namespace Polimer.Data.Repository
         public UserRepository(IDbContextFactory<DataContext> dbContextFactory) : base(dbContextFactory)
         {
         }
+
     }
 }
