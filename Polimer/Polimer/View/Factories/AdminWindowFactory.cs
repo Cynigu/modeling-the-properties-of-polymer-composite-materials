@@ -13,7 +13,9 @@ namespace Polimer.App.View.Factories
         }
         public AdminWindow CreateWindow()
         {
-            return new AdminWindow() {DataContext = _adminViewModel.CreateViewModel()};
+            var window = AdminWindow.CreateInstance();
+            window.DataContext = _adminViewModel.CreateViewModel();
+            return window;
         }
     }
 }

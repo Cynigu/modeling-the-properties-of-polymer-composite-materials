@@ -1,4 +1,4 @@
-﻿namespace Polimer.App.ViewModel.Authorization
+﻿namespace Polimer.App.ViewModel.Authorization.Models
 {
     public class UserModel : ViewModelBase
     {

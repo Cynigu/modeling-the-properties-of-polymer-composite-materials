@@ -1,13 +1,13 @@
 ﻿namespace Polimer.App.ViewModel.Admin.Models
 {
-    public class UserModel : ViewModelBase
+    public class UserModel : ViewModelBase, IModelAsEntity
     {
-        private int _id;
+        private int? _id;
         private string? _login;
         private string? _password;
         private string? _role;
 
-        public int Id
+        public int? Id
         {
             get => _id;
             set => SetField(ref _id, value);

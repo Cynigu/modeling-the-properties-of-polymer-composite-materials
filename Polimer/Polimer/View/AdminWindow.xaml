@@ -58,27 +58,27 @@
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Логин: "></TextBlock>
-                                <TextBox Text="{Binding UsersVM.Login}"></TextBox>
+                                <TextBox Text="{Binding UsersVM.ChangingModel.Login}"></TextBox>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Пароль: "></TextBlock>
-                                <TextBox Text="{Binding UsersVM.Password}"></TextBox>
+                                <TextBox Text="{Binding UsersVM.ChangingModel.Password}"></TextBox>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Роль: "></TextBlock>
                                 <ComboBox ItemsSource="{Binding UsersVM.Roles}" 
-                                          SelectedItem="{Binding UsersVM.SelectedRole}">
+                                          SelectedItem="{Binding UsersVM.ChangingModel.Role}">
                                 </ComboBox>
                             </StackPanel>
                             <StackPanel>
-                                <Button Content="Добавить" Command="{Binding UsersVM.AddUserCommand}"></Button>
-                                <Button Content="Удалить"></Button>
-                                <Button Content="Изменить"></Button>
+                                <Button Content="Добавить" Command="{Binding UsersVM.AddCommand}"></Button>
+                                <Button Content="Удалить" Command="{Binding UsersVM.RemoveCommand}"></Button>
+                                <Button Content="Изменить" Command="{Binding UsersVM.EditCommand}"></Button>
                             </StackPanel>
                         </StackPanel>
                         <StackPanel>
-                            <DataGrid ItemsSource ="{Binding UsersVM.Users}"
-                                      SelectedItem="{Binding UsersVM.SelectedUser}"
+                            <DataGrid ItemsSource ="{Binding UsersVM.Models}"
+                                      SelectedItem="{Binding UsersVM.SelectedModel}"
                                       CanUserDeleteRows="False" CanUserAddRows="False" 
                                       IsReadOnly="True" AutoGenerateColumns="False">
                                 <DataGrid.Columns>

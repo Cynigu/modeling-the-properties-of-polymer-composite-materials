@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using Microsoft.EntityFrameworkCore;
 using Polimer.Data.Factory;
+using Polimer.Data.Models;
+using Polimer.Data.Repository;
 
 namespace Polimer.Data.Autofac
 {
@@ -10,7 +12,7 @@ namespace Polimer.Data.Autofac
         {
             builder.Register(c => new ContextFactory(@"Data Source = polim.db", @"logs.txt"))
                 .As<IDbContextFactory<DataContext>>();
-            builder.RegisterType<Repository.Repository>().AsSelf();
+            builder.RegisterType<UserRepository>().AsSelf();
         }
     }
 }

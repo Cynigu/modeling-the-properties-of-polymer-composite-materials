@@ -7,9 +7,14 @@ namespace Polimer.App.View
     /// </summary>
     public partial class AuthorizationWindow : Window
     {
-        public AuthorizationWindow()
+        private AuthorizationWindow()
         {
             InitializeComponent();
+        }
+
+        public static AuthorizationWindow CreateInstance()
+        {
+            return new AuthorizationWindow();
         }
     }
 }

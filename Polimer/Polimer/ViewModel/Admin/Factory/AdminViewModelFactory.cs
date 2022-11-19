@@ -1,24 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using Polimer.Data.Models;
 using Polimer.Data.Repository;
+using System;
 
 namespace Polimer.App.ViewModel.Admin.Factory
 {
     internal class AdminViewModelFactory : IViewModelFactory<AdminViewModel>
     {
-        private readonly Repository _repository;
+        private readonly UserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public AdminViewModelFactory(Repository repository)
+        public AdminViewModelFactory( IMapper mapper, UserRepository userRepository)
         {
-            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public AdminViewModel CreateViewModel()
         {
-            return new AdminViewModel(_repository);
+            return AdminViewModel.CreateInstance(_userRepository, _mapper);
         }
     }
 }

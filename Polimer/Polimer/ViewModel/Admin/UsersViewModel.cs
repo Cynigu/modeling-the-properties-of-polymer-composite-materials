@@ -2,43 +2,31 @@
 using Polimer.Data.Repository;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
+using AutoMapper;
+using Polimer.Data.Models;
 
 namespace Polimer.App.ViewModel.Admin
 {
-    public class UsersViewModel: ViewModelBase
+    public sealed class UsersViewModel: TabAdminBaseViewModel<UserEntity, UserModel>
     {
-        private readonly Repository _repository;
-        
-        public UsersViewModel(Repository repository)
+        private UsersViewModel(UserRepository userRepository, IMapper mapper) : base(userRepository, mapper)
         {
-            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-
             Roles = new ObservableCollection<string>() {"Администратор", "Технолог"};
+            ChangingModel = new UserModel();
+        }
 
-            AddUserCommand = new AsyncCommand(AddUserAsync, CanAddUser);
+        public static UsersViewModel CreateInstance(UserRepository userRepository, IMapper mapper)
+        {
+            return new UsersViewModel(userRepository, mapper);
         }
 
         #region Fields
-
-        private UserModel? _selectedUser;
-        private string? _login;
-        private string? _password;
-        private string? _selectedRole;
-        private ObservableCollection<UserModel> _users;
         private ObservableCollection<string> _roles;
 
         #endregion
 
         #region Properties
-
-        public ObservableCollection<UserModel> Users
-        {
-            get => _users;
-            set => SetField(ref _users, value);
-        }
 
         public ObservableCollection<string> Roles
         {
@@ -46,74 +34,25 @@ namespace Polimer.App.ViewModel.Admin
             set => SetField(ref _roles, value);
         }
 
-        public UserModel? SelectedUser
-        {
-            get => _selectedUser;
-            set
-            {
-                SetField(ref _selectedUser, value);
-                Login = SelectedUser?.Login;
-                Password = SelectedUser?.Password;
-                SelectedRole = SelectedUser?.Role;
-            }
-        }
-
-        public string? Login
-        {
-            get => _login;
-            set => SetField(ref _login, value);
-        }
-
-        public string? Password
-        {
-            get => _password;
-            set => SetField(ref _password, value);
-        }
-
-
-        public string? SelectedRole
-        {
-            get => _selectedRole;
-            set => SetField(ref _selectedRole, value);
-        }
-
-        #endregion
-
-        #region Commands
-
-        public ICommand AddUserCommand { get; set; }
-
-        private bool CanAddUser() => !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password) &&
-                                     !string.IsNullOrWhiteSpace(SelectedRole);
-
         #endregion
 
 
-        #region Methods
+        #region Override Methods
 
-        private async Task AddUserAsync()
+        protected override async Task<bool> CheckingForExistenceAsync()
         {
-            if (string.IsNullOrWhiteSpace(Login) || string.IsNullOrWhiteSpace(Password) || string.IsNullOrWhiteSpace(SelectedRole))
-            {
-                throw new ArgumentNullException("Поля должны быть заполнены!");
-            }
-            await _repository.AddUserAsync(Login, Password, SelectedRole);
-            await UpdateEntitiesAsync();
+            if (SelectedModel == null)
+                throw new ArgumentException("Нет данных!");
+            var user = await _repository.GetEntityByFilterFirstOrDefaultAsync(u => u.Login == SelectedModel.Login);
+            return user == null;
         }
 
-        public async Task UpdateEntitiesAsync()
-        {
-            var users = (await _repository.GetUsersAsync()).Select(x => new UserModel()
-            {
-                Id = x.Id,
-                Login = x.Login,
-                Password = x.Password,
-                Role = x.Role
-            });
-
-            Users = new ObservableCollection<UserModel>(users);
-        }
+        protected override bool CanAdd() => !string.IsNullOrWhiteSpace(ChangingModel?.Login) 
+                                            && !string.IsNullOrWhiteSpace(ChangingModel?.Password) 
+                                            && !string.IsNullOrWhiteSpace(ChangingModel?.Role);
 
         #endregion
+
     }
+
 }

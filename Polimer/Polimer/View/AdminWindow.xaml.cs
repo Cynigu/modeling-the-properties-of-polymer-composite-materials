@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Polimer.App.View
 {
@@ -8,9 +7,14 @@ namespace Polimer.App.View
     /// </summary>
     public partial class AdminWindow : Window
     {
-        public AdminWindow()
+        private AdminWindow()
         {
             InitializeComponent();
+        }
+
+        public static AdminWindow CreateInstance()
+        {
+            return new AdminWindow();
         }
     }
 

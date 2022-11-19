@@ -1,23 +1,29 @@
-﻿using System;
+﻿using Polimer.App.View;
+using Polimer.App.View.Factories;
+using Polimer.App.ViewModel.Authorization.Models;
+using Polimer.Data.Repository;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Polimer.App.View;
-using Polimer.App.View.Factories;
-using Polimer.Data.Repository;
 
 namespace Polimer.App.ViewModel.Authorization
 {
     public class AuthorizationViewModel : ViewModelBase
     {
         private readonly IWindowFactory<AdminWindow> _adminWindowFactory;
-        private readonly Repository _repository;
+        private readonly UserRepository _userRepository;
 
-        public AuthorizationViewModel(IWindowFactory<AdminWindow> adminWindow, Repository repository)
+        private AuthorizationViewModel(IWindowFactory<AdminWindow> adminWindow, UserRepository userRepository)
         {
             _adminWindowFactory = adminWindow ?? throw new ArgumentNullException(nameof(adminWindow));
-            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
 
             LogInCommand = new AsyncCommand(LogInMethodAsync, CanLogIn);
+        }
+
+        internal static AuthorizationViewModel CreateInstance(IWindowFactory<AdminWindow> adminWindow, UserRepository userRepository)
+        {
+            return new AuthorizationViewModel(adminWindow, userRepository);
         }
 
         #region Fields
@@ -59,9 +65,10 @@ namespace Polimer.App.ViewModel.Authorization
             if(login == null || password == null)
                 throw new ArgumentNullException("Не введен логин или пароль!");
             
-            var user = await _repository.UserByLoginAndPasswordAsync(login, password);
+            var user = await _userRepository
+                .GetEntityByFilterFirstOrDefaultAsync(u => u.Login == login && u.Password == password);
 
-            if (user.Success == false)
+            if (user == null)
             {
                 throw new Exception("Пользователя не существует!");
             }
