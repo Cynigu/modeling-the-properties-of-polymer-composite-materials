@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Polimer.App.ViewModel.Admin.Abstract;
@@ -34,6 +35,15 @@ public class CompatibilityMaterialViewModel
     {
         get => _materialsFirst;
         set => SetField(ref _materialsFirst, value);
+    }
+
+    protected override void CopySelectedModelToChanging()
+    {
+        ChangingModel.Id = 0;
+        ChangingModel.FirstMaterial = (Materials
+            .FirstOrDefault(m => m.Id == SelectedModel?.FirstMaterial.Id) )!;
+        ChangingModel.SecondMaterial = (Materials
+            .FirstOrDefault(m => m.Id == SelectedModel?.SecondMaterial.Id))!;
     }
 
     protected override async Task<bool> CheckingForExistenceAsync()

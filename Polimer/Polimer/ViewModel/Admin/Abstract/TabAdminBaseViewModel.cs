@@ -53,8 +53,7 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
             SetField(ref _selectedModel, value);
             if (_selectedModel != null)
             {
-                ChangingModel = _mapper.Map<TModelAsEntity>(_selectedModel);
-                ChangingModel.Id = null;
+                CopySelectedModelToChanging();
             }
 
         }
@@ -89,7 +88,9 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
             throw new ArgumentException("Такая сущность уже существует!");
         }
 
-        var model = _mapper.Map<TEntity>(ChangingModel);
+        var chModel = _mapper.Map<TModelAsEntity>(ChangingModel);
+        chModel.Id = 0;
+        var model = _mapper.Map<TEntity>(chModel);
         await _repository.AddAsync(model);
 
         await UpdateEntitiesAsync();
@@ -141,6 +142,14 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
 
 
     #region AbstractMethods
+
+    /// <summary>
+    /// копирование полей в модель для изменениия из выбраннй строки
+    /// </summary>
+    protected virtual void CopySelectedModelToChanging()
+    {
+        ChangingModel = _mapper.Map<TModelAsEntity>(_selectedModel);
+    }
 
     /// <summary>
     /// Проверка на существование такой же строки
