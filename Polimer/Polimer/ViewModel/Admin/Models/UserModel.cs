@@ -1,6 +1,7 @@
 ﻿using Polimer.Data.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace Polimer.App.ViewModel.Admin.Models
 {

@@ -37,7 +37,7 @@
         <Style TargetType="DataGrid">
             <!--<Setter Property="Width" Value="400"></Setter>-->
             <!--<Setter Property="Height" Value="270"></Setter>-->
-            <Setter Property="ColumnWidth" Value="auto"></Setter>
+            <Setter Property="ColumnWidth" Value="*"></Setter>
         </Style>
         <Style TargetType="wpfx:IntegerUpDown">
             <Setter Property="Width" Value="60"></Setter>
@@ -57,29 +57,26 @@
             <TabControl DockPanel.Dock="Top" Height="400">
                 <TabItem Header="{Binding UsersVM.NameTab}">
                     <DockPanel>
-                        <DockPanel>
-                            <DockPanel  DockPanel.Dock="Top" Width="200">
-                                <DockPanel DockPanel.Dock="Top">
-                                    <TextBlock Width="70" Text="Логин: "></TextBlock>
-                                    <TextBox Text="{Binding UsersVM.ChangingModel.Login}"></TextBox>
-                                </DockPanel>
-                                <DockPanel DockPanel.Dock="Top">
-                                    <TextBlock  Width="70" Text="Пароль: "></TextBlock>
-                                    <TextBox Text="{Binding UsersVM.ChangingModel.Password}"></TextBox>
-                                </DockPanel>
-                                <DockPanel DockPanel.Dock="Top">
-                                    <TextBlock  Width="70" Text="Роль: "></TextBlock>
-                                    <ComboBox ItemsSource="{Binding UsersVM.Roles}" 
-                                              SelectedItem="{Binding UsersVM.ChangingModel.Role}">
-                                    </ComboBox>
-                                </DockPanel>
-                                <StackPanel>
-                                    <Button Content="Добавить" Command="{Binding UsersVM.AddCommand}"></Button>
-                                    <Button Content="Удалить" Command="{Binding UsersVM.RemoveCommand}"></Button>
-                                    <Button Content="Изменить" Command="{Binding UsersVM.EditCommand}"></Button>
-                                </StackPanel>
+                        <DockPanel  DockPanel.Dock="Left" Width="200">
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock Width="70" Text="Логин: "></TextBlock>
+                                <TextBox Text="{Binding UsersVM.ChangingModel.Login}"></TextBox>
                             </DockPanel>
-                            
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock  Width="70" Text="Пароль: "></TextBlock>
+                                <TextBox Text="{Binding UsersVM.ChangingModel.Password}"></TextBox>
+                            </DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock  Width="70" Text="Роль: "></TextBlock>
+                                <ComboBox ItemsSource="{Binding UsersVM.Roles}" 
+                                              SelectedItem="{Binding UsersVM.ChangingModel.Role}">
+                                </ComboBox>
+                            </DockPanel>
+                            <StackPanel>
+                                <Button Content="Добавить" Command="{Binding UsersVM.AddCommand}"></Button>
+                                <Button Content="Удалить" Command="{Binding UsersVM.RemoveCommand}"></Button>
+                                <Button Content="Изменить" Command="{Binding UsersVM.EditCommand}"></Button>
+                            </StackPanel>
                         </DockPanel>
                         <DockPanel>
                             <DataGrid ItemsSource ="{Binding UsersVM.Models}"
@@ -193,6 +190,34 @@
                                     <DataGridTextColumn Width="*" Header="Первый материал" Binding="{Binding FirstMaterial.QuickName}"/>
                                     <DataGridTextColumn Width="*" Header="Второй материал" Binding="{Binding SecondMaterial.QuickName}"></DataGridTextColumn>
                                 </DataGrid.Columns>
+                            </DataGrid>
+                        </DockPanel>
+                    </DockPanel>
+                </TabItem>
+                <TabItem Header="{Binding MixtureVM.NameTab}">
+                    <DockPanel>
+                        <DockPanel  DockPanel.Dock="Left" Width="200">
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock Width="70" Text="Название: "></TextBlock>
+                                <TextBox Text="{Binding MixtureVM.ChangingModel.Name}"></TextBox>
+                            </DockPanel>
+                            <StackPanel>
+                                <Button Content="Добавить" Command="{Binding MixtureVM.AddCommand}"></Button>
+                                <Button Content="Удалить" Command="{Binding MixtureVM.RemoveCommand}"></Button>
+                                <Button Content="Изменить" Command="{Binding MixtureVM.EditCommand}"></Button>
+                            </StackPanel>
+                        </DockPanel>
+                        <DockPanel>
+                            <DataGrid ItemsSource ="{Binding MixtureVM.Models}"
+                                      SelectedItem="{Binding MixtureVM.SelectedModel}"
+                                      CanUserDeleteRows="False" CanUserAddRows="False" 
+                                      IsReadOnly="True" AutoGenerateColumns="True">
+                                <!--<DataGrid.Columns>
+                                    <DataGridTextColumn Width="40" Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="*" Header="Логин" Binding="{Binding Login}"/>
+                                    <DataGridTextColumn Width="*" Header="Пароль" Binding="{Binding Password}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="*" Header="Роль" Binding="{Binding Role}"></DataGridTextColumn>
+                                </DataGrid.Columns>-->
                             </DataGrid>
                         </DockPanel>
                     </DockPanel>

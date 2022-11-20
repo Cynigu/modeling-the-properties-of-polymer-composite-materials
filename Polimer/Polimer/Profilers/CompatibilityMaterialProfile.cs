@@ -62,16 +62,6 @@ internal class CompatibilityMaterialProfile : Profile, IAdminEntityProfile
                     => opt.MapFrom<int>(src => src.Id!.Value)
             )
             .ForMember(
-                dest => dest.FirstMaterial,
-                opt
-                    => opt.MapFrom<MaterialModel>(src => src.FirstMaterial)
-            )
-            .ForMember(
-                dest => dest.SecondMaterial,
-                opt
-                    => opt.MapFrom<MaterialModel>(src => src.SecondMaterial)
-            )
-            .ForMember(
                 dest => dest.IdFirstMaterial,
                 opt
                     => opt.MapFrom<int>(src => src.FirstMaterial.Id!.Value)

@@ -12,10 +12,28 @@ public class CompatibilityMaterialrRepository : RepositoryBase<CompatibilityMate
     }
     public override async Task AddAsync(CompatibilityMaterialEntity item)
     {
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-        context.Materials.AttachRange(item.FirstMaterial, item.SecondMaterial); // !!!!
-        await context.Set<CompatibilityMaterialEntity>().AddAsync(item);
-        await context.SaveChangesAsync();
+
+        await using (var context = await _dbContextFactory.CreateDbContextAsync())
+        {
+            if (item.FirstMaterial.Equals(item.SecondMaterial))
+            {
+                context.Materials.AttachRange(item.FirstMaterial); // !!!!
+            }
+            else
+            {
+                context.Materials.AttachRange(item.FirstMaterial, item.SecondMaterial); // !!!!
+            }
+            try
+            {
+                await context.Set<CompatibilityMaterialEntity>().AddAsync(item);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Выбериите разные материалы!");
+            }
+           
+        }
     }
 
     public override async Task<ICollection<CompatibilityMaterialEntity>> GetEntitiesAsync()
@@ -29,6 +47,7 @@ public class CompatibilityMaterialrRepository : RepositoryBase<CompatibilityMate
 
         return result;
     }
+    
     public override async Task<ICollection<CompatibilityMaterialEntity>> GetEntitiesByFilterAsync(
         Func<CompatibilityMaterialEntity, bool> predicate)
     {
@@ -40,6 +59,7 @@ public class CompatibilityMaterialrRepository : RepositoryBase<CompatibilityMate
 
         return result;
     }
+    
     public override async Task<CompatibilityMaterialEntity?> GetEntityByFilterFirstOrDefaultAsync(
         Expression<Func<CompatibilityMaterialEntity, bool>> predicate)
     {
@@ -50,5 +70,5 @@ public class CompatibilityMaterialrRepository : RepositoryBase<CompatibilityMate
             .FirstOrDefaultAsync(predicate);
 
         return result;
-        }
+    }
 }

@@ -11,12 +11,15 @@ public class AdminViewModel : ViewModelBase
     private MaterialsViewModel _materialsVm;
     private AdditiveViewModel _additiveVm;
     private CompatibilityMaterialViewModel _compatibilityVm;
+    private MixtureViewModel _mixtureVm;
 
     private AdminViewModel(
         IMapper mapper, 
         RepositoriesFactory repositoriesFactory
         )
     {
+        _mixtureVm = MixtureViewModel
+            .CreateInstance(repositoriesFactory.CreateMixtureRepository(), mapper);
         _usersVm = UsersViewModel
             .CreateInstance(repositoriesFactory.CreateUserRepository(), mapper);
         _materialsVm = MaterialsViewModel
@@ -36,6 +39,13 @@ public class AdminViewModel : ViewModelBase
         RepositoriesFactory repositoriesFactory)
     {
         return new AdminViewModel(mapper, repositoriesFactory);
+    }
+
+
+    public MixtureViewModel MixtureVM
+    {
+        get => _mixtureVm;
+        set => SetField(ref _mixtureVm, value);
     }
 
     public MaterialsViewModel MaterialsVM
@@ -70,5 +80,6 @@ public class AdminViewModel : ViewModelBase
         await MaterialsVM.UpdateEntitiesAsync();
         await AdditiveVM.UpdateEntitiesAsync();
         await CompatibilityVM.UpdateEntitiesAsync();
+        await MixtureVM.UpdateEntitiesAsync();
     }
 }
