@@ -16,13 +16,13 @@ public record PropertyMaterialEntity : IEntity
     [Required]
     public int IdProperty { get; init; }
     [ForeignKey("IdProperty")]
-    public PropertyEntity Property { get; init; }
+    public virtual PropertyEntity Property { get; init; }
 
 
     [Column("id_material")]
     [Required]
     public int IdMaterial { get; init; }
     [ForeignKey("IdMaterial")]
-    public MaterialEntity Material { get; init; }
+    public virtual MaterialEntity Material { get; init; }
 
 }

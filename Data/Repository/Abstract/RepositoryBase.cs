@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 using Polimer.Data.Models;
+using System.Linq.Expressions;
 
 namespace Polimer.Data.Repository.Abstract
 {

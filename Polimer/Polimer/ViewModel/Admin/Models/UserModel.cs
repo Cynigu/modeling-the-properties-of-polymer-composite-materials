@@ -1,4 +1,8 @@
-﻿namespace Polimer.App.ViewModel.Admin.Models
+﻿using Polimer.Data.Models;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace Polimer.App.ViewModel.Admin.Models
 {
     public class UserModel : ViewModelBase, IModelAsEntity
     {

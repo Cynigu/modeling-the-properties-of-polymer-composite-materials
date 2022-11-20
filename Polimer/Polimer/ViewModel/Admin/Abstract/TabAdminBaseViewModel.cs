@@ -107,7 +107,7 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
         {
             throw new ArgumentException("Такая сущность уже существует!");
         }
-
+        
         var model = _mapper.Map<TModelAsEntity>(ChangingModel);
         model.Id = SelectedModel?.Id;
         await _repository.UpdateAsync(_mapper.Map<TEntity>(model));

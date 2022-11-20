@@ -3,6 +3,7 @@ using Polimer.App.View.Factories;
 using Polimer.Data.Repository;
 using System;
 using System.Windows;
+using Polimer.Data.Repository.Factory;
 
 namespace Polimer.App.ViewModel.Authorization.Factory
 {
@@ -12,9 +13,9 @@ namespace Polimer.App.ViewModel.Authorization.Factory
         private readonly UserRepository _userRepository;
         private readonly IWindowFactory<AdminWindow> _windowFactory;
 
-        public AuthorizationViewModelFactory(UserRepository userRepository, IWindowFactory<AdminWindow> windowFactory)
+        public AuthorizationViewModelFactory(RepositoriesFactory repositoryFactory, IWindowFactory<AdminWindow> windowFactory)
         {
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _userRepository = (repositoryFactory ?? throw new ArgumentNullException(nameof(repositoryFactory))).CreateUserRepository();
             _windowFactory = windowFactory ?? throw new ArgumentNullException(nameof(windowFactory));
         }
 

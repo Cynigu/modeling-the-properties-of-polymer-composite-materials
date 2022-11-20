@@ -4,9 +4,9 @@ using Polimer.Data.Models;
 
 namespace Polimer.App.Profilers;
 
-internal class AdditiveProfiler : Profile, IAdminEntityProfile
+internal class AdditiveProfile : Profile, IAdminEntityProfile
 {
-    public AdditiveProfiler()
+    public AdditiveProfile()
     {
         MapEntityToModel();
         MapModelToEntity();

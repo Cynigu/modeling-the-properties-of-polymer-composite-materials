@@ -160,6 +160,43 @@
                         </DockPanel>
                     </DockPanel>
                 </TabItem>
+                <TabItem Header="{Binding CompatibilityVM.NameTab}">
+                    <DockPanel>
+                        <DockPanel Width="200">
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock  Width="73" Text="Материал 1: "></TextBlock>
+                                <ComboBox ItemsSource="{Binding CompatibilityVM.Materials}" 
+                                              SelectedItem="{Binding CompatibilityVM.ChangingModel.FirstMaterial}"
+                                              DisplayMemberPath="QuickName">
+                                    </ComboBox>
+                            </DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock  Width="73" Text="Материал 2: "></TextBlock>
+                                <ComboBox ItemsSource="{Binding CompatibilityVM.Materials}" 
+                                          SelectedItem="{Binding CompatibilityVM.ChangingModel.SecondMaterial}"
+                                          DisplayMemberPath="QuickName">
+                                </ComboBox>
+                            </DockPanel>
+                            <StackPanel>
+                                <Button Content="Добавить" Command="{Binding CompatibilityVM.AddCommand}"></Button>
+                                <Button Content="Удалить" Command="{Binding CompatibilityVM.RemoveCommand}"></Button>
+                                <Button Content="Изменить" Command="{Binding CompatibilityVM.EditCommand}"></Button>
+                            </StackPanel>
+                        </DockPanel>
+                        <DockPanel>
+                            <DataGrid ItemsSource ="{Binding CompatibilityVM.Models}"
+                                      SelectedItem="{Binding CompatibilityVM.SelectedModel}"
+                                      CanUserDeleteRows="False" CanUserAddRows="False" 
+                                      IsReadOnly="True" AutoGenerateColumns="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Width="40" Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="*" Header="Первый материал" Binding="{Binding FirstMaterial.QuickName}"/>
+                                    <DataGridTextColumn Width="*" Header="Второй материал" Binding="{Binding SecondMaterial.QuickName}"></DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DockPanel>
+                    </DockPanel>
+                </TabItem>
             </TabControl>
         </DockPanel>
         <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top">

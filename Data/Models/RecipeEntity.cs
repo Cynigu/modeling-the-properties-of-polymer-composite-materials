@@ -16,12 +16,12 @@ public record RecipeEntity : IEntity
     [Required]
     public int IdMixture { get; init; }
     [ForeignKey("IdMixture")]
-    public MixtureEntity Mixture { get; init; }
+    public virtual MixtureEntity Mixture { get; init; }
 
     [Column("id_additive")]
     [Required]
     public int IdAdditive { get; init; }
     [ForeignKey("IdAdditive")]
-    public AdditiveEntity Additive { get; init; }
-    public ICollection<CompositionRecipeEntity>? CompositionRecipes { get; init; }
+    public virtual AdditiveEntity Additive { get; init; }
+    public virtual ICollection<CompositionRecipeEntity>? CompositionRecipes { get; init; }
 }

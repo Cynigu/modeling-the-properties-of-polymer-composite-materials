@@ -16,12 +16,12 @@ public record CompatibilityMaterialEntity : IEntity
     [Required]
     public int IdFirstMaterial { get; init; }
     [ForeignKey("IdFirstMaterial")]
-    public MaterialEntity FirstMaterial { get; init; }
+    public virtual MaterialEntity FirstMaterial { get; init; }
 
     [Column("id_material2")]
     [Required]
     public int IdSecondMaterial { get; init; }
     [ForeignKey("IdSecondMaterial")]
-    public MaterialEntity SecondMaterial { get; init; }
+    public virtual MaterialEntity SecondMaterial { get; init; }
 
 }

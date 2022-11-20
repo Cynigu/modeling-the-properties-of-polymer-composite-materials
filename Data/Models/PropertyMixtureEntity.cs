@@ -16,12 +16,12 @@ public record PropertyMixtureEntity : IEntity
     [Required]
     public int IdProperty { get; init; }
     [ForeignKey("IdProperty")]
-    public PropertyEntity Property { get; init; }
+    public virtual PropertyEntity Property { get; init; }
 
 
     [Column("id_mixture")]
     [Required]
     public int IdMixture { get; init; }
     [ForeignKey("IdMixture")]
-    public MixtureEntity Mixture { get; init; }
+    public virtual MixtureEntity Mixture { get; init; }
 }

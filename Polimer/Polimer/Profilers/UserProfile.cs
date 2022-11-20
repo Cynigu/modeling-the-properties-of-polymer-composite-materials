@@ -4,9 +4,9 @@ using Polimer.Data.Models;
 
 namespace Polimer.App.Profilers
 {
-    internal class UserProfiler : Profile, IAdminEntityProfile
+    internal class UserProfile : Profile, IAdminEntityProfile
     {
-        public UserProfiler()
+        public UserProfile()
         {
             MapEntityToModel();
             MapModelToEntity();
@@ -48,7 +48,7 @@ namespace Polimer.App.Profilers
                 )
                 .ForMember(
                     dest => dest.Login,
-                    opt 
+                    opt
                         => opt.MapFrom<string>(src => src.Login ?? string.Empty)
                 )
                 .ForMember(
@@ -90,3 +90,5 @@ namespace Polimer.App.Profilers
 
     }
 }
+
+    

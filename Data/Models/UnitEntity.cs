@@ -16,5 +16,5 @@ public record UnitEntity : IEntity
     [Required]
     public string? Name { get; init; }
 
-    public ICollection<PropertyEntity>? Properties { get; init; }
+    public virtual ICollection<PropertyEntity>? Properties { get; init; }
 }

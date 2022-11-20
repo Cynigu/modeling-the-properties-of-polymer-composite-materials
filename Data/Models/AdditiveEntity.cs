@@ -16,5 +16,5 @@ public record AdditiveEntity : IEntity
     [Required]
     public string? Name { get; init; }
 
-    public ICollection<RecipeEntity>? RecipeEntities { get; init; }
+    public virtual ICollection<RecipeEntity>? RecipeEntities { get; init; }
 }

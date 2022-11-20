@@ -21,7 +21,6 @@ namespace Polimer.Data.Factory
             optionsBuilder.UseSqlite(_connectionString);
             //optionsBuilder.LogTo(logStream.WriteLine);
             optionsBuilder.EnableSensitiveDataLogging();
-
             return new DataContext(optionsBuilder.Options);
         }
     }

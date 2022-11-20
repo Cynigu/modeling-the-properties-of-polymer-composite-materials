@@ -1,11 +1,10 @@
-﻿using Polimer.App.ViewModel.Admin.Models;
+﻿using AutoMapper;
+using Polimer.App.ViewModel.Admin.Abstract;
+using Polimer.App.ViewModel.Admin.Models;
+using Polimer.Data.Models;
 using Polimer.Data.Repository;
-using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using AutoMapper;
-using Polimer.Data.Models;
-using Polimer.App.ViewModel.Admin.Abstract;
 
 namespace Polimer.App.ViewModel.Admin
 {

@@ -24,11 +24,11 @@ public record MaterialEntity : IEntity
     [Required]
     public string? EnglishName { get; init; }
 
-    public ICollection<PropertyMaterialEntity>? MaterialProperties { get; init; }
+    public virtual ICollection<PropertyMaterialEntity>? MaterialProperties { get; init; }
 
     [InverseProperty("FirstMaterial")]
-    public ICollection<CompatibilityMaterialEntity>? MaterialsFirst{ get; init; }
+    public virtual ICollection<CompatibilityMaterialEntity>? MaterialsFirst{ get; init; }
 
     [InverseProperty("SecondMaterial")]
-    public ICollection<CompatibilityMaterialEntity>? MaterialsSecond { get; init; }
+    public virtual ICollection<CompatibilityMaterialEntity>? MaterialsSecond { get; init; }
 }

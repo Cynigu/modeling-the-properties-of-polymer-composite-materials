@@ -16,9 +16,9 @@ namespace Polimer.Data.Models
         [Required]
         public string? Name { get; init; }
 
-        public ICollection<PropertyMixtureEntity>? PropertyMixtureEntities { get; init; }
-        public ICollection<RecipeEntity>? RecipeEntities { get; init; }
+        public virtual ICollection<PropertyMixtureEntity>? PropertyMixtureEntities { get; init; }
+        public virtual ICollection<RecipeEntity>? RecipeEntities { get; init; }
 
-        public ICollection<CompositionRecipeEntity>? CompositionRecipeEntities { get; init; }
+        public virtual ICollection<CompositionRecipeEntity>? CompositionRecipeEntities { get; init; }
     }
 }

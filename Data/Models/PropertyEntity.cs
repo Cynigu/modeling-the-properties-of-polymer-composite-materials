@@ -19,8 +19,8 @@ public record PropertyEntity : IEntity
     [Column("id_unit")]
     public int UnitId { get; set; }
     [ForeignKey("UnitId")]
-    public UnitEntity Unit { get; init; }
+    public virtual UnitEntity Unit { get; init; }
 
-    public ICollection<PropertyMaterialEntity>? PropertyMaterials { get; init; }
-    public ICollection<PropertyMixtureEntity>? PropertyMixtureEntities { get; init; }
+    public  virtual ICollection<PropertyMaterialEntity>? PropertyMaterials { get; init; }
+    public virtual ICollection<PropertyMixtureEntity>? PropertyMixtureEntities { get; init; }
 }
