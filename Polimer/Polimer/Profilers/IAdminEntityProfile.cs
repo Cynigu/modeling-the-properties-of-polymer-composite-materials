@@ -1,8 +1,11 @@
-﻿namespace Polimer.App.Profilers;
+﻿using Polimer.App.ViewModel;
+using Polimer.Data.Models;
+
+namespace Polimer.App.Profilers;
 
 internal interface IAdminEntityProfile
 {
-    void MapModelToEntity();
     void MapEntityToModel();
+    void MapModelToEntity();
     void MapModelToModel();
 }

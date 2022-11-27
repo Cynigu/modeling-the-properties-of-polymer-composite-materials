@@ -21,6 +21,7 @@ public record PropertyEntity : IEntity
     [ForeignKey("UnitId")]
     public virtual UnitEntity Unit { get; init; }
 
+    [InverseProperty("Property")]
     public  virtual ICollection<PropertyMaterialEntity>? PropertyMaterials { get; init; }
     public virtual ICollection<PropertyMixtureEntity>? PropertyMixtureEntities { get; init; }
 }

@@ -130,7 +130,7 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
     /// Обновить таблицу сущности
     /// </summary>
     /// <returns></returns>
-    public async Task UpdateEntitiesAsync()
+    public virtual async Task UpdateEntitiesAsync()
     {
         var models = (await _repository.GetEntitiesAsync()).Select(x
             => _mapper.Map<TModelAsEntity>(x));
