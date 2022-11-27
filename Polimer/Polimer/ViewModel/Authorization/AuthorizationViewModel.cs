@@ -12,20 +12,28 @@ namespace Polimer.App.ViewModel.Authorization
     public class AuthorizationViewModel : ViewModelBase
     {
         private readonly IWindowFactory<AdminWindow> _adminWindowFactory;
+        private readonly IWindowFactory<TechnolgyWindow> _technologyWindowFactory;
         private readonly UserRepository _userRepository;
         private readonly Window? _currentWindow;
-        private AuthorizationViewModel(IWindowFactory<AdminWindow> adminWindow, UserRepository userRepository, Window? currentWindow = null)
+        private AuthorizationViewModel(IWindowFactory<AdminWindow> adminWindow,
+            UserRepository userRepository,
+            IWindowFactory<TechnolgyWindow> technologyWindowFactory,
+            Window? currentWindow = null)
         {
             _adminWindowFactory = adminWindow ?? throw new ArgumentNullException(nameof(adminWindow));
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _technologyWindowFactory = technologyWindowFactory ?? throw new ArgumentNullException(nameof(technologyWindowFactory));
             _currentWindow = currentWindow ?? throw new ArgumentNullException(nameof(currentWindow));
 
             LogInCommand = new AsyncCommand(LogInMethodAsync, CanLogIn);
         }
 
-        internal static AuthorizationViewModel CreateInstance(IWindowFactory<AdminWindow> adminWindow, UserRepository userRepository, Window? currentWindow = null)
+        internal static AuthorizationViewModel CreateInstance(IWindowFactory<AdminWindow> adminWindow,
+            UserRepository userRepository,
+            IWindowFactory<TechnolgyWindow> technologyWindowFactory,
+            Window? currentWindow = null)
         {
-            return new AuthorizationViewModel(adminWindow, userRepository, currentWindow);
+            return new AuthorizationViewModel(adminWindow, userRepository, technologyWindowFactory, currentWindow);
         }
 
         #region Fields
@@ -83,7 +91,9 @@ namespace Polimer.App.ViewModel.Authorization
             }
             else if (user.Role == "Технолог")
             {
-                throw new InvalidOperationException("Технолога пока нет!");
+                var window = _technologyWindowFactory.CreateWindow();
+                window.Show();
+                _currentWindow?.Close();
             }
             else
             {

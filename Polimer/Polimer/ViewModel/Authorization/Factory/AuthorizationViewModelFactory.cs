@@ -11,22 +11,24 @@ namespace Polimer.App.ViewModel.Authorization.Factory
     public class AuthorizationViewModelFactory : IViewModelFactory<AuthorizationViewModel>
     {
         private readonly UserRepository _userRepository;
-        private readonly IWindowFactory<AdminWindow> _windowFactory;
+        private readonly IWindowFactory<AdminWindow> _adminWindowFactory;
+        private readonly IWindowFactory<TechnolgyWindow> _techWindowFactory;
 
-        public AuthorizationViewModelFactory(RepositoriesFactory repositoryFactory, IWindowFactory<AdminWindow> windowFactory)
+        public AuthorizationViewModelFactory(RepositoriesFactory repositoryFactory, IWindowFactory<AdminWindow> windowFactory, IWindowFactory<TechnolgyWindow> techWindowFactory)
         {
             _userRepository = (repositoryFactory ?? throw new ArgumentNullException(nameof(repositoryFactory))).CreateUserRepository();
-            _windowFactory = windowFactory ?? throw new ArgumentNullException(nameof(windowFactory));
+            _adminWindowFactory = windowFactory ?? throw new ArgumentNullException(nameof(windowFactory));
+            _techWindowFactory = techWindowFactory ?? throw new ArgumentNullException(nameof(techWindowFactory));
         }
 
         public AuthorizationViewModel CreateViewModel(Window currentWindow)
         {
-            return AuthorizationViewModel.CreateInstance(_windowFactory, _userRepository, currentWindow);
+            return AuthorizationViewModel.CreateInstance(_adminWindowFactory, _userRepository, _techWindowFactory, currentWindow);
         }
 
         public AuthorizationViewModel CreateViewModel()
         {
-            return AuthorizationViewModel.CreateInstance(_windowFactory, _userRepository);
+            return AuthorizationViewModel.CreateInstance(_adminWindowFactory, _userRepository, _techWindowFactory);
         }
     }
 }

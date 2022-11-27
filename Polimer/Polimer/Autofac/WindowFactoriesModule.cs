@@ -10,5 +10,6 @@ internal class WindowFactoriesModule : Module
     {
         builder.RegisterType<AuthorizationWindowFactory>().As<IWindowFactory<AuthorizationWindow>>();
         builder.RegisterType<AdminWindowFactory>().As<IWindowFactory<AdminWindow>>();
+        builder.RegisterType<TechnologyWindowFactory>().As<IWindowFactory<TechnolgyWindow>>();
     }
 }
