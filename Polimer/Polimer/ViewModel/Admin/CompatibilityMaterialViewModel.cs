@@ -61,36 +61,35 @@ public class CompatibilityMaterialViewModel
 
 }
 
-
-public class PropertyMaterialViewModel
-    : TabAdminBaseViewModel<PropertyMaterialEntity, PropertyMaterialModel>
+public class PropertyMixtureViewModel
+    : TabAdminBaseViewModel<PropertyMixtureEntity, PropertyMixtureModel>
 {
-    private ObservableCollection<MaterialModel> _materials;
+    private ObservableCollection<MixtureModel> _mixtures;
     private ObservableCollection<PropertyModel> _properties;
 
-    private PropertyMaterialViewModel(PropertyMaterialRepository repository,
+    private PropertyMixtureViewModel(PropertyMixtureRepository repository,
         IMapper mapper,
-        MaterialRepository materialRepository,
+        MixtureRepository materialRepository,
         PropertyRepository propertyRepository) :
         base(repository, mapper)
     {
-        NameTab = "Свойства материалов";
-        ChangingModel = new PropertyMaterialModel();
+        NameTab = "Свойства смесей";
+        ChangingModel = new PropertyMixtureModel();
         var materials = materialRepository.GetEntitiesAsync().Result;
-        Materials = new ObservableCollection<MaterialModel>(mapper.Map<ICollection<MaterialModel>>(materials));
+        Mixtures = new ObservableCollection<MixtureModel>(mapper.Map<ICollection<MixtureModel>>(materials));
         Properties = new ObservableCollection<PropertyModel>(mapper.Map<ICollection<PropertyModel>>(propertyRepository.GetEntitiesAsync().Result));
     }
 
-    public static PropertyMaterialViewModel CreateInstance(PropertyMaterialRepository repository, IMapper mapper,
-        MaterialRepository materialRepository, PropertyRepository propertyRepository)
+    public static PropertyMixtureViewModel CreateInstance(PropertyMixtureRepository repository, IMapper mapper,
+        MixtureRepository materialRepository, PropertyRepository propertyRepository)
     {
-        return new PropertyMaterialViewModel(repository, mapper, materialRepository, propertyRepository);
+        return new PropertyMixtureViewModel(repository, mapper, materialRepository, propertyRepository);
     }
 
-    public ObservableCollection<MaterialModel> Materials
+    public ObservableCollection<MixtureModel> Mixtures
     {
-        get => _materials;
-        set => SetField(ref _materials, value);
+        get => _mixtures;
+        set => SetField(ref _mixtures, value);
     }
 
     public ObservableCollection<PropertyModel> Properties
@@ -103,8 +102,8 @@ public class PropertyMaterialViewModel
     protected override void CopySelectedModelToChanging()
     {
         //ChangingModel.Id = 0;
-        ChangingModel.Material = (Materials
-            .FirstOrDefault(m => m.Id == SelectedModel?.Material.Id))!;
+        ChangingModel.Mixture = (Mixtures
+            .FirstOrDefault(m => m.Id == SelectedModel?.Mixture.Id))!;
         ChangingModel.Property = (Properties
             .FirstOrDefault(m => m.Id == SelectedModel?.Property.Id))!;
     }
@@ -113,12 +112,12 @@ public class PropertyMaterialViewModel
     {
         var user = await _repository.GetEntityByFilterFirstOrDefaultAsync(u =>
             u.Property.Id == ChangingModel.Property.Id
-            && u.Material.Id == ChangingModel.Material.Id);
+            && u.Mixture.Id == ChangingModel.Mixture.Id);
         return user == null;
     }
 
     protected override bool CanAdd() => ChangingModel.Property != null
-                                        && ChangingModel.Material != null
+                                        && ChangingModel.Mixture != null
                                         && ChangingModel != null;
 
 

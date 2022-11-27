@@ -15,6 +15,7 @@ public class AdminViewModel : ViewModelBase
     private UnitViewModel _unitsVm;
     private PropertiesViewModel _propertiesVm;
     private PropertyMaterialViewModel _propertyMaterialVm;
+    private PropertyMixtureViewModel _propertyMixtureVm;
 
     private AdminViewModel(
         IMapper mapper, 
@@ -43,6 +44,11 @@ public class AdminViewModel : ViewModelBase
             repositoriesFactory.CreatePropertyMaterialRepository(), mapper,
             repositoriesFactory.CreateMaterialRepository(),
             repositoriesFactory.CreatePropertyRepository());
+        
+        _propertyMixtureVm = PropertyMixtureViewModel.CreateInstance(
+            repositoriesFactory.CreatePropertyMixtureRepository(), mapper,
+            repositoriesFactory.CreateMixtureRepository(),
+            repositoriesFactory.CreatePropertyRepository());
 
         UpdateTablesCommand = new AsyncCommand(UpdateTablesAsync, () => true);
         UpdateTablesAsync();
@@ -52,6 +58,12 @@ public class AdminViewModel : ViewModelBase
         RepositoriesFactory repositoriesFactory)
     {
         return new AdminViewModel(mapper, repositoriesFactory);
+    }
+
+    public PropertyMixtureViewModel PropertyMixtureVM
+    {
+        get => _propertyMixtureVm;
+        set => SetField(ref _propertyMixtureVm, value);
     }
 
     public PropertyMaterialViewModel PropertyMaterialVM
@@ -114,5 +126,6 @@ public class AdminViewModel : ViewModelBase
         await UnitsVM.UpdateEntitiesAsync();
         await PropertiesVM.UpdateEntitiesAsync();
         await PropertyMaterialVM.UpdateEntitiesAsync();
+        await PropertyMixtureVM.UpdateEntitiesAsync();
     }
 }

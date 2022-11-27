@@ -321,6 +321,43 @@
                         </DockPanel>
                     </DockPanel>
                 </TabItem>
+
+                <TabItem Header="{Binding PropertyMixtureVM.NameTab}">
+                    <DockPanel>
+                        <DockPanel Width="200">
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock  Width="73" Text="Смесь: "></TextBlock>
+                                <ComboBox ItemsSource="{Binding PropertyMixtureVM.Mixtures}" 
+                                              SelectedItem="{Binding PropertyMixtureVM.ChangingModel.Mixture}"
+                                              DisplayMemberPath="Name">
+                                </ComboBox>
+                            </DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock  Width="73" Text="Свойство: "></TextBlock>
+                                <ComboBox ItemsSource="{Binding PropertyMixtureVM.Properties}" 
+                                          SelectedItem="{Binding PropertyMixtureVM.ChangingModel.Property}"
+                                          DisplayMemberPath="Name">
+                                </ComboBox>
+                            </DockPanel>
+                            <StackPanel>
+                                <Button Content="Добавить" Command="{Binding PropertyMixtureVM.AddCommand}"></Button>
+                                <Button Content="Удалить" Command="{Binding PropertyMixtureVM.RemoveCommand}"></Button>
+                            </StackPanel>
+                        </DockPanel>
+                        <DockPanel>
+                            <DataGrid ItemsSource ="{Binding PropertyMixtureVM.Models}"
+                                      SelectedItem="{Binding PropertyMixtureVM.SelectedModel}"
+                                      CanUserDeleteRows="False" CanUserAddRows="False" 
+                                      IsReadOnly="True" AutoGenerateColumns="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Width="40" Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="*" Header="Свойство" Binding="{Binding Property.Name}"/>
+                                    <DataGridTextColumn Width="*" Header="Смесь" Binding="{Binding Mixture.Name}"></DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DockPanel>
+                    </DockPanel>
+                </TabItem>
             </TabControl>
         </DockPanel>
         <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top">
