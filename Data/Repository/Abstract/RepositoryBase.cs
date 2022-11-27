@@ -52,13 +52,21 @@ namespace Polimer.Data.Repository.Abstract
 
         public virtual async Task<IEnumerable<TEntity>> RemoveRangeAsync(Func<TEntity, bool> predicate)
         {
-            await using var context = await _dbContextFactory.CreateDbContextAsync();
-            var entities = context.Set<TEntity>().Where(predicate);
+            try
+            {
+                await using var context = await _dbContextFactory.CreateDbContextAsync();
+                var entities = context.Set<TEntity>().Where(predicate);
 
-            var removeRangeAsync = entities as TEntity[] ?? entities.ToArray();
-            context.Set<TEntity>().RemoveRange(removeRangeAsync);
-            await context.SaveChangesAsync();
-            return removeRangeAsync;
+                var removeRangeAsync = entities as TEntity[] ?? entities.ToArray();
+                context.Set<TEntity>().RemoveRange(removeRangeAsync);
+                await context.SaveChangesAsync();
+                return removeRangeAsync;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Эта рецептура привязана к составу рецептуры. Удалите ее из состава рецептуры!");
+            }
+            
         }
 
         public virtual async Task UpdateAsync(TEntity item)

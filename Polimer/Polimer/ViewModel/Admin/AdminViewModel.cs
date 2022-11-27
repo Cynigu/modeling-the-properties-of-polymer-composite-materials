@@ -16,6 +16,8 @@ public class AdminViewModel : ViewModelBase
     private PropertiesViewModel _propertiesVm;
     private PropertyMaterialViewModel _propertyMaterialVm;
     private PropertyMixtureViewModel _propertyMixtureVm;
+    private RecipeViewModel _recipesVm;
+    private CompositionRecipeViewModel _compositionRecipeVm;
 
     private AdminViewModel(
         IMapper mapper, 
@@ -50,6 +52,14 @@ public class AdminViewModel : ViewModelBase
             repositoriesFactory.CreateMixtureRepository(),
             repositoriesFactory.CreatePropertyRepository());
 
+        _recipesVm = RecipeViewModel.CreateInstance(repositoriesFactory.CreateRecipeRepository(), mapper,
+            repositoriesFactory.CreateMixtureRepository(),
+            repositoriesFactory.CreateAdditiveRepository());
+
+        _compositionRecipeVm = CompositionRecipeViewModel.CreateInstance(repositoriesFactory.CreateCompositionRecipeRepository(), mapper,
+            repositoriesFactory.CreateMixtureRepository(),
+            repositoriesFactory.CreateRecipeRepository());
+
         UpdateTablesCommand = new AsyncCommand(UpdateTablesAsync, () => true);
         UpdateTablesAsync();
     }
@@ -58,6 +68,18 @@ public class AdminViewModel : ViewModelBase
         RepositoriesFactory repositoriesFactory)
     {
         return new AdminViewModel(mapper, repositoriesFactory);
+    }
+
+    public CompositionRecipeViewModel CompositionRecipeVM
+    {
+        get => _compositionRecipeVm;
+        set => SetField(ref _compositionRecipeVm, value);
+    }
+
+    public RecipeViewModel RecipesVM
+    {
+        get => _recipesVm;
+        set => SetField(ref _recipesVm, value);
     }
 
     public PropertyMixtureViewModel PropertyMixtureVM
@@ -127,5 +149,7 @@ public class AdminViewModel : ViewModelBase
         await PropertiesVM.UpdateEntitiesAsync();
         await PropertyMaterialVM.UpdateEntitiesAsync();
         await PropertyMixtureVM.UpdateEntitiesAsync();
+        await RecipesVM.UpdateEntitiesAsync();
+        await CompositionRecipeVM.UpdateEntitiesAsync();
     }
 }
