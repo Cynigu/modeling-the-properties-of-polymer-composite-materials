@@ -4,6 +4,9 @@ using Polimer.App.ViewModel.Admin;
 
 namespace Polimer.App.View.Factories
 {
+    /// <summary>
+    /// фабрика для создания окна администратора
+    /// </summary>
     public class AdminWindowFactory : IWindowFactory<AdminWindow>
     {
         private readonly IViewModelFactory<AdminViewModel> _adminViewModel;

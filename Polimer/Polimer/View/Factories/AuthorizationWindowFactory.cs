@@ -4,6 +4,9 @@ using Polimer.App.ViewModel.Authorization;
 
 namespace Polimer.App.View.Factories
 {
+    /// <summary>
+    /// фабрика для окна авторизации
+    /// </summary>
     public class AuthorizationWindowFactory : IWindowFactory<AuthorizationWindow>
     {
         private readonly IViewModelFactory<AuthorizationViewModel> _authViewModel;

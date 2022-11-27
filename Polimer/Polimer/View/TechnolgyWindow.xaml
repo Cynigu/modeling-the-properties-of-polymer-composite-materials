@@ -6,7 +6,58 @@
         xmlns:local="clr-namespace:Polimer.App.View"
         mc:Ignorable="d"
         Title="TechnolgyWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <Window.Resources>
+        <Style TargetType="DockPanel">
+            <Setter Property="Margin" Value="3"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Value="3" Property="Margin"></Setter>
+        </Style>
+    </Window.Resources>
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top">
+            <GroupBox Header="Входные данные">
+                <DockPanel>
+                    <DockPanel Width="350">
+                        <DockPanel DockPanel.Dock="Top">
+                            <Label Content="Первый полимер"/>
+                            <ComboBox/>
+                        </DockPanel>
+                        <DockPanel DockPanel.Dock="Top">
+                            <Label Content="Второй полимер"/>
+                            <ComboBox/>
+                        </DockPanel>
+                        <DockPanel DockPanel.Dock="Top">
+                            <GroupBox Header="Свойства">
+                                <DockPanel>
+                                    <DockPanel DockPanel.Dock="Top">
+                                        <Label Content="Масса"/>
+                                        <Label Content="1"/>
+                                        <Label Content="1"/>
+                                    </DockPanel>
+                                </DockPanel>
+                            </GroupBox>
+                        </DockPanel>
+                    </DockPanel>
+                    <DockPanel Width="350">
+                       
+                    </DockPanel>
+                </DockPanel>
+            </GroupBox>
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Top">
+            <TabControl>
+                <TabItem Header="Формиование совместимости и рецептуры композиционной смеси">
+
+                </TabItem>
+                <TabItem Header="Расчет физико-химических и технологических свойств полимерной композиционной смеси">
+
+                </TabItem>
+                <TabItem Header="Расчет свойств в зависимости от изменениия процентного соотношения">
+
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+
+    </DockPanel>
 </Window>
