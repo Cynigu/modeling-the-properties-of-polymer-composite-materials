@@ -72,3 +72,5 @@ public class CompatibilityMaterialrRepository : RepositoryBase<CompatibilityMate
         return result;
     }
 }
+
+
