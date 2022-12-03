@@ -48,7 +48,9 @@ public class RecipeViewModel
         set => SetField(ref _additives, value);
     }
 
-
+    /// <summary>
+    /// Копирование модели во временную модель
+    /// </summary>
     protected override void CopySelectedModelToChanging()
     {
         //ChangingModel.Id = 0;
@@ -61,6 +63,10 @@ public class RecipeViewModel
         ChangingModel.ContentAdditive = SelectedModel?.ContentAdditive ?? 0;
     }
 
+    /// <summary>
+    /// Проверка на существование модели
+    /// </summary>
+    /// <returns></returns>
     protected override async Task<bool> CheckingForExistenceAsync()
     {
         var user = await _repository.GetEntityByFilterFirstOrDefaultAsync(u =>
@@ -72,6 +78,10 @@ public class RecipeViewModel
         return user == null;
     }
 
+    /// <summary>
+    /// Проверка на корректность введенных данных
+    /// </summary>
+    /// <returns></returns>
     protected override bool CanAdd() => ChangingModel.Additive != null
                                         && ChangingModel.CompatibilityMaterial != null
                                         && ChangingModel != null;

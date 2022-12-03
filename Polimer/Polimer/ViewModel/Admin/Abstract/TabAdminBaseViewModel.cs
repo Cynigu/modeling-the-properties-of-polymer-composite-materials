@@ -13,12 +13,12 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
     where TEntity : class, IEntity
     where TModelAsEntity : ViewModelBase, IModelAsEntity
 {
-    protected readonly RepositoryBase<TEntity> _repository;
+    protected readonly RepositoryBase<TEntity> _repository; // Репозиторий для работы с бд
     protected readonly IMapper _mapper;
 
-    private ObservableCollection<TModelAsEntity>? _models;
-    private TModelAsEntity? _selectedModel;
-    private TModelAsEntity _changingModel;
+    private ObservableCollection<TModelAsEntity>? _models; // коллекция хранящая все сущности таблицы
+    private TModelAsEntity? _selectedModel; // выбранная из таблицы сущность
+    private TModelAsEntity _changingModel; // модель, хранящая информацию для изенениия бд
     private string _nameTab;
 
     protected TabAdminBaseViewModel(RepositoryBase<TEntity> repository, IMapper mapper)
@@ -33,18 +33,27 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
 
     #region Properties
 
+    /// <summary>
+    /// Название таблицы
+    /// </summary>
     public string NameTab
     {
         get => _nameTab;
         set => SetField(ref _nameTab, value);
     }
 
+    /// <summary>
+    /// Коллекця хранящая все сущности таблицы
+    /// </summary>
     public ObservableCollection<TModelAsEntity>? Models
     {
         get => _models;
         set => SetField(ref _models, value);
     }
 
+    /// <summary>
+    /// Выбранная из таблицы сущность
+    /// </summary>
     public TModelAsEntity? SelectedModel
     {
         get => _selectedModel;
@@ -59,6 +68,9 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
         }
     }
 
+    /// <summary>
+    /// модель, хранящая информацию для изенениия бд
+    /// </summary>
     public TModelAsEntity ChangingModel
     {
         get => _changingModel;
@@ -76,6 +88,12 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
 
     #region Methods
 
+    /// <summary>
+    /// Функция добавляющая строку ChangingModel в бд
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
     private async Task AddAsync()
     {
         if (!CanAdd())
@@ -96,6 +114,12 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
         await UpdateEntitiesAsync();
     }
 
+    /// <summary>
+    /// Функция редактирующая строку SelectedModel в соответствии ChangingModel в бд
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
     private async Task EditAsync()
     {
         if (!CanEdit())
@@ -116,6 +140,11 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
         await UpdateEntitiesAsync();
     }
 
+    /// <summary>
+    /// Ф-я удалиющая строку SelectedModel
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
     private async Task RemoveAsync()
     {
         if (SelectedModel == null)
