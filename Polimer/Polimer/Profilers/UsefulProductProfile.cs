@@ -3,7 +3,7 @@ using Polimer.Data.Models;
 
 namespace Polimer.App.Profilers;
 
-internal class CompositionRecipeProfile : ProfileAbstract<CompositionRecipeEntity, CompositionRecipeModel>
+internal class UsefulProductProfile : ProfileAbstract<UsefulProductEntity, UsefulProductModel>
 {
 
 }

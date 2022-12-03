@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Polimer.Data.Models;
@@ -24,4 +24,5 @@ public record CompatibilityMaterialEntity : IEntity
     [ForeignKey("IdSecondMaterial")]
     public virtual MaterialEntity SecondMaterial { get; init; }
 
+    public virtual ICollection<RecipeEntity>? Recipes { get; init; }
 }

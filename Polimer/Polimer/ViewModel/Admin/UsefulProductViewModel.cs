@@ -8,20 +8,20 @@ using Polimer.Data.Repository;
 
 namespace Polimer.App.ViewModel.Admin;
 
-public class MixtureViewModel
-    : TabAdminBaseViewModel<MixtureEntity, MixtureModel>
+public class UsefulProductViewModel
+    : TabAdminBaseViewModel<UsefulProductEntity, UsefulProductModel>
 {
-    private MixtureViewModel(MixtureRepository repository,
+    private UsefulProductViewModel(UsefulProductRepository repository,
         IMapper mapper) :
         base(repository, mapper)
     {
-        NameTab = "Смеси";
-        ChangingModel = new MixtureModel();
+        NameTab = "Полезная продукция";
+        ChangingModel = new UsefulProductModel();
     }
 
-    public static MixtureViewModel CreateInstance(MixtureRepository repository, IMapper mapper)
+    public static UsefulProductViewModel CreateInstance(UsefulProductRepository repository, IMapper mapper)
     {
-        return new MixtureViewModel(repository, mapper);
+        return new UsefulProductViewModel(repository, mapper);
     }
 
     

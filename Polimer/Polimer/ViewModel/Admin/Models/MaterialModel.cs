@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Polimer.App.ViewModel.Admin.Models
+﻿namespace Polimer.App.ViewModel.Admin.Models
 {
     public class MaterialModel : ViewModelBase, IModelAsEntity
     {

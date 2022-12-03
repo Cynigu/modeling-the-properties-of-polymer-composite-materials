@@ -22,5 +22,5 @@ public record PropertyEntity : IEntity
     public virtual UnitEntity Unit { get; init; }
     
     public  virtual ICollection<PropertyMaterialEntity>? PropertyMaterials { get; init; }
-    public virtual ICollection<PropertyMixtureEntity>? PropertyMixtureEntities { get; init; }
+    public virtual ICollection<PropertyUsefulProductEntity>? PropertyMixtureEntities { get; init; }
 }

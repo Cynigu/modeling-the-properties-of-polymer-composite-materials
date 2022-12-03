@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Polimer.Data.Models;
 
-[Table("property_mixture")]
-public record PropertyMixtureEntity : IEntity
+[Table("property_usefulProduct")]
+public record PropertyUsefulProductEntity : IEntity
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -19,9 +19,13 @@ public record PropertyMixtureEntity : IEntity
     public virtual PropertyEntity Property { get; init; }
 
 
-    [Column("id_mixture")]
+    [Column("id_usefulProduct")]
     [Required]
-    public int IdMixture { get; init; }
-    [ForeignKey("IdMixture")]
-    public virtual MixtureEntity Mixture { get; init; }
+    public int IdUsefulProduct { get; init; }
+    [ForeignKey("IdUsefulProduct")]
+    public UsefulProductEntity UsefulProduct { get; init; }
+
+    [Column("value")]
+    [Required]
+    public double Value { get; init; }
 }

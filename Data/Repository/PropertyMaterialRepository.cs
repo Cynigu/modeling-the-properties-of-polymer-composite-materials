@@ -65,4 +65,19 @@ public class PropertyMaterialRepository : RepositoryBase<PropertyMaterialEntity>
 
         return result;
     }
+
+
+    public override async Task UpdateAsync(PropertyMaterialEntity item)
+    {
+        PropertyMaterialEntity i = new PropertyMaterialEntity()
+        {
+            Id = item.Id,
+            Property = item.Property,
+            Material = item.Material,
+            IdProperty = item.Property.Id,
+            IdMaterial = item.Material.Id,
+            Value = item.Value
+        };
+        await base.UpdateAsync(i);
+    }
 }

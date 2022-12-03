@@ -10,35 +10,35 @@ using Polimer.Data.Repository;
 
 namespace Polimer.App.ViewModel.Admin;
 
-public class PropertyMixtureViewModel
-    : TabAdminBaseViewModel<PropertyMixtureEntity, PropertyMixtureModel>
+public class PropertyUsefulProductViewModel
+    : TabAdminBaseViewModel<PropertyUsefulProductEntity, PropertyUsefulProductModel>
 {
-    private ObservableCollection<MixtureModel> _mixtures;
+    private ObservableCollection<UsefulProductModel> _usefulProducts;
     private ObservableCollection<PropertyModel> _properties;
 
-    private PropertyMixtureViewModel(PropertyMixtureRepository repository,
+    private PropertyUsefulProductViewModel(PropertyUsefulProductRepository repository,
         IMapper mapper,
-        MixtureRepository materialRepository,
+        UsefulProductRepository materialRepository,
         PropertyRepository propertyRepository) :
         base(repository, mapper)
     {
-        NameTab = "Свойства смесей";
-        ChangingModel = new PropertyMixtureModel();
+        NameTab = "Свойства полезной продукции";
+        ChangingModel = new();
         var materials = materialRepository.GetEntitiesAsync().Result;
-        Mixtures = new ObservableCollection<MixtureModel>(mapper.Map<ICollection<MixtureModel>>(materials));
+        UsefulProducts = new ObservableCollection<UsefulProductModel>(mapper.Map<ICollection<UsefulProductModel>>(materials));
         Properties = new ObservableCollection<PropertyModel>(mapper.Map<ICollection<PropertyModel>>(propertyRepository.GetEntitiesAsync().Result));
     }
 
-    public static PropertyMixtureViewModel CreateInstance(PropertyMixtureRepository repository, IMapper mapper,
-        MixtureRepository materialRepository, PropertyRepository propertyRepository)
+    public static PropertyUsefulProductViewModel CreateInstance(PropertyUsefulProductRepository repository, IMapper mapper,
+        UsefulProductRepository materialRepository, PropertyRepository propertyRepository)
     {
-        return new PropertyMixtureViewModel(repository, mapper, materialRepository, propertyRepository);
+        return new PropertyUsefulProductViewModel(repository, mapper, materialRepository, propertyRepository);
     }
 
-    public ObservableCollection<MixtureModel> Mixtures
+    public ObservableCollection<UsefulProductModel> UsefulProducts
     {
-        get => _mixtures;
-        set => SetField(ref _mixtures, value);
+        get => _usefulProducts;
+        set => SetField(ref _usefulProducts, value);
     }
 
     public ObservableCollection<PropertyModel> Properties
@@ -51,22 +51,23 @@ public class PropertyMixtureViewModel
     protected override void CopySelectedModelToChanging()
     {
         //ChangingModel.Id = 0;
-        ChangingModel.Mixture = (Mixtures
-            .FirstOrDefault(m => m.Id == SelectedModel?.Mixture.Id))!;
+        ChangingModel.UsefulProduct = (UsefulProducts
+            .FirstOrDefault(m => m.Id == SelectedModel?.UsefulProduct.Id))!;
         ChangingModel.Property = (Properties
             .FirstOrDefault(m => m.Id == SelectedModel?.Property.Id))!;
+        ChangingModel.Value = SelectedModel?.Value ?? 0;
     }
 
     protected override async Task<bool> CheckingForExistenceAsync()
     {
         var user = await _repository.GetEntityByFilterFirstOrDefaultAsync(u =>
             u.Property.Id == ChangingModel.Property.Id
-            && u.Mixture.Id == ChangingModel.Mixture.Id);
+            && u.UsefulProduct.Id == ChangingModel.UsefulProduct.Id);
         return user == null;
     }
 
     protected override bool CanAdd() => ChangingModel.Property != null
-                                        && ChangingModel.Mixture != null
+                                        && ChangingModel.UsefulProduct != null
                                         && ChangingModel != null;
 
 

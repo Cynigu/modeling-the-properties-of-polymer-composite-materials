@@ -55,6 +55,7 @@ public class PropertyMaterialViewModel
             .FirstOrDefault(m => m.Id == SelectedModel?.Material.Id))!;
         ChangingModel.Property = (Properties
             .FirstOrDefault(m => m.Id == SelectedModel?.Property.Id))!;
+        ChangingModel.Value = SelectedModel?.Value ?? 0;
     }
 
     protected override async Task<bool> CheckingForExistenceAsync()

@@ -11,21 +11,20 @@ public class AdminViewModel : ViewModelBase
     private MaterialsViewModel _materialsVm;
     private AdditiveViewModel _additiveVm;
     private CompatibilityMaterialViewModel _compatibilityVm;
-    private MixtureViewModel _mixtureVm;
+    private UsefulProductViewModel _usefulProductVm;
     private UnitViewModel _unitsVm;
     private PropertiesViewModel _propertiesVm;
     private PropertyMaterialViewModel _propertyMaterialVm;
-    private PropertyMixtureViewModel _propertyMixtureVm;
+    private PropertyUsefulProductViewModel _propertyUsefulProductVm;
     private RecipeViewModel _recipesVm;
-    private CompositionRecipeViewModel _compositionRecipeVm;
 
     private AdminViewModel(
         IMapper mapper, 
         RepositoriesFactory repositoriesFactory
         )
     {
-        _mixtureVm = MixtureViewModel
-            .CreateInstance(repositoriesFactory.CreateMixtureRepository(), mapper);
+        _usefulProductVm = UsefulProductViewModel
+            .CreateInstance(repositoriesFactory.CreateUsefulProductRepository(), mapper);
         _usersVm = UsersViewModel
             .CreateInstance(repositoriesFactory.CreateUserRepository(), mapper);
         _materialsVm = MaterialsViewModel
@@ -47,18 +46,14 @@ public class AdminViewModel : ViewModelBase
             repositoriesFactory.CreateMaterialRepository(),
             repositoriesFactory.CreatePropertyRepository());
         
-        _propertyMixtureVm = PropertyMixtureViewModel.CreateInstance(
-            repositoriesFactory.CreatePropertyMixtureRepository(), mapper,
-            repositoriesFactory.CreateMixtureRepository(),
+        _propertyUsefulProductVm = PropertyUsefulProductViewModel.CreateInstance(
+            repositoriesFactory.CreatePropertyUsefulProductRepository(), mapper,
+            repositoriesFactory.CreateUsefulProductRepository(),
             repositoriesFactory.CreatePropertyRepository());
 
         _recipesVm = RecipeViewModel.CreateInstance(repositoriesFactory.CreateRecipeRepository(), mapper,
-            repositoriesFactory.CreateMixtureRepository(),
+            repositoriesFactory.CreateCompatibilityMaterialrRepository(),
             repositoriesFactory.CreateAdditiveRepository());
-
-        _compositionRecipeVm = CompositionRecipeViewModel.CreateInstance(repositoriesFactory.CreateCompositionRecipeRepository(), mapper,
-            repositoriesFactory.CreateMixtureRepository(),
-            repositoriesFactory.CreateRecipeRepository());
 
         UpdateTablesCommand = new AsyncCommand(UpdateTablesAsync, () => true);
         UpdateTablesAsync();
@@ -70,22 +65,16 @@ public class AdminViewModel : ViewModelBase
         return new AdminViewModel(mapper, repositoriesFactory);
     }
 
-    public CompositionRecipeViewModel CompositionRecipeVM
-    {
-        get => _compositionRecipeVm;
-        set => SetField(ref _compositionRecipeVm, value);
-    }
-
     public RecipeViewModel RecipesVM
     {
         get => _recipesVm;
         set => SetField(ref _recipesVm, value);
     }
 
-    public PropertyMixtureViewModel PropertyMixtureVM
+    public PropertyUsefulProductViewModel PropertyUsefulProductVm
     {
-        get => _propertyMixtureVm;
-        set => SetField(ref _propertyMixtureVm, value);
+        get => _propertyUsefulProductVm;
+        set => SetField(ref _propertyUsefulProductVm, value);
     }
 
     public PropertyMaterialViewModel PropertyMaterialVM
@@ -106,10 +95,10 @@ public class AdminViewModel : ViewModelBase
         set => SetField(ref _propertiesVm, value);
     }
 
-    public MixtureViewModel MixtureVM
+    public UsefulProductViewModel UsefulProductVm
     {
-        get => _mixtureVm;
-        set => SetField(ref _mixtureVm, value);
+        get => _usefulProductVm;
+        set => SetField(ref _usefulProductVm, value);
     }
 
     public MaterialsViewModel MaterialsVM
@@ -144,12 +133,11 @@ public class AdminViewModel : ViewModelBase
         await MaterialsVM.UpdateEntitiesAsync();
         await AdditiveVM.UpdateEntitiesAsync();
         await CompatibilityVM.UpdateEntitiesAsync();
-        await MixtureVM.UpdateEntitiesAsync();
+        await UsefulProductVm.UpdateEntitiesAsync();
         await UnitsVM.UpdateEntitiesAsync();
         await PropertiesVM.UpdateEntitiesAsync();
         await PropertyMaterialVM.UpdateEntitiesAsync();
-        await PropertyMixtureVM.UpdateEntitiesAsync();
+        await PropertyUsefulProductVm.UpdateEntitiesAsync();
         await RecipesVM.UpdateEntitiesAsync();
-        await CompositionRecipeVM.UpdateEntitiesAsync();
     }
 }

@@ -1,10 +1,10 @@
 ﻿namespace Polimer.App.ViewModel.Admin.Models;
 
-public class PropertyMaterialModel : ViewModelBase, IModelAsEntity
+public class PropertyUsefulProductModel : ViewModelBase, IModelAsEntity
 {
     private int? _id;
     private PropertyModel _property;
-    private MaterialModel _material;
+    private UsefulProductModel _usefulProduct;
     private double _value;
 
     public int? Id
@@ -19,10 +19,10 @@ public class PropertyMaterialModel : ViewModelBase, IModelAsEntity
         set => SetField(ref _property, value);
     }
 
-    public MaterialModel Material
+    public UsefulProductModel UsefulProduct
     {
-        get => _material;
-        set => SetField(ref _material, value);
+        get => _usefulProduct;
+        set => SetField(ref _usefulProduct, value);
     }
 
     public double Value

@@ -23,6 +23,9 @@ public record PropertyMaterialEntity : IEntity
     [Required]
     public int IdMaterial { get; init; }
     [ForeignKey("IdMaterial")]
-    public virtual MaterialEntity Material { get; init; }
+    public MaterialEntity Material { get; init; }
 
+    [Column("value")]
+    [Required]
+    public double Value { get; init; }
 }

@@ -40,11 +40,11 @@
             <Setter Property="ColumnWidth" Value="*"></Setter>
         </Style>
         <Style TargetType="wpfx:IntegerUpDown">
-            <Setter Property="Width" Value="60"></Setter>
+            <Setter Property="Width" Value="auto"></Setter>
             <Setter Property="Height" Value="auto"></Setter>
         </Style>
         <Style TargetType="wpfx:DoubleUpDown">
-            <Setter Property="Width" Value="60"></Setter>
+            <Setter Property="Width" Value="auto"></Setter>
             <Setter Property="Height" Value="auto"></Setter>
             <Setter Property="Margin" Value="0 3"></Setter>
         </Style>
@@ -194,22 +194,22 @@
                         </DockPanel>
                     </DockPanel>
                 </TabItem>
-                <TabItem Header="{Binding MixtureVM.NameTab}">
+                <TabItem Header="{Binding UsefulProductVm.NameTab}">
                     <DockPanel>
                         <DockPanel  DockPanel.Dock="Left" Width="200">
                             <DockPanel DockPanel.Dock="Top">
                                 <TextBlock Width="70" Text="Название: "></TextBlock>
-                                <TextBox Text="{Binding MixtureVM.ChangingModel.Name}"></TextBox>
+                                <TextBox Text="{Binding UsefulProductVm.ChangingModel.Name}"></TextBox>
                             </DockPanel>
                             <StackPanel>
-                                <Button Content="Добавить" Command="{Binding MixtureVM.AddCommand}"></Button>
-                                <Button Content="Удалить" Command="{Binding MixtureVM.RemoveCommand}"></Button>
-                                <Button Content="Изменить" Command="{Binding MixtureVM.EditCommand}"></Button>
+                                <Button Content="Добавить" Command="{Binding UsefulProductVm.AddCommand}"></Button>
+                                <Button Content="Удалить" Command="{Binding UsefulProductVm.RemoveCommand}"></Button>
+                                <Button Content="Изменить" Command="{Binding UsefulProductVm.EditCommand}"></Button>
                             </StackPanel>
                         </DockPanel>
                         <DockPanel>
-                            <DataGrid ItemsSource ="{Binding MixtureVM.Models}"
-                                      SelectedItem="{Binding MixtureVM.SelectedModel}"
+                            <DataGrid ItemsSource ="{Binding UsefulProductVm.Models}"
+                                      SelectedItem="{Binding UsefulProductVm.SelectedModel}"
                                       CanUserDeleteRows="False" CanUserAddRows="False" 
                                       IsReadOnly="True" AutoGenerateColumns="True">
                                 <!--<DataGrid.Columns>
@@ -284,7 +284,6 @@
                         </DockPanel>
                     </DockPanel>
                 </TabItem>
-
                 <TabItem Header="{Binding PropertyMaterialVM.NameTab}">
                     <DockPanel>
                         <DockPanel Width="200">
@@ -302,8 +301,14 @@
                                           DisplayMemberPath="Name">
                                 </ComboBox>
                             </DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock  Width="73" Text="Значение: "></TextBlock>
+                                <wpfx:DoubleUpDown Value= "{Binding PropertyMaterialVM.ChangingModel.Value}">
+                                </wpfx:DoubleUpDown>
+                            </DockPanel>
                             <StackPanel>
                                 <Button Content="Добавить" Command="{Binding PropertyMaterialVM.AddCommand}"></Button>
+                                <Button Content="Изменить" Command="{Binding PropertyMaterialVM.EditCommand}"></Button>
                                 <Button Content="Удалить" Command="{Binding PropertyMaterialVM.RemoveCommand}"></Button>
                             </StackPanel>
                         </DockPanel>
@@ -316,43 +321,51 @@
                                     <DataGridTextColumn Width="40" Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
                                     <DataGridTextColumn Width="*" Header="Свойство" Binding="{Binding Property.Name}"/>
                                     <DataGridTextColumn Width="*" Header="Материал" Binding="{Binding Material.QuickName}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="*" Header="Значение" Binding="{Binding Value}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </DockPanel>
                     </DockPanel>
                 </TabItem>
 
-                <TabItem Header="{Binding PropertyMixtureVM.NameTab}">
+                <TabItem Header="{Binding PropertyUsefulProductVm.NameTab}">
                     <DockPanel>
                         <DockPanel Width="200">
                             <DockPanel DockPanel.Dock="Top">
-                                <TextBlock  Width="73" Text="Смесь: "></TextBlock>
-                                <ComboBox ItemsSource="{Binding PropertyMixtureVM.Mixtures}" 
-                                              SelectedItem="{Binding PropertyMixtureVM.ChangingModel.Mixture}"
+                                <TextBlock  Width="73" Text="Продукция: "></TextBlock>
+                                <ComboBox ItemsSource="{Binding PropertyUsefulProductVm.UsefulProducts}" 
+                                              SelectedItem="{Binding PropertyUsefulProductVm.ChangingModel.UsefulProduct}"
                                               DisplayMemberPath="Name">
                                 </ComboBox>
                             </DockPanel>
                             <DockPanel DockPanel.Dock="Top">
                                 <TextBlock  Width="73" Text="Свойство: "></TextBlock>
-                                <ComboBox ItemsSource="{Binding PropertyMixtureVM.Properties}" 
-                                          SelectedItem="{Binding PropertyMixtureVM.ChangingModel.Property}"
+                                <ComboBox ItemsSource="{Binding PropertyUsefulProductVm.Properties}" 
+                                          SelectedItem="{Binding PropertyUsefulProductVm.ChangingModel.Property}"
                                           DisplayMemberPath="Name">
                                 </ComboBox>
                             </DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock  Width="73" Text="Значение: "></TextBlock>
+                                <wpfx:DoubleUpDown Value= "{Binding PropertyUsefulProductVm.ChangingModel.Value}">
+                                </wpfx:DoubleUpDown>
+                            </DockPanel>
                             <StackPanel>
-                                <Button Content="Добавить" Command="{Binding PropertyMixtureVM.AddCommand}"></Button>
-                                <Button Content="Удалить" Command="{Binding PropertyMixtureVM.RemoveCommand}"></Button>
+                                <Button Content="Добавить" Command="{Binding PropertyUsefulProductVm.AddCommand}"></Button>
+                                <Button Content="Удалить" Command="{Binding PropertyUsefulProductVm.RemoveCommand}"></Button>
+                                <Button Content="Изменить" Command="{Binding PropertyUsefulProductVm.EditCommand}"></Button>
                             </StackPanel>
                         </DockPanel>
                         <DockPanel>
-                            <DataGrid ItemsSource ="{Binding PropertyMixtureVM.Models}"
-                                      SelectedItem="{Binding PropertyMixtureVM.SelectedModel}"
+                            <DataGrid ItemsSource ="{Binding PropertyUsefulProductVm.Models}"
+                                      SelectedItem="{Binding PropertyUsefulProductVm.SelectedModel}"
                                       CanUserDeleteRows="False" CanUserAddRows="False" 
                                       IsReadOnly="True" AutoGenerateColumns="False">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Width="40" Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
                                     <DataGridTextColumn Width="*" Header="Свойство" Binding="{Binding Property.Name}"/>
-                                    <DataGridTextColumn Width="*" Header="Смесь" Binding="{Binding Mixture.Name}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="*" Header="Полезное продукция" Binding="{Binding UsefulProduct.Name}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="*" Header="Значение" Binding="{Binding Value}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </DockPanel>
@@ -363,22 +376,46 @@
                     <DockPanel>
                         <DockPanel Width="200">
                             <DockPanel DockPanel.Dock="Top">
-                                <TextBlock  Width="73" Text="Смесь: "></TextBlock>
-                                <ComboBox ItemsSource="{Binding RecipesVM.Mixtures}" 
-                                              SelectedItem="{Binding RecipesVM.ChangingModel.Mixture}"
-                                              DisplayMemberPath="Name">
+                                <TextBlock  Width="90" Text="Совместимость: "></TextBlock>
+                                <ComboBox ItemsSource="{Binding RecipesVM.CompatibilityMaterials}" 
+                                              SelectedItem="{Binding RecipesVM.ChangingModel.CompatibilityMaterial}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Margin="1" Text="{Binding FirstMaterial.QuickName}"/>
+                                                <TextBlock Margin="1" Text="+" />
+                                                <TextBlock Margin="1" Text="{Binding SecondMaterial.QuickName}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
                                 </ComboBox>
                             </DockPanel>
                             <DockPanel DockPanel.Dock="Top">
-                                <TextBlock  Width="73" Text="Свойство: "></TextBlock>
+                                <TextBlock  Width="90" Text="Добавка: "></TextBlock>
                                 <ComboBox ItemsSource="{Binding RecipesVM.Additives}" 
                                           SelectedItem="{Binding RecipesVM.ChangingModel.Additive}"
                                           DisplayMemberPath="Name">
                                 </ComboBox>
                             </DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock Width="128" Text="Значение 1ого мат-ла: "></TextBlock>
+                                <wpfx:DoubleUpDown Value= "{Binding RecipesVM.ChangingModel.ContentMaterialFirst}">
+                                </wpfx:DoubleUpDown>
+                            </DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock Width="128" Text="Значение 1ого мат-ла: "></TextBlock>
+                                <wpfx:DoubleUpDown Value= "{Binding RecipesVM.ChangingModel.ContentMaterialSecond}">
+                                </wpfx:DoubleUpDown>
+                            </DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock Width="128" Text="Значение добавки: "></TextBlock>
+                                <wpfx:DoubleUpDown Value= "{Binding RecipesVM.ChangingModel.ContentAdditive}">
+                                </wpfx:DoubleUpDown>
+                            </DockPanel>
                             <StackPanel>
                                 <Button Content="Добавить" Command="{Binding RecipesVM.AddCommand}"></Button>
                                 <Button Content="Удалить" Command="{Binding RecipesVM.RemoveCommand}"></Button>
+                                <Button Content="Изменить" Command="{Binding RecipesVM.EditCommand}"></Button>
                             </StackPanel>
                         </DockPanel>
                         <DockPanel>
@@ -388,50 +425,18 @@
                                       IsReadOnly="True" AutoGenerateColumns="False">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Width="40" Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
-                                    <DataGridTextColumn Width="*" Header="Свойство" Binding="{Binding Additive.Name}"/>
-                                    <DataGridTextColumn Width="*" Header="Смесь" Binding="{Binding Mixture.Name}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="60" Header="Добавка" Binding="{Binding Additive.Name}"/>
+                                    <DataGridTextColumn Width="130" Header="Первый материал" Binding="{Binding CompatibilityMaterial.FirstMaterial.QuickName}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="130" Header="Второй материал" Binding="{Binding CompatibilityMaterial.SecondMaterial.QuickName}"/>
+                                    <DataGridTextColumn Width="115" Header="Значение 1 мат-ла" Binding="{Binding ContentMaterialFirst}"/>
+                                    <DataGridTextColumn Width="115" Header="Значение 2 мат-ла" Binding="{Binding ContentMaterialSecond}"/>
+                                    <DataGridTextColumn Width="110" Header="Значение добавки" Binding="{Binding ContentAdditive}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </DockPanel>
                     </DockPanel>
                 </TabItem>
 
-                <TabItem Header="{Binding CompositionRecipeVM.NameTab}">
-                    <DockPanel>
-                        <DockPanel Width="200">
-                            <DockPanel DockPanel.Dock="Top">
-                                <TextBlock  Width="73" Text="Смесь: "></TextBlock>
-                                <ComboBox ItemsSource="{Binding CompositionRecipeVM.Mixtures}" 
-                                              SelectedItem="{Binding CompositionRecipeVM.ChangingModel.Mixture}"
-                                              DisplayMemberPath="Name">
-                                </ComboBox>
-                            </DockPanel>
-                            <DockPanel DockPanel.Dock="Top">
-                                <TextBlock  Width="73" Text="Рецептура: "></TextBlock>
-                                <ComboBox ItemsSource="{Binding CompositionRecipeVM.Recipes}" 
-                                          SelectedItem="{Binding CompositionRecipeVM.ChangingModel.Recipe}"
-                                          DisplayMemberPath="Id">
-                                </ComboBox>
-                            </DockPanel>
-                            <StackPanel>
-                                <Button Content="Добавить" Command="{Binding CompositionRecipeVM.AddCommand}"></Button>
-                                <Button Content="Удалить" Command="{Binding CompositionRecipeVM.RemoveCommand}"></Button>
-                            </StackPanel>
-                        </DockPanel>
-                        <DockPanel>
-                            <DataGrid ItemsSource ="{Binding CompositionRecipeVM.Models}"
-                                      SelectedItem="{Binding CompositionRecipeVM.SelectedModel}"
-                                      CanUserDeleteRows="False" CanUserAddRows="False" 
-                                      IsReadOnly="True" AutoGenerateColumns="False">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Width="40" Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
-                                    <DataGridTextColumn Width="*" Header="Рецептура" Binding="{Binding Recipe.Id}"/>
-                                    <DataGridTextColumn Width="*" Header="Смесь" Binding="{Binding Mixture.Name}"></DataGridTextColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </DockPanel>
-                    </DockPanel>
-                </TabItem>
             </TabControl>
         </DockPanel>
         <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top">

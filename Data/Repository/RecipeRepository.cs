@@ -17,7 +17,7 @@ public class RecipeRepository : RepositoryBase<RecipeEntity>
         {
             try
             {
-                context.Mixtures.AttachRange(item.Mixture); // !!!!
+                context.CompatibilitiesMaterial.AttachRange(item.CompatibilityMaterial); // !!!!
                 context.Additives.AttachRange(item.Additive); // !!!!
                 await context.Set<RecipeEntity>().AddAsync(item);
                 await context.SaveChangesAsync();
@@ -36,7 +36,9 @@ public class RecipeRepository : RepositoryBase<RecipeEntity>
 
         var result = await context.Set<RecipeEntity>()
             .Include(x => x.Additive) // !!!!
-            .Include(x => x.Mixture)
+            .Include(x => x.CompatibilityMaterial)
+            .Include(x => x.CompatibilityMaterial.FirstMaterial)
+            .Include(x => x.CompatibilityMaterial.SecondMaterial)
             .ToListAsync();
 
         return result;
@@ -48,7 +50,7 @@ public class RecipeRepository : RepositoryBase<RecipeEntity>
         await using var context = await _dbContextFactory.CreateDbContextAsync();
         var result = context.Set<RecipeEntity>()
             .Include(x => x.Additive)
-            .Include(x => x.Mixture)
+            .Include(x => x.CompatibilityMaterial)
             .Where(predicate).ToList();
 
         return result;
@@ -60,9 +62,26 @@ public class RecipeRepository : RepositoryBase<RecipeEntity>
         await using var context = await _dbContextFactory.CreateDbContextAsync();
         var result = await context.Set<RecipeEntity>()
             .Include(x => x.Additive)
-            .Include(x => x.Mixture)
+            .Include(x => x.CompatibilityMaterial)
             .FirstOrDefaultAsync(predicate);
 
         return result;
+    }
+
+
+    public override async Task UpdateAsync(RecipeEntity item)
+    {
+        RecipeEntity i = new RecipeEntity()
+        {
+            Id = item.Id,
+            CompatibilityMaterial = item.CompatibilityMaterial,
+            Additive = item.Additive,
+            IdCompatibilityMaterial = item.CompatibilityMaterial.Id,
+            IdAdditive = item.Additive.Id,
+            ContentMaterialFirst = item.ContentMaterialFirst,
+            ContentMaterialSecond = item.ContentMaterialSecond,
+            ContentAdditive = item.ContentAdditive,
+        };
+        await base.UpdateAsync(i);
     }
 }

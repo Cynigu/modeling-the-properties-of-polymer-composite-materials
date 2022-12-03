@@ -24,25 +24,21 @@ namespace Polimer.Data.Repository.Factory
         {
             return new CompatibilityMaterialrRepository(_dbContextFactory);
         }
-        public CompositionRecipeRepository CreateCompositionRecipeRepository()
+        public UsefulProductRepository CreateUsefulProductRepository()
         {
-            return new CompositionRecipeRepository(_dbContextFactory);
+            return new UsefulProductRepository(_dbContextFactory);
         }
         public MaterialRepository CreateMaterialRepository()
         {
             return new MaterialRepository(_dbContextFactory);
         }
-        public MixtureRepository CreateMixtureRepository()
-        {
-            return new MixtureRepository(_dbContextFactory);
-        }
         public PropertyMaterialRepository CreatePropertyMaterialRepository()
         {
             return new PropertyMaterialRepository(_dbContextFactory);
         }
-        public PropertyMixtureRepository CreatePropertyMixtureRepository()
+        public PropertyUsefulProductRepository CreatePropertyUsefulProductRepository()
         {
-            return new PropertyMixtureRepository(_dbContextFactory);
+            return new PropertyUsefulProductRepository(_dbContextFactory);
         }
         public PropertyRepository CreatePropertyRepository()
         {

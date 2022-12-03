@@ -1,6 +1,6 @@
 ﻿namespace Polimer.App.ViewModel.Admin.Models;
 
-public class MixtureModel : ViewModelBase, IModelAsEntity
+public class UsefulProductModel : ViewModelBase, IModelAsEntity
 {
     private string? _name;
     private int? _id;

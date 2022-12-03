@@ -10,7 +10,7 @@ namespace Polimer.Data.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.Register(c => new ContextFactory(@"Data Source = polim.db", "logdb.txt"))
+            builder.Register(c => new ContextFactory(@"Data Source = polimer.db", "logdb.txt"))
                 .As<IDbContextFactory<DataContext>>();
             builder.RegisterType<RepositoriesFactory>().AsSelf();
 

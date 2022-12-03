@@ -104,11 +104,11 @@ public abstract class TabAdminBaseViewModel<TEntity, TModelAsEntity> : ViewModel
                 new ArgumentNullException($"Поля должны быть заполнены и выбрана строка для редактирования!");
         }
 
-        if (!await CheckingForExistenceAsync())
+        if (await CheckingForExistenceAsync())
         {
-            throw new ArgumentException("Такая сущность уже существует!");
+            throw new ArgumentException("Такой сущности не существует!");
         }
-        
+
         var model = _mapper.Map<TModelAsEntity>(ChangingModel);
         model.Id = SelectedModel?.Id;
         await _repository.UpdateAsync(_mapper.Map<TEntity>(model));
