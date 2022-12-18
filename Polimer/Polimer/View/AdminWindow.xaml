@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit" xmlns:admin="clr-namespace:Polimer.App.ViewModel.Admin" d:DataContext="{d:DesignInstance Type=admin:AdminViewModel}"
+        xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit" 
+        xmlns:admin="clr-namespace:Polimer.App.ViewModel.Admin" d:DataContext="{d:DesignInstance Type=admin:AdminViewModel}"
         mc:Ignorable="d"
         Title="Окно администратора" Height="500" Width="800" ResizeMode="NoResize">
     <Window.Resources>
@@ -15,6 +16,7 @@
             <!--<Setter Property="Width" Value="200"></Setter>-->
             <Setter Property="Height" Value="30"></Setter>
             <Setter Property="Margin" Value="0 3"></Setter>
+            <Setter Property="Background" Value="#FFBBD6BB"></Setter>
         </Style>
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="0 3"></Setter>
@@ -38,6 +40,8 @@
             <!--<Setter Property="Width" Value="400"></Setter>-->
             <!--<Setter Property="Height" Value="270"></Setter>-->
             <Setter Property="ColumnWidth" Value="*"></Setter>
+            <Setter Property="Background" Value="#FFE6F1E6"></Setter>
+            <Setter Property="BorderBrush" Value="#FF73A073"></Setter>
         </Style>
         <Style TargetType="wpfx:IntegerUpDown">
             <Setter Property="Width" Value="auto"></Setter>
@@ -50,6 +54,10 @@
         </Style>
         <Style TargetType="DockPanel">
             <Setter Property="Margin" Value="3"></Setter>
+        </Style>
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="#FFDAE8DA"></Setter>
+            <Setter Property="BorderBrush" Value="#FF8BB28B"></Setter>
         </Style>
     </Window.Resources>
     <DockPanel>

@@ -51,6 +51,8 @@ public class RecipeRepository : RepositoryBase<RecipeEntity>
         var result = context.Set<RecipeEntity>()
             .Include(x => x.Additive)
             .Include(x => x.CompatibilityMaterial)
+            .Include(x => x.CompatibilityMaterial.FirstMaterial)
+            .Include(x => x.CompatibilityMaterial.SecondMaterial)
             .Where(predicate).ToList();
 
         return result;
@@ -63,6 +65,8 @@ public class RecipeRepository : RepositoryBase<RecipeEntity>
         var result = await context.Set<RecipeEntity>()
             .Include(x => x.Additive)
             .Include(x => x.CompatibilityMaterial)
+            .Include(x => x.CompatibilityMaterial.FirstMaterial)
+            .Include(x => x.CompatibilityMaterial.SecondMaterial)
             .FirstOrDefaultAsync(predicate);
 
         return result;

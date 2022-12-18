@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Авторизация" Height="200" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="Авторизация" Height="200" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+        Background="#FFDAE8DA" BorderBrush="#FF8BB28B">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <Style TargetType="Button">
@@ -13,6 +14,7 @@
             <Setter Property="Height" Value="30"></Setter>
             <Setter Property="Margin" Value="0 3"></Setter>
             <Setter Property="FontSize" Value="14"></Setter>
+            <Setter Property="Background" Value="#FFBBD6BB"></Setter>
         </Style>
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="0 3"></Setter>

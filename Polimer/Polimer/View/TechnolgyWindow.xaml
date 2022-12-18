@@ -3,10 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Polimer.App.View" xmlns:technology="clr-namespace:Polimer.App.ViewModel.Technology" d:DataContext="{d:DesignInstance Type=technology:TechnologyViewModel}"
+        xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit" 
+        xmlns:local="clr-namespace:Polimer.App.View" 
+        xmlns:technology="clr-namespace:Polimer.App.ViewModel.Technology" d:DataContext="{d:DesignInstance Type=technology:TechnologyViewModel}"
         mc:Ignorable="d"
-        Title="Окно технолога" Height="460" Width="800" ResizeMode="NoResize" Background="#FF86A186" WindowStartupLocation="CenterScreen">
+        Title="Окно технолога" Margin="0" Height="470" Width="800" ResizeMode="NoResize" Background="#FF86A186" WindowStartupLocation="CenterScreen">
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <Style TargetType="DockPanel">
             <Setter Property="Margin" Value="3"/>
         </Style>
@@ -37,10 +40,26 @@
             <Setter Property="Background" Value="#FFE6F1E6"></Setter>
             <Setter Property="BorderBrush" Value="#FF73A073"></Setter>
         </Style>
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="#FFDAE8DA"></Setter>
+            <Setter Property="BorderBrush" Value="#FF8BB28B"></Setter>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        </Style>
+        <Style TargetType="wpfx:IntegerUpDown">
+            <Setter Property="Width" Value="auto"></Setter>
+            <Setter Property="Height" Value="auto"></Setter>
+        </Style>
+        <Style TargetType="wpfx:DoubleUpDown">
+            <Setter Property="Width" Value="50"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="0 3"></Setter>
+        </Style>
     </Window.Resources>
-    <DockPanel>
+    <DockPanel Margin="0">
         <DockPanel DockPanel.Dock="Top">
-            <TabControl Background="#FFDAE8DA" BorderBrush="#FF8BB28B">
+            <TabControl>
                 <TabItem Header="Входные данные">
                     <DockPanel>
                         <DockPanel Dock="Top">
@@ -92,25 +111,20 @@
                                         </DockPanel>
                                     </GroupBox>
                                 </DockPanel>
-
                             </DockPanel>
                             <DockPanel>
                                 <DockPanel DockPanel.Dock="Top">
-                                    <GroupBox Header="Свойства">
+                                    <GroupBox DockPanel.Dock="Top" Header="Свойства">
                                         <TabControl>
                                             <TabItem Header="Первый полимер">
                                                 <DockPanel>
                                                     <DockPanel DockPanel.Dock="Top">
                                                         <Label Content="Английское название"/>
-                                                        <Label Content="п1"/>
-                                                        <Label Content="п2"/>
-                                                        <Label Content="д"/>
+                                                        <Label Content="{Binding PropertyFirst.EnglishName}"/>
                                                     </DockPanel>
                                                     <DockPanel DockPanel.Dock="Top">
                                                         <Label Content="Русское полное название"/>
-                                                        <Label Content="п1"/>
-                                                        <Label Content="п2"/>
-                                                        <Label Content="д"/>
+                                                        <Label Content="{Binding PropertyFirst.RussianName}"/>
                                                     </DockPanel>
                                                     <DockPanel DockPanel.Dock="Top">
                                                         <DataGrid ItemsSource ="{Binding PropertiesFirstMaterial}"
@@ -129,13 +143,11 @@
                                                 <DockPanel>
                                                     <DockPanel DockPanel.Dock="Top">
                                                         <Label Content="Английское название"/>
-                                                        <Label Content="п1"/>
-                                                        <Label Content="п2"/>
-                                                        <Label Content="д"/>
+                                                        <Label Content="{Binding PropertySecond.EnglishName}"/>
                                                     </DockPanel>
                                                     <DockPanel DockPanel.Dock="Top">
                                                         <Label Content="Русское полное название"/>
-                                                        <Label Content="п1"/>
+                                                        <Label Content="{Binding PropertySecond.RussianName}"/>
                                                     </DockPanel>
                                                     <DockPanel DockPanel.Dock="Top">
                                                         <DataGrid ItemsSource ="{Binding PropertiesSecondMaterial}"
@@ -154,11 +166,11 @@
                                                 <DockPanel>
                                                     <DockPanel DockPanel.Dock="Top">
                                                         <Label Content="Английское название"/>
-                                                        <Label Content="п1"/>
+                                                        <Label Content="{Binding PropertyAdditive.EnglishName}"/>
                                                     </DockPanel>
                                                     <DockPanel DockPanel.Dock="Top">
                                                         <Label Content="Русское полное название"/>
-                                                        <Label Content="п1"/>
+                                                        <Label Content="{Binding PropertyAdditive.RussianName}"/>
                                                     </DockPanel>
                                                     <DockPanel DockPanel.Dock="Top">
                                                         <DataGrid ItemsSource ="{Binding PropertiesAdditive}"
@@ -178,55 +190,126 @@
                                 </DockPanel>
                             </DockPanel>
                         </DockPanel>
-                        <DockPanel Dock="Top" HorizontalAlignment="Right" VerticalAlignment="Top">
-                            <Button Width="120" Content="Вычислить" 
-                                    Command="{Binding ComputeCommand}"/>
+                        <DockPanel Dock="Top" VerticalAlignment="Top">
+                            <DockPanel Dock="Right" HorizontalAlignment="Right">
+                                <Button Width="120" Content="Вычислить" 
+                                        Command="{Binding ComputeCommand}"/>
+                            </DockPanel>
                         </DockPanel>
                     </DockPanel>
                 </TabItem>
                 <TabItem Header="Выходные параметры">
                     <DockPanel DockPanel.Dock="Top">
-                        <GroupBox Header="Формиование совместимости и рецептуры композиционной смеси">
-                            <DockPanel>
+                        <DockPanel>
                                 <DockPanel DockPanel.Dock="Top">
-                                    <Label Content="Визуализация"/>
-                                    <Label Content="1"/>
-                                </DockPanel>
-                                <DockPanel DockPanel.Dock="Top">
-                                    <GroupBox Header="Рассчитанные параметры смеси">
-                                        <DockPanel>
-                                            <DockPanel Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <DockPanel Width="350">
-                                                    <DockPanel DockPanel.Dock="Top">
-                                                        <Label DockPanel.Dock="Left" Content="Плотность"/>
-                                                        <TextBlock DockPanel.Dock="Left" Width="auto" Text="{Binding ComputeRecipeParametersModel.Density}" HorizontalAlignment="Left"/>
-                                                        <TextBlock DockPanel.Dock="Left" Text="кг/м^3" HorizontalAlignment="Left"/>
-                                                    </DockPanel>
-                                                    <DockPanel DockPanel.Dock="Top">
-                                                        <Label DockPanel.Dock="Left"  Content="Число фаз"/>
-                                                        <TextBlock DockPanel.Dock="Left" Width="auto" Text="{Binding ComputeRecipeParametersModel.NumberOfPhases}" HorizontalAlignment="Left"/>
-                                                    </DockPanel>
-                                                </DockPanel>
-                                                <DockPanel Width="350">
-                                                    <DockPanel DockPanel.Dock="Top">
-                                                        <Label DockPanel.Dock="Left" Content="Вязкость"/>
-                                                        <TextBlock DockPanel.Dock="Left" Text="{Binding ComputeRecipeParametersModel.Viscosity}" HorizontalAlignment="Left" Width="auto"/>
-                                                        <TextBlock DockPanel.Dock="Left" Text="Па*с" HorizontalAlignment="Left"/>
-                                                    </DockPanel>
-                                                </DockPanel>
-                                                <DockPanel Width="350">
-
-                                                </DockPanel>
-                                            </DockPanel>
-
+                                    <GroupBox Header="Композиция">
+                                        <DockPanel HorizontalAlignment="Center">
+                                            <Border CornerRadius="50" Width="60" Height="60" Margin="3" Background="#FF6AB89E">
+                                                <TextBlock Width="auto" Margin="0" Foreground="#FFF1FFF6" HorizontalAlignment="Center"  FontSize="14"
+                                                           Text="{Binding ComputeRecipeParametersModel.Recipe.CompatibilityMaterial.FirstMaterial.QuickName}" ></TextBlock>
+                                            </Border>
+                                            <TextBlock Width="50" Text="⇆" FontSize="50" HorizontalAlignment="Center" Foreground="#FF2B7A95"></TextBlock>
+                                            <Border CornerRadius="50" Width="60" Height="60" Margin="3" Background="#FF555CA3">
+                                                <TextBlock Width="auto" Margin="0" Foreground="#FFF1FFF6" HorizontalAlignment="Center"   FontSize="14"
+                                                           Text="{Binding ComputeRecipeParametersModel.Recipe.Additive.QuickName}" ></TextBlock>
+                                            </Border>
+                                            <TextBlock Width="50" Text="⇆" FontSize="50" HorizontalAlignment="Center" Foreground="#FF772C89"></TextBlock>
+                                            <Border CornerRadius="50" Width="60" Height="60" Margin="3" Background="#FFB86A86">
+                                                <TextBlock Width="auto" Margin="0" Foreground="#FFF1FFF6" HorizontalAlignment="Center"  FontSize="14"
+                                                           Text="{Binding ComputeRecipeParametersModel.Recipe.CompatibilityMaterial.SecondMaterial.QuickName}"></TextBlock>
+                                            </Border>
                                         </DockPanel>
                                     </GroupBox>
                                 </DockPanel>
-                                <DockPanel>
-                                    <Label Content="Рецептура"/>
+                                <DockPanel DockPanel.Dock="Top">
+                                    <DockPanel >
+                                        <GroupBox Header="Физико-химические свойства смеси">
+                                        <DockPanel Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <DockPanel >
+                                                <DockPanel DockPanel.Dock="Top">
+                                                    <Label Width="95" DockPanel.Dock="Left" Content="Плотность:"/>
+                                                    <TextBlock DockPanel.Dock="Left" Width="auto" Text="{Binding ComputeRecipeParametersModel.Density}" HorizontalAlignment="Left"/>
+                                                    <TextBlock Width="auto" DockPanel.Dock="Left" Text="кг/м^3" HorizontalAlignment="Left"/>
+                                                </DockPanel>
+                                                <DockPanel  DockPanel.Dock="Top">
+                                                    <Label Width="95" DockPanel.Dock="Left"  Content="Число фаз:"/>
+                                                    <TextBlock DockPanel.Dock="Left" Width="auto" Text="{Binding ComputeRecipeParametersModel.NumberOfPhases}" HorizontalAlignment="Left"/>
+                                                </DockPanel>
+                                            </DockPanel>
+                                            <DockPanel>
+                                                <DockPanel DockPanel.Dock="Top">
+                                                    <Label Width="95" DockPanel.Dock="Left" Content="Вязкость:"/>
+                                                    <TextBlock DockPanel.Dock="Left" Text="{Binding ComputeRecipeParametersModel.Viscosity}" HorizontalAlignment="Left" Width="auto"/>
+                                                    <TextBlock Width="auto" DockPanel.Dock="Left" Text="Па*с" HorizontalAlignment="Left"/>
+                                                </DockPanel>
+                                                <DockPanel DockPanel.Dock="Top">
+                                                    <Label Width="95" DockPanel.Dock="Left"  Content="Растворимость:"/>
+                                                    <TextBlock DockPanel.Dock="Left" Width="auto" Text="{Binding ComputeRecipeParametersModel.Solubility}" HorizontalAlignment="Left"/>
+                                                </DockPanel>
+                                            </DockPanel>
+                                        </DockPanel>
+                                    </GroupBox>
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <GroupBox Header="Технологические свойства">
+                                            <DockPanel>
+                                            <DockPanel DockPanel.Dock="Top">
+                                                <Label DockPanel.Dock="Left" Width="186" Content="Насыпная плотность:"/>
+                                                <TextBlock DockPanel.Dock="Left" Text="{Binding ComputeRecipeParametersModel.NasDensity}" HorizontalAlignment="Left" Width="auto"/>
+                                                <TextBlock Width="auto" DockPanel.Dock="Left" Text="кг/м^3" HorizontalAlignment="Left"/>
+                                            </DockPanel>
+                                            <DockPanel DockPanel.Dock="Top">
+                                                <Label Width="186" DockPanel.Dock="Left" Content="Показатель тякучести расплава:"/>
+                                                <TextBlock DockPanel.Dock="Left" Text="{Binding ComputeRecipeParametersModel.Ptr}" HorizontalAlignment="Left" Width="auto"/>
+                                                <TextBlock Width="auto" DockPanel.Dock="Left" Text="г/10мин" HorizontalAlignment="Left"/>
+                                            </DockPanel>
+                                        </DockPanel>
+                                        </GroupBox>
+                                    </DockPanel>
                                 </DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <GroupBox Header="Рецептура">
+                                    <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <GroupBox Header="{Binding ComputeRecipeParametersModel.Recipe.CompatibilityMaterial.FirstMaterial.QuickName}" FontSize="17">
+                                            <DockPanel>
+                                                <TextBlock FontSize="17" Width="auto" Text="{Binding ComputeRecipeParametersModel.Recipe.ContentMaterialFirst}"/>
+                                                <TextBlock FontSize="17" Width="auto" Text="%"/>
+                                            </DockPanel>
+                                        </GroupBox>
+                                        <GroupBox Header="{Binding ComputeRecipeParametersModel.Recipe.CompatibilityMaterial.SecondMaterial.QuickName}" FontSize="17">
+                                            <DockPanel>
+                                                <TextBlock FontSize="17" Width="auto" Text="{Binding ComputeRecipeParametersModel.Recipe.ContentMaterialSecond}"/>
+                                                <TextBlock FontSize="17" Width="auto" Text="%"/>
+                                            </DockPanel>
+                                        </GroupBox>
+                                        <GroupBox Header="{Binding ComputeRecipeParametersModel.Recipe.Additive.QuickName}" FontSize="17">
+                                            <DockPanel>
+                                                <TextBlock FontSize="17" Width="auto" Text="{Binding ComputeRecipeParametersModel.Recipe.ContentAdditive}"/>
+                                                <TextBlock FontSize="17" Width="auto" Text="%"/>
+                                            </DockPanel>
+                                        </GroupBox>
+                                    </DockPanel>
+                                </GroupBox>
                             </DockPanel>
-                        </GroupBox>
+                            <DockPanel DockPanel.Dock="Top">
+                                <GroupBox>
+                                    <DockPanel>
+                                        <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                            <TextBlock Width="auto" Text="{Binding ComputeRecipeParametersModel.Recipe.CompatibilityMaterial.FirstMaterial.QuickName, StringFormat=' {0}: '}"></TextBlock>
+                                            <wpfx:DoubleUpDown Minimum="0.001" Value="{Binding PercentResearchFirst}"></wpfx:DoubleUpDown>
+                                            <TextBlock Width="auto" Text="%"></TextBlock>
+                                            <TextBlock Width="auto" Text="{Binding ComputeRecipeParametersModel.Recipe.CompatibilityMaterial.SecondMaterial.QuickName, StringFormat=' {0}: '}"></TextBlock>
+                                            <wpfx:DoubleUpDown Minimum="0.001" Value="{Binding PercentResearchSecond}"></wpfx:DoubleUpDown>
+                                            <TextBlock Width="auto" Text="%"></TextBlock>
+                                            <TextBlock Width="auto" Text="{Binding ComputeRecipeParametersModel.Recipe.Additive.QuickName, StringFormat=' {0}: '}"></TextBlock>
+                                            <wpfx:DoubleUpDown Minimum="0.001" Value="{Binding PercentResearchAdditive}"></wpfx:DoubleUpDown>
+                                            <TextBlock Width="auto" Text="%"></TextBlock>
+                                            <Button Width="200" Content="Провести исследование" Command="{Binding ResearchCommand}"/>
+                                        </DockPanel>
+                                    </DockPanel>
+                                </GroupBox>
+                            </DockPanel>
+                        </DockPanel>
                     </DockPanel>
                 </TabItem>
             </TabControl>

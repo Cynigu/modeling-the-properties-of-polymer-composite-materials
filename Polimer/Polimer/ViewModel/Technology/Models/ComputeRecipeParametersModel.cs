@@ -13,11 +13,24 @@ namespace Polimer.App.ViewModel.Technology.Models
         private RecipeModel _recipe;
         private double _viscosity;
         private int _numberOfPhases;
+        private double _totalVolume;
+        private double _solubility;
+        private double _ptr;
+        private double _nasDensity;
 
         public RecipeModel Recipe
         {
             get => _recipe;
             set => SetField(ref _recipe, value);
+        }
+
+        /// <summary>
+        /// Объем
+        /// </summary>
+        public double TotalVolume
+        {
+            get => _totalVolume;
+            set => SetField(ref _totalVolume, value);
         }
 
         /// <summary>
@@ -45,6 +58,33 @@ namespace Polimer.App.ViewModel.Technology.Models
         {
             get => _numberOfPhases;
             set => SetField(ref _numberOfPhases, value);
+        }
+
+        /// <summary>
+        /// Растворимость
+        /// </summary>
+        public double Solubility
+        {
+            get => _solubility;
+            set => SetField(ref _solubility, value);
+        }
+
+        /// <summary>
+        /// Показатель тякучести расплава
+        /// </summary>
+        public double Ptr
+        {
+            get => _ptr;
+            set => SetField(ref _ptr, value);
+        }
+
+        /// <summary>
+        /// Насыпная плотность
+        /// </summary>
+        public double NasDensity
+        {
+            get => _nasDensity;
+            set => SetField(ref _nasDensity, value);
         }
     }
 }

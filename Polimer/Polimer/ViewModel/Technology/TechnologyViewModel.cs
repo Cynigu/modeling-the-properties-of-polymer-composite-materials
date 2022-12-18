@@ -43,6 +43,10 @@ public class TechnologyViewModel : ViewModelBase
     private PropertyElement? _propertyFirst;
     private PropertyElement? _propertySecond;
     private PropertyElement? _propertyAdditive;
+    private bool _useResearch;
+    private double _percentResearchFirst;
+    private double _percentResearchSecond;
+    private double _percentResearchAdditive;
 
     public TechnologyViewModel(IMapper mapper, RepositoriesFactory repositories)
     {
@@ -71,15 +75,25 @@ public class TechnologyViewModel : ViewModelBase
         SelectedAdditive = null;
         SelectedCompatibilityMaterial = null;
         SelectedUsefulProductModel = null;
-        
+        PercentResearchFirst = 100;
+        PercentResearchSecond = 10;
+        PercentResearchAdditive = 10;
+
         ComputeRecipeParametersModel = new ComputeRecipeParametersModel();
 
-        ComputeCommand = new AsyncCommand(ComputeParametersAsync, () => 
+        ComputeCommand = new AsyncCommand(() => ComputeParametersAsync(false), () => 
             SelectedAdditive != null && SelectedCompatibilityMaterial != null
             && SelectedUsefulProductModel != null
             && PropertyAdditive != null
             && PropertyFirst != null
             && PropertySecond != null);
+
+        ResearchCommand = new AsyncCommand(() => ComputeParametersAsync(true), () =>
+            SelectedAdditive != null && SelectedCompatibilityMaterial != null
+                                     && SelectedUsefulProductModel != null
+                                     && PropertyAdditive != null
+                                     && PropertyFirst != null
+                                     && PropertySecond != null);
     }
 
     #region Properties
@@ -196,6 +210,24 @@ public class TechnologyViewModel : ViewModelBase
         set => SetField(ref _propertyAdditive, value);
     }
 
+    public double PercentResearchFirst
+    {
+        get => _percentResearchFirst;
+        set => SetField(ref _percentResearchFirst, value);
+    }
+
+    public double PercentResearchSecond
+    {
+        get => _percentResearchSecond;
+        set => SetField(ref _percentResearchSecond, value);
+    }
+
+    public double PercentResearchAdditive
+    {
+        get => _percentResearchAdditive;
+        set => SetField(ref _percentResearchAdditive, value);
+    }
+
     #endregion
 
     public ComputeRecipeParametersModel? ComputeRecipeParametersModel
@@ -209,57 +241,67 @@ public class TechnologyViewModel : ViewModelBase
     #region Commands
 
     public ICommand ComputeCommand { get; set; }
+    public ICommand ResearchCommand { get; set; }
 
     #endregion
 
 
     #region Methods
 
-    private async Task ComputeParametersAsync()
+
+    private async Task ComputeParametersAsync(bool useResearch)
     {
         ComputeRecipeParametersModel = new ComputeRecipeParametersModel();
+        // Получение рецептуры смеси
         ComputeRecipeParametersModel.Recipe = _mapper.Map<RecipeModel>(_recipeRepository
             .GetEntityByFilterFirstOrDefaultAsync(r =>
                 r.IdAdditive == SelectedAdditive!.Id && r.IdCompatibilityMaterial == SelectedCompatibilityMaterial!.Id).Result);
+        if (useResearch)
+        {
+            ComputeRecipeParametersModel.Recipe.ContentMaterialFirst = PercentResearchFirst;
+            ComputeRecipeParametersModel.Recipe.ContentMaterialSecond = PercentResearchSecond;
+            ComputeRecipeParametersModel.Recipe.ContentAdditive = PercentResearchAdditive;
+        }
 
-        double percentFirst = ComputeRecipeParametersModel.Recipe.ContentMaterialFirst;
-        double percentSecond = ComputeRecipeParametersModel.Recipe.ContentMaterialSecond;
-        double percentAdditive = ComputeRecipeParametersModel.Recipe.ContentAdditive;
-        double totalPercent = percentAdditive + percentSecond + percentFirst;
-        double totalVolume = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Объём")!.Value;
-      
+        // Получение объема смеси
+        ComputeRecipeParametersModel.TotalVolume = PropertyUsefulProducts!
+            .FirstOrDefault(x => x.Property.Name == "Объём")!.Value;
 
-        ComputeRecipeParametersModel.Density = GetDensity(percentFirst, percentSecond, percentAdditive, totalPercent, totalVolume,
-            PropertyFirst!.Density, PropertySecond!.Density, PropertyAdditive!.Density);
+        var percents = new[]
+        {
+            ComputeRecipeParametersModel.Recipe.ContentMaterialFirst,
+            ComputeRecipeParametersModel.Recipe.ContentMaterialSecond,
+            ComputeRecipeParametersModel.Recipe.ContentAdditive
+        };
+        var densities = new[] {PropertyFirst!.Density, PropertySecond!.Density, PropertyAdditive!.Density};
 
-        ComputeRecipeParametersModel.Viscosity = CalculatePhysicsService.GetViscosity(PropertyFirst.MolecMass, PropertySecond.MolecMass, 
-            PropertyAdditive.MolecMass, PropertyFirst.Viscosity, PropertySecond.Viscosity, PropertyAdditive.Viscosity);
+        // Получение плотности смеси
+        ComputeRecipeParametersModel.Density = CalculatePhysicsService.GetDensity( percents, ComputeRecipeParametersModel.TotalVolume, densities);
 
+        var viscosities = new[]
+        {
+            PropertyFirst.Viscosity, PropertySecond.Viscosity, PropertyAdditive.Viscosity
+        };
+
+        // Получение вязкости смеси
+        ComputeRecipeParametersModel.Viscosity = CalculatePhysicsService.GetViscosity(percents, viscosities,
+            densities, ComputeRecipeParametersModel.TotalVolume);
+
+        // Получение количества фаз смеси
         ComputeRecipeParametersModel.NumberOfPhases = CalculatePhysicsService.GetNumberOfPhases();
+
+        // Получение ПТР 
+        var t = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Время")!.Value;
+        //ComputeRecipeParametersModel.Ptr = CalculatePhysicsService.GetNumberOfPhases();
+
+        // Получение растворимости
+
+        // Получение насыпной плотности
 
         MessageBox.Show("Расчёт выполнен!");
     }
 
-    private double GetDensity(double percentFirst, double percentSecond, double percentAdditive, 
-        double totalPercent, double totalVolume, double densityFirst,
-        double densitySecond, double densityAdditive)
-    {
-        // 1. Рассчитать объем для кажого элемента из значений рецептуры и объема полезного изделия 
-        var volumeFirst = CalculatePhysicsService.GetVolumeByPercent(percentFirst, totalVolume, totalPercent);
-        var volumeSecond = CalculatePhysicsService.GetVolumeByPercent(percentSecond, totalVolume, totalPercent);
-        var volumeAdditive = CalculatePhysicsService.GetVolumeByPercent(percentAdditive, totalVolume, totalPercent);
-
-        // 2. Рассчитать массу для каждого элемента по объему для каждого элемента и плотности каждого элемента
-        var massFirst = CalculatePhysicsService.GetMass(densityFirst, volumeFirst);
-        var massSecond = CalculatePhysicsService.GetMass(densitySecond, volumeSecond);
-        var massAdditive = CalculatePhysicsService.GetMass(densityAdditive, volumeAdditive);
-
-        // 3. Ссумировать все массы
-        var totalMass = massFirst + massSecond + massAdditive;
-
-        // 4. Найти плонтность смеси
-        return Math.Round(CalculatePhysicsService.GetDensity(totalMass, totalVolume), 3);
-    }
+   
 
     private async Task InitializeAdditivesByCompatabilitiesAsync(CompatibilityMaterialModel compatibilityMaterial)
     {
