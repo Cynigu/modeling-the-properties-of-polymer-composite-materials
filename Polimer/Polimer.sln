@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Polimer.App", "Polimer\Polimer.App.csproj", "{0C07158A-D6D5-425E-ABB6-12FD052AAFFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polimer.Data", "..\Data\Polimer.Data.csproj", "{14918B3C-D611-444E-88FE-AEDFC4498180}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Polimer.Data", "..\Data\Polimer.Data.csproj", "{14918B3C-D611-444E-88FE-AEDFC4498180}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

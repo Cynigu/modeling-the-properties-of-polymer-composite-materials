@@ -22,7 +22,6 @@
         </Style>
         <Style TargetType="TextBox">
             <Setter Property="Margin" Value="0 3"></Setter>
-            <Setter Property="Width" Value="130"></Setter>
             <Setter Property="Height" Value="30"></Setter>
             <Setter Property="FontSize" Value="14"></Setter>
         </Style>
@@ -49,17 +48,17 @@
             <Setter Property="Margin" Value="0 3"></Setter>
         </Style>
     </Window.Resources>
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <StackPanel Orientation="Horizontal">
+    <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <DockPanel Dock="Top">
             <TextBlock Text="Логин: "></TextBlock>
             <TextBox Text="{Binding UserModel.Login}"></TextBox>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
+        </DockPanel>
+        <DockPanel Dock="Top">
             <TextBlock Text="Пароль: "></TextBlock>
-            <TextBox Text="{Binding UserModel.Password}"></TextBox>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
+            <PasswordBox Height="30" FontSize="14" PasswordChanged="PasswordBox_OnPasswordChanged"></PasswordBox>
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Top">
             <Button Content="Войти" Command="{Binding LogInCommand}"></Button>
-        </StackPanel>
-    </StackPanel>
+        </DockPanel>
+    </DockPanel>
 </Window>

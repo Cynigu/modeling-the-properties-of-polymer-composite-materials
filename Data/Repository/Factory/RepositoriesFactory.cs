@@ -56,5 +56,9 @@ namespace Polimer.Data.Repository.Factory
         {
             return new UserRepository(_dbContextFactory);
         }
+        public PropertyAdditiveRepository CreatePropertyAdditiveRepository()
+        {
+            return new PropertyAdditiveRepository(_dbContextFactory);
+        }
     }
 }

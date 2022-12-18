@@ -37,6 +37,7 @@ public class PropertyMaterialRepository : RepositoryBase<PropertyMaterialEntity>
         var result = await context.Set<PropertyMaterialEntity>()
             .Include(x => x.Property) // !!!!
             .Include(x => x.Material)
+            .Include(x => x.Property.Unit)
             .ToListAsync();
 
         return result;
@@ -49,6 +50,7 @@ public class PropertyMaterialRepository : RepositoryBase<PropertyMaterialEntity>
         var result = context.Set<PropertyMaterialEntity>()
             .Include(x => x.Property)
             .Include(x => x.Material)
+            .Include(x => x.Property.Unit)
             .Where(predicate).ToList();
 
         return result;
@@ -61,6 +63,7 @@ public class PropertyMaterialRepository : RepositoryBase<PropertyMaterialEntity>
         var result = await context.Set<PropertyMaterialEntity>()
             .Include(x => x.Property)
             .Include(x => x.Material)
+            .Include(x => x.Property.Unit)
             .FirstOrDefaultAsync(predicate);
 
         return result;

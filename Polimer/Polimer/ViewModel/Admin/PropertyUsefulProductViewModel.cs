@@ -13,6 +13,8 @@ namespace Polimer.App.ViewModel.Admin;
 public class PropertyUsefulProductViewModel
     : TabAdminBaseViewModel<PropertyUsefulProductEntity, PropertyUsefulProductModel>
 {
+    private readonly UsefulProductRepository _materialRepository;
+    private readonly PropertyRepository _propertyRepository;
     private ObservableCollection<UsefulProductModel> _usefulProducts;
     private ObservableCollection<PropertyModel> _properties;
 
@@ -22,6 +24,8 @@ public class PropertyUsefulProductViewModel
         PropertyRepository propertyRepository) :
         base(repository, mapper)
     {
+        _materialRepository = materialRepository;
+        _propertyRepository = propertyRepository;
         NameTab = "Свойства полезной продукции";
         ChangingModel = new();
         var materials = materialRepository.GetEntitiesAsync().Result;
@@ -70,5 +74,11 @@ public class PropertyUsefulProductViewModel
                                         && ChangingModel.UsefulProduct != null
                                         && ChangingModel != null;
 
-
+    public override Task UpdateEntitiesAsync()
+    {
+        var materials = _materialRepository.GetEntitiesAsync().Result;
+        UsefulProducts = new ObservableCollection<UsefulProductModel>(_mapper.Map<ICollection<UsefulProductModel>>(materials));
+        Properties = new ObservableCollection<PropertyModel>(_mapper.Map<ICollection<PropertyModel>>(_propertyRepository.GetEntitiesAsync().Result));
+        return base.UpdateEntitiesAsync();
+    }
 }

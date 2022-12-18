@@ -14,6 +14,8 @@ namespace Polimer.App.ViewModel.Admin;
 public class RecipeViewModel
     : TabAdminBaseViewModel<RecipeEntity, RecipeModel>
 {
+    private readonly CompatibilityMaterialrRepository _materialRepository;
+    private readonly AdditiveRepository _additiveRepository;
     private ObservableCollection<CompatibilityMaterialModel> _compatibilityMaterials;
     private ObservableCollection<AdditiveModel> _additives;
 
@@ -23,6 +25,8 @@ public class RecipeViewModel
         AdditiveRepository additiveRepository) :
         base(repository, mapper)
     {
+        _materialRepository = materialRepository;
+        _additiveRepository = additiveRepository;
         NameTab = "Рецептура";
         ChangingModel = new RecipeModel();
         var materials = materialRepository.GetEntitiesAsync().Result;
@@ -86,5 +90,12 @@ public class RecipeViewModel
                                         && ChangingModel.CompatibilityMaterial != null
                                         && ChangingModel != null;
 
+    public override Task UpdateEntitiesAsync()
+    {
+        var materials = _materialRepository.GetEntitiesAsync().Result;
+        CompatibilityMaterials = new ObservableCollection<CompatibilityMaterialModel>(_mapper.Map<ICollection<CompatibilityMaterialModel>>(materials));
+        Additives = new ObservableCollection<AdditiveModel>(_mapper.Map<ICollection<AdditiveModel>>(_additiveRepository.GetEntitiesAsync().Result));
 
+        return base.UpdateEntitiesAsync();
+    }
 }

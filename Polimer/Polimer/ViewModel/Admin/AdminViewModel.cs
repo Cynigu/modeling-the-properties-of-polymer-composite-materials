@@ -17,6 +17,7 @@ public class AdminViewModel : ViewModelBase
     private PropertyMaterialViewModel _propertyMaterialVm;
     private PropertyUsefulProductViewModel _propertyUsefulProductVm;
     private RecipeViewModel _recipesVm;
+    private PropertyAdditiveViewModel _propertyAdditiveVm;
 
     private AdminViewModel(
         IMapper mapper, 
@@ -55,6 +56,9 @@ public class AdminViewModel : ViewModelBase
             repositoriesFactory.CreateCompatibilityMaterialrRepository(),
             repositoriesFactory.CreateAdditiveRepository());
 
+        _propertyAdditiveVm = PropertyAdditiveViewModel.CreateInstance(repositoriesFactory.CreatePropertyAdditiveRepository(), mapper,
+            repositoriesFactory.CreateAdditiveRepository(), repositoriesFactory.CreatePropertyRepository());
+
         UpdateTablesCommand = new AsyncCommand(UpdateTablesAsync, () => true);
         UpdateTablesAsync();
     }
@@ -63,6 +67,12 @@ public class AdminViewModel : ViewModelBase
         RepositoriesFactory repositoriesFactory)
     {
         return new AdminViewModel(mapper, repositoriesFactory);
+    }
+
+    public PropertyAdditiveViewModel PropertyAdditiveVM
+    {
+        get => _propertyAdditiveVm;
+        set => SetField(ref _propertyAdditiveVm, value);
     }
 
     public RecipeViewModel RecipesVM
@@ -139,5 +149,6 @@ public class AdminViewModel : ViewModelBase
         await PropertyMaterialVM.UpdateEntitiesAsync();
         await PropertyUsefulProductVm.UpdateEntitiesAsync();
         await RecipesVM.UpdateEntitiesAsync();
+        await PropertyAdditiveVM.UpdateEntitiesAsync();
     }
 }

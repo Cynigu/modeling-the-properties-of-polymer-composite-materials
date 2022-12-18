@@ -14,15 +14,20 @@ public class CompatibilityMaterialViewModel
     : TabAdminBaseViewModel<CompatibilityMaterialEntity, CompatibilityMaterialModel>
 {   
     private ObservableCollection<MaterialModel> _materialsFirst;
+    private readonly IMapper _mapper;
+    private readonly MaterialRepository _materialRepository;
 
     private CompatibilityMaterialViewModel(CompatibilityMaterialrRepository repository,
         IMapper mapper,
         MaterialRepository materialRepository) : 
         base(repository, mapper)
     {
+        _mapper = mapper;
+        _materialRepository = materialRepository;
+
         NameTab = "Совместимость материалов";
         ChangingModel = new CompatibilityMaterialModel();
-        var materials = materialRepository.GetEntitiesAsync().Result;
+        var materials = _materialRepository.GetEntitiesAsync().Result;
         Materials = new ObservableCollection<MaterialModel>(mapper.Map<ICollection<MaterialModel>>(materials));
     }
 
@@ -58,5 +63,10 @@ public class CompatibilityMaterialViewModel
                                         && ChangingModel.FirstMaterial != null
                                         && ChangingModel != null;
 
-
+    public override async Task UpdateEntitiesAsync()
+    {
+        var materials = _materialRepository.GetEntitiesAsync().Result;
+        Materials = new ObservableCollection<MaterialModel>(_mapper.Map<ICollection<MaterialModel>>(materials));
+        await base.UpdateEntitiesAsync();
+    }
 }

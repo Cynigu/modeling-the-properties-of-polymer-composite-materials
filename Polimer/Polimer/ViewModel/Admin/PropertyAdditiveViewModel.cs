@@ -10,39 +10,39 @@ using Polimer.Data.Repository;
 
 namespace Polimer.App.ViewModel.Admin;
 
-public class PropertyMaterialViewModel
-    : TabAdminBaseViewModel<PropertyMaterialEntity, PropertyMaterialModel>
+public class PropertyAdditiveViewModel
+    : TabAdminBaseViewModel<PropertyAdditiveEntity, PropertyAdditiveModel>
 {
-    private readonly MaterialRepository _materialRepository;
+    private readonly AdditiveRepository _additiveRepository;
     private readonly PropertyRepository _propertyRepository;
-    private ObservableCollection<MaterialModel> _materials;
+    private ObservableCollection<AdditiveModel> _additives;
     private ObservableCollection<PropertyModel> _properties;
 
-    private PropertyMaterialViewModel(PropertyMaterialRepository repository,
+    private PropertyAdditiveViewModel(PropertyAdditiveRepository repository,
         IMapper mapper,
-        MaterialRepository materialRepository,
+        AdditiveRepository additiveRepository,
         PropertyRepository propertyRepository) :
         base(repository, mapper)
     {
-        _materialRepository = materialRepository;
+        _additiveRepository = additiveRepository;
         _propertyRepository = propertyRepository;
-        NameTab = "Свойства материалов";
-        ChangingModel = new PropertyMaterialModel();
-        var materials = materialRepository.GetEntitiesAsync().Result;
-        Materials = new ObservableCollection<MaterialModel>(mapper.Map<ICollection<MaterialModel>>(materials));
+        NameTab = "Свойства добавок";
+        ChangingModel = new PropertyAdditiveModel();
+        var materials = additiveRepository.GetEntitiesAsync().Result;
+        Additives = new ObservableCollection<AdditiveModel>(mapper.Map<ICollection<AdditiveModel>>(materials));
         Properties = new ObservableCollection<PropertyModel>(mapper.Map<ICollection<PropertyModel>>(propertyRepository.GetEntitiesAsync().Result));
     }
 
-    public static PropertyMaterialViewModel CreateInstance(PropertyMaterialRepository repository, IMapper mapper,
-        MaterialRepository materialRepository, PropertyRepository propertyRepository)
+    public static PropertyAdditiveViewModel CreateInstance(PropertyAdditiveRepository repository, IMapper mapper,
+        AdditiveRepository materialRepository, PropertyRepository propertyRepository)
     {
-        return new PropertyMaterialViewModel(repository, mapper, materialRepository, propertyRepository);
+        return new PropertyAdditiveViewModel(repository, mapper, materialRepository, propertyRepository);
     }
 
-    public ObservableCollection<MaterialModel> Materials
+    public ObservableCollection<AdditiveModel> Additives
     {
-        get => _materials;
-        set => SetField(ref _materials, value);
+        get => _additives;
+        set => SetField(ref _additives, value);
     }
 
     public ObservableCollection<PropertyModel> Properties
@@ -55,8 +55,8 @@ public class PropertyMaterialViewModel
     protected override void CopySelectedModelToChanging()
     {
         //ChangingModel.Id = 0;
-        ChangingModel.Material = (Materials
-            .FirstOrDefault(m => m.Id == SelectedModel?.Material.Id))!;
+        ChangingModel.Additive = (Additives
+            .FirstOrDefault(m => m.Id == SelectedModel?.Additive.Id))!;
         ChangingModel.Property = (Properties
             .FirstOrDefault(m => m.Id == SelectedModel?.Property.Id))!;
         ChangingModel.Value = SelectedModel?.Value ?? 0;
@@ -66,18 +66,18 @@ public class PropertyMaterialViewModel
     {
         var user = await _repository.GetEntityByFilterFirstOrDefaultAsync(u =>
             u.Property.Id == ChangingModel.Property.Id
-            && u.Material.Id == ChangingModel.Material.Id);
+            && u.Additive.Id == ChangingModel.Additive.Id);
         return user == null;
     }
 
     protected override bool CanAdd() => ChangingModel.Property != null
-                                        && ChangingModel.Material != null
+                                        && ChangingModel.Additive != null
                                         && ChangingModel != null;
 
     public override Task UpdateEntitiesAsync()
     {
-        var materials = _materialRepository.GetEntitiesAsync().Result;
-        Materials = new ObservableCollection<MaterialModel>(_mapper.Map<ICollection<MaterialModel>>(materials));
+        var materials = _additiveRepository.GetEntitiesAsync().Result;
+        Additives = new ObservableCollection<AdditiveModel>(_mapper.Map<ICollection<AdditiveModel>>(materials));
         Properties = new ObservableCollection<PropertyModel>(_mapper.Map<ICollection<PropertyModel>>(_propertyRepository.GetEntitiesAsync().Result));
         return base.UpdateEntitiesAsync();
     }

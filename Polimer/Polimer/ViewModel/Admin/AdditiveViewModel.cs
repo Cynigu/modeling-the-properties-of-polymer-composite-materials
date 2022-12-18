@@ -22,11 +22,11 @@ public sealed class AdditiveViewModel : TabAdminBaseViewModel<AdditiveEntity, Ad
 
     protected override async Task<bool> CheckingForExistenceAsync()
     {
-        var user = await _repository.GetEntityByFilterFirstOrDefaultAsync(u => u.Name == ChangingModel.Name);
+        var user = await _repository.GetEntityByFilterFirstOrDefaultAsync(u => u.QuickName == ChangingModel.QuickName);
         return user == null;
     }
 
-    protected override bool CanAdd() => !string.IsNullOrWhiteSpace(ChangingModel?.Name);
+    protected override bool CanAdd() => !string.IsNullOrWhiteSpace(ChangingModel?.QuickName);
 
 
 }

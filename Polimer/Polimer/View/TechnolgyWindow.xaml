@@ -3,61 +3,233 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Polimer.App.View"
+        xmlns:local="clr-namespace:Polimer.App.View" xmlns:technology="clr-namespace:Polimer.App.ViewModel.Technology" d:DataContext="{d:DesignInstance Type=technology:TechnologyViewModel}"
         mc:Ignorable="d"
-        Title="TechnolgyWindow" Height="450" Width="800">
+        Title="Окно технолога" Height="460" Width="800" ResizeMode="NoResize" Background="#FF86A186" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style TargetType="DockPanel">
             <Setter Property="Margin" Value="3"/>
         </Style>
         <Style TargetType="TextBox">
             <Setter Value="3" Property="Margin"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        </Style>
+        <Style TargetType="Label">
+            <!--<Setter Value="3" Property="Margin"></Setter>-->
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Value="3" Property="Margin"></Setter>
+            <Setter Property="Height" Value="30"></Setter>
+            <Setter Property="Background" Value="#FFBBD6BB"></Setter>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="27"></Setter>
+            <Setter Property="Width" Value="120"></Setter>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Width" Value="150"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="3"></Setter>
+        </Style>
+        <Style TargetType="DataGrid">
+            <!--Background="#FFECF3EC" BorderBrush="#FFA6C3A6"-->
+            <Setter Property="Background" Value="#FFE6F1E6"></Setter>
+            <Setter Property="BorderBrush" Value="#FF73A073"></Setter>
         </Style>
     </Window.Resources>
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
-            <GroupBox Header="Входные данные">
-                <DockPanel>
-                    <DockPanel Width="350">
-                        <DockPanel DockPanel.Dock="Top">
-                            <Label Content="Первый полимер"/>
-                            <ComboBox/>
-                        </DockPanel>
-                        <DockPanel DockPanel.Dock="Top">
-                            <Label Content="Второй полимер"/>
-                            <ComboBox/>
-                        </DockPanel>
-                        <DockPanel DockPanel.Dock="Top">
-                            <GroupBox Header="Свойства">
-                                <DockPanel>
-                                    <DockPanel DockPanel.Dock="Top">
-                                        <Label Content="Масса"/>
-                                        <Label Content="1"/>
-                                        <Label Content="1"/>
-                                    </DockPanel>
+            <TabControl Background="#FFDAE8DA" BorderBrush="#FF8BB28B">
+                <TabItem Header="Входные данные">
+                    <DockPanel>
+                        <DockPanel Dock="Top">
+                            <DockPanel>
+                                <DockPanel DockPanel.Dock="Top">
+                                    <TextBlock Text="Совместимые полимеры"/>
+                                    <ComboBox ItemsSource="{Binding CompatibilityMaterials}" 
+                                      SelectedItem="{Binding SelectedCompatibilityMaterial}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="1" Text="{Binding FirstMaterial.QuickName}"/>
+                                                    <TextBlock Margin="1" Text="+" />
+                                                    <TextBlock Margin="1" Text="{Binding SecondMaterial.QuickName}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
                                 </DockPanel>
-                            </GroupBox>
+                                <DockPanel DockPanel.Dock="Top">
+                                    <TextBlock Text="Добавка"/>
+                                    <ComboBox ItemsSource="{Binding Additives}" 
+                                      SelectedItem="{Binding SelectedAdditive}"
+                                      DisplayMemberPath="QuickName"/>
+                                </DockPanel>
+                                <DockPanel Dock="Top">
+                                    <TextBlock Text="Полезное изделие"></TextBlock>
+                                    <ComboBox ItemsSource="{Binding UsefulProducts}" 
+                                      SelectedItem="{Binding SelectedUsefulProductModel}"
+                                      DisplayMemberPath="Name"></ComboBox>
+                                </DockPanel>
+                                <DockPanel DockPanel.Dock="Top">
+                                    <GroupBox Header="Характеристики полезного изделия">
+                                        <DockPanel>
+                                            <DockPanel DockPanel.Dock="Top">
+                                                <Label Width="70" Content="Цвет"/>
+                                                <TextBlock Width="50"  Background="{Binding ColorUsefulProduct}" HorizontalAlignment="Left"/>
+                                            </DockPanel>
+                                            <DockPanel>
+                                                <DataGrid ItemsSource ="{Binding PropertyUsefulProducts}"
+                                                          CanUserDeleteRows="False" CanUserAddRows="False" IsReadOnly="True" AutoGenerateColumns="False" Width="270" Height="150" >
+                                                    <DataGrid.Columns>
+                                                        <DataGridTextColumn Width="*" Header="Свойство" Binding="{Binding Property.Name}"/>
+                                                        <DataGridTextColumn Width="*" Header="Значение" Binding="{Binding Value}"/>
+                                                        <DataGridTextColumn Width="*" Header="Единица измерения" Binding="{Binding Property.Unit.Name}"/>
+                                                    </DataGrid.Columns>
+                                                </DataGrid>
+                                            </DockPanel>
+                                        </DockPanel>
+                                    </GroupBox>
+                                </DockPanel>
+
+                            </DockPanel>
+                            <DockPanel>
+                                <DockPanel DockPanel.Dock="Top">
+                                    <GroupBox Header="Свойства">
+                                        <TabControl>
+                                            <TabItem Header="Первый полимер">
+                                                <DockPanel>
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <Label Content="Английское название"/>
+                                                        <Label Content="п1"/>
+                                                        <Label Content="п2"/>
+                                                        <Label Content="д"/>
+                                                    </DockPanel>
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <Label Content="Русское полное название"/>
+                                                        <Label Content="п1"/>
+                                                        <Label Content="п2"/>
+                                                        <Label Content="д"/>
+                                                    </DockPanel>
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <DataGrid ItemsSource ="{Binding PropertiesFirstMaterial}"
+                                                                  CanUserDeleteRows="False" CanUserAddRows="False" IsReadOnly="True" AutoGenerateColumns="False">
+                                                            <DataGrid.Columns>
+                                                                <DataGridTextColumn Width="*" Header="Свойство" Binding="{Binding Property.Name}"/>
+                                                                <DataGridTextColumn Width="*" Header="Значение" Binding="{Binding Value}"/>
+                                                                <DataGridTextColumn Width="*" Header="Единица измерения" Binding="{Binding Property.Unit.Name}"/>
+
+                                                            </DataGrid.Columns>
+                                                        </DataGrid>
+                                                    </DockPanel>
+                                                </DockPanel>
+                                            </TabItem>
+                                            <TabItem Header="Второй полимер">
+                                                <DockPanel>
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <Label Content="Английское название"/>
+                                                        <Label Content="п1"/>
+                                                        <Label Content="п2"/>
+                                                        <Label Content="д"/>
+                                                    </DockPanel>
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <Label Content="Русское полное название"/>
+                                                        <Label Content="п1"/>
+                                                    </DockPanel>
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <DataGrid ItemsSource ="{Binding PropertiesSecondMaterial}"
+                                                                  CanUserDeleteRows="False" CanUserAddRows="False" IsReadOnly="True" AutoGenerateColumns="False">
+                                                            <DataGrid.Columns>
+                                                                <DataGridTextColumn Width="*" Header="Свойство" Binding="{Binding Property.Name}"/>
+                                                                <DataGridTextColumn Width="*" Header="Значение" Binding="{Binding Value}"/>
+                                                                <DataGridTextColumn Width="*" Header="Единица измерения" Binding="{Binding Property.Unit.Name}"/>
+
+                                                            </DataGrid.Columns>
+                                                        </DataGrid>
+                                                    </DockPanel>
+                                                </DockPanel>
+                                            </TabItem>
+                                            <TabItem Header="Добавка">
+                                                <DockPanel>
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <Label Content="Английское название"/>
+                                                        <Label Content="п1"/>
+                                                    </DockPanel>
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <Label Content="Русское полное название"/>
+                                                        <Label Content="п1"/>
+                                                    </DockPanel>
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <DataGrid ItemsSource ="{Binding PropertiesAdditive}"
+                                                                  CanUserDeleteRows="False" CanUserAddRows="False" IsReadOnly="True" AutoGenerateColumns="False">
+                                                            <DataGrid.Columns>
+                                                                <DataGridTextColumn Width="*" Header="Свойство" Binding="{Binding Property.Name}"/>
+                                                                <DataGridTextColumn Width="*" Header="Значение" Binding="{Binding Value}"/>
+                                                                <DataGridTextColumn Width="*" Header="Единица измерения" Binding="{Binding Property.Unit.Name}"/>
+                                                            </DataGrid.Columns>
+                                                        </DataGrid>
+
+                                                    </DockPanel>
+                                                </DockPanel>
+                                            </TabItem>
+                                        </TabControl>
+                                    </GroupBox>
+                                </DockPanel>
+                            </DockPanel>
+                        </DockPanel>
+                        <DockPanel Dock="Top" HorizontalAlignment="Right" VerticalAlignment="Top">
+                            <Button Width="120" Content="Вычислить" 
+                                    Command="{Binding ComputeCommand}"/>
                         </DockPanel>
                     </DockPanel>
-                    <DockPanel Width="350">
-                       
+                </TabItem>
+                <TabItem Header="Выходные параметры">
+                    <DockPanel DockPanel.Dock="Top">
+                        <GroupBox Header="Формиование совместимости и рецептуры композиционной смеси">
+                            <DockPanel>
+                                <DockPanel DockPanel.Dock="Top">
+                                    <Label Content="Визуализация"/>
+                                    <Label Content="1"/>
+                                </DockPanel>
+                                <DockPanel DockPanel.Dock="Top">
+                                    <GroupBox Header="Рассчитанные параметры смеси">
+                                        <DockPanel>
+                                            <DockPanel Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <DockPanel Width="350">
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <Label DockPanel.Dock="Left" Content="Плотность"/>
+                                                        <TextBlock DockPanel.Dock="Left" Width="auto" Text="{Binding ComputeRecipeParametersModel.Density}" HorizontalAlignment="Left"/>
+                                                        <TextBlock DockPanel.Dock="Left" Text="кг/м^3" HorizontalAlignment="Left"/>
+                                                    </DockPanel>
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <Label DockPanel.Dock="Left"  Content="Число фаз"/>
+                                                        <TextBlock DockPanel.Dock="Left" Width="auto" Text="{Binding ComputeRecipeParametersModel.NumberOfPhases}" HorizontalAlignment="Left"/>
+                                                    </DockPanel>
+                                                </DockPanel>
+                                                <DockPanel Width="350">
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <Label DockPanel.Dock="Left" Content="Вязкость"/>
+                                                        <TextBlock DockPanel.Dock="Left" Text="{Binding ComputeRecipeParametersModel.Viscosity}" HorizontalAlignment="Left" Width="auto"/>
+                                                        <TextBlock DockPanel.Dock="Left" Text="Па*с" HorizontalAlignment="Left"/>
+                                                    </DockPanel>
+                                                </DockPanel>
+                                                <DockPanel Width="350">
+
+                                                </DockPanel>
+                                            </DockPanel>
+
+                                        </DockPanel>
+                                    </GroupBox>
+                                </DockPanel>
+                                <DockPanel>
+                                    <Label Content="Рецептура"/>
+                                </DockPanel>
+                            </DockPanel>
+                        </GroupBox>
                     </DockPanel>
-                </DockPanel>
-            </GroupBox>
-        </DockPanel>
-        <DockPanel DockPanel.Dock="Top">
-            <TabControl>
-                <TabItem Header="Формиование совместимости и рецептуры композиционной смеси">
-
-                </TabItem>
-                <TabItem Header="Расчет физико-химических и технологических свойств полимерной композиционной смеси">
-
-                </TabItem>
-                <TabItem Header="Расчет свойств в зависимости от изменениия процентного соотношения">
-
                 </TabItem>
             </TabControl>
         </DockPanel>
-
     </DockPanel>
 </Window>

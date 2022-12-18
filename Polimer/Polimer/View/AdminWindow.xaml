@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit" xmlns:admin="clr-namespace:Polimer.App.ViewModel.Admin" d:DataContext="{d:DesignInstance Type=admin:AdminViewModel}"
         mc:Ignorable="d"
         Title="Окно администратора" Height="500" Width="800" ResizeMode="NoResize">
     <Window.Resources>
@@ -133,8 +133,16 @@
                     <DockPanel>
                         <DockPanel Width="200">
                             <DockPanel DockPanel.Dock="Top">
-                                <TextBlock Width="83" Text="Название: "></TextBlock>
-                                <TextBox Text="{Binding AdditiveVM.ChangingModel.Name}"></TextBox>
+                                <TextBlock Width="83" Text="Русское наим. "></TextBlock>
+                                <TextBox Text="{Binding AdditiveVM.ChangingModel.RussianName}"></TextBox>
+                            </DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock Width="83" Text="Краткое наим."></TextBlock>
+                                <TextBox Text="{Binding AdditiveVM.ChangingModel.QuickName}"></TextBox>
+                            </DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock Width="83" Text="Англ. наим.: "></TextBlock>
+                                <TextBox Text="{Binding AdditiveVM.ChangingModel.EnglishName}"></TextBox>
                             </DockPanel>
                             <StackPanel>
                                 <Button Content="Добавить" Command="{Binding AdditiveVM.AddCommand}"></Button>
@@ -327,7 +335,6 @@
                         </DockPanel>
                     </DockPanel>
                 </TabItem>
-
                 <TabItem Header="{Binding PropertyUsefulProductVm.NameTab}">
                     <DockPanel>
                         <DockPanel Width="200">
@@ -371,7 +378,6 @@
                         </DockPanel>
                     </DockPanel>
                 </TabItem>
-
                 <TabItem Header="{Binding RecipesVM.NameTab}">
                     <DockPanel>
                         <DockPanel Width="200">
@@ -425,7 +431,7 @@
                                       IsReadOnly="True" AutoGenerateColumns="False">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Width="40" Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
-                                    <DataGridTextColumn Width="60" Header="Добавка" Binding="{Binding Additive.Name}"/>
+                                    <DataGridTextColumn Width="60" Header="Добавка" Binding="{Binding Additive.QuickName}"/>
                                     <DataGridTextColumn Width="130" Header="Первый материал" Binding="{Binding CompatibilityMaterial.FirstMaterial.QuickName}"></DataGridTextColumn>
                                     <DataGridTextColumn Width="130" Header="Второй материал" Binding="{Binding CompatibilityMaterial.SecondMaterial.QuickName}"/>
                                     <DataGridTextColumn Width="115" Header="Значение 1 мат-ла" Binding="{Binding ContentMaterialFirst}"/>
@@ -436,7 +442,49 @@
                         </DockPanel>
                     </DockPanel>
                 </TabItem>
-
+                <TabItem Header="{Binding PropertyAdditiveVM.NameTab}">
+                    <DockPanel>
+                        <DockPanel Width="200">
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock  Width="73" Text="Добавка: "></TextBlock>
+                                <ComboBox ItemsSource="{Binding PropertyAdditiveVM.Additives}" 
+                                              SelectedItem="{Binding PropertyAdditiveVM.ChangingModel.Additive}"
+                                              DisplayMemberPath="QuickName">
+                                </ComboBox>
+                            </DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock  Width="73" Text="Свойство: "></TextBlock>
+                                <ComboBox ItemsSource="{Binding PropertyAdditiveVM.Properties}" 
+                                          SelectedItem="{Binding PropertyAdditiveVM.ChangingModel.Property}"
+                                          DisplayMemberPath="Name">
+                                </ComboBox>
+                            </DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock  Width="73" Text="Значение: "></TextBlock>
+                                <wpfx:DoubleUpDown Value= "{Binding PropertyAdditiveVM.ChangingModel.Value}">
+                                </wpfx:DoubleUpDown>
+                            </DockPanel>
+                            <StackPanel>
+                                <Button Content="Добавить" Command="{Binding PropertyAdditiveVM.AddCommand}"></Button>
+                                <Button Content="Изменить" Command="{Binding PropertyAdditiveVM.EditCommand}"></Button>
+                                <Button Content="Удалить" Command="{Binding PropertyAdditiveVM.RemoveCommand}"></Button>
+                            </StackPanel>
+                        </DockPanel>
+                        <DockPanel>
+                            <DataGrid ItemsSource ="{Binding PropertyAdditiveVM.Models}"
+                                      SelectedItem="{Binding PropertyAdditiveVM.SelectedModel}"
+                                      CanUserDeleteRows="False" CanUserAddRows="False" 
+                                      IsReadOnly="True" AutoGenerateColumns="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Width="40" Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="*" Header="Свойство" Binding="{Binding Property.Name}"/>
+                                    <DataGridTextColumn Width="*" Header="Добавка" Binding="{Binding Additive.QuickName}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="*" Header="Значение" Binding="{Binding Value}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DockPanel>
+                    </DockPanel>
+                </TabItem>
             </TabControl>
         </DockPanel>
         <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top">

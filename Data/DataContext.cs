@@ -11,6 +11,7 @@ namespace Polimer.Data
         public DbSet<UnitEntity> Units { get; set; } = null!;
         public DbSet<PropertyEntity> Properties { get; set; } = null!;
         public DbSet<PropertyMaterialEntity> PropertiesMaterial { get; set; } = null!;
+        public DbSet<PropertyAdditiveEntity> PropertiesAdditive { get; set; } = null!;
         public DbSet<PropertyUsefulProductEntity> PropertiesUsefulProduct { get; set; } = null!;
         public DbSet<CompatibilityMaterialEntity> CompatibilitiesMaterial{ get; set; } = null!;
         public DbSet<AdditiveEntity> Additives { get; set; } = null!;

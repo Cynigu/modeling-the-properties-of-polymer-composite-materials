@@ -12,6 +12,7 @@ namespace Polimer.App.ViewModel.Admin;
 
 public class PropertiesViewModel : TabAdminBaseViewModel<PropertyEntity, PropertyModel>
 {
+    private readonly UnitRepository _materialRepository;
     private ObservableCollection<UnitModel> _unitModels;
 
     private PropertiesViewModel(PropertyRepository repository,
@@ -19,6 +20,7 @@ public class PropertiesViewModel : TabAdminBaseViewModel<PropertyEntity, Propert
         UnitRepository materialRepository) :
         base(repository, mapper)
     {
+        _materialRepository = materialRepository;
         NameTab = "Свойства";
         ChangingModel = new PropertyModel();
         var units = materialRepository.GetEntitiesAsync().Result;
@@ -54,5 +56,10 @@ public class PropertiesViewModel : TabAdminBaseViewModel<PropertyEntity, Propert
     protected override bool CanAdd() => ChangingModel.Name != null
                                         && ChangingModel != null && ChangingModel.Unit != null;
 
-
+    public override Task UpdateEntitiesAsync()
+    {
+        var units = _materialRepository.GetEntitiesAsync().Result;
+        Units = new ObservableCollection<UnitModel>(_mapper.Map<ICollection<UnitModel>>(units));
+        return base.UpdateEntitiesAsync();
+    }
 }
