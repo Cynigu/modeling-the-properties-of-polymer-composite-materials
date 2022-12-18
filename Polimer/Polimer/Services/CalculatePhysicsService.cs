@@ -19,6 +19,33 @@ namespace Polimer.App.Services
             return 600 * m / t;
         }
 
+        /// <summary>
+        /// Получтить ПТР 
+        /// </summary>
+        /// <param name="t">время в с</param>
+        /// <param name="k">колиество зон</param>
+        /// <param name="totalVolume"></param>
+        /// <param name="percents"></param>
+        /// <param name="densities"></param>
+        /// <returns></returns>
+        public static double GetPtr(double t, double k, double totalVolume, double[] percents, double[] densities)
+        {
+            // 1. Нахоим массу элементов в кг и переводим каждый элемент в граммы
+            var massElemans = GetMassElementsByTotalVolume(percents, totalVolume, densities)
+                .Select(x => x * 1000).ToArray();
+
+            // 2. Находим массу смеси и делим на количество зон
+            var averageMass = massElemans.Sum() / k;
+
+            // 3. переводим время в минуты
+            t /= 60;
+            
+            // 4. находим ПТР 
+            var ptr = GetFlowMeltFluidity(averageMass, t);
+
+            return ptr;
+        }
+
         #endregion
 
         #region Растворимость

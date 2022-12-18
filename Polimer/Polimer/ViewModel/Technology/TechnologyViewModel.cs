@@ -292,7 +292,8 @@ public class TechnologyViewModel : ViewModelBase
 
         // Получение ПТР 
         var t = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Время")!.Value;
-        //ComputeRecipeParametersModel.Ptr = CalculatePhysicsService.GetNumberOfPhases();
+        var k = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Количество зон")!.Value;
+        ComputeRecipeParametersModel.Ptr = CalculatePhysicsService.GetPtr(t, k, ComputeRecipeParametersModel.TotalVolume, percents, densities);
 
         // Получение растворимости
 
