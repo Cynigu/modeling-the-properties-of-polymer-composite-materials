@@ -129,9 +129,9 @@
                                       IsReadOnly="True" AutoGenerateColumns="False">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Width="40" Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
-                                    <DataGridTextColumn Width="*" Header="Русское наим." Binding="{Binding RussianName}"/>
-                                    <DataGridTextColumn Width="*" Header="Краткое наим." Binding="{Binding QuickName}"></DataGridTextColumn>
-                                    <DataGridTextColumn Width="*" Header="Англ. наим." Binding="{Binding EnglishName}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="*" Header="Русское наименование" Binding="{Binding RussianName}"/>
+                                    <DataGridTextColumn Width="*" Header="Краткое наименование." Binding="{Binding QuickName}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="*" Header="Английское наименование" Binding="{Binding EnglishName}"></DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </DockPanel>
@@ -162,13 +162,13 @@
                             <DataGrid ItemsSource ="{Binding AdditiveVM.Models}"
                                       SelectedItem="{Binding AdditiveVM.SelectedModel}"
                                       CanUserDeleteRows="False" CanUserAddRows="False" 
-                                      IsReadOnly="True" AutoGenerateColumns="True">
-                                <!--<DataGrid.Columns>
+                                      IsReadOnly="True" AutoGenerateColumns="False">
+                                <DataGrid.Columns>
                                     <DataGridTextColumn Width="40" Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
-                                    <DataGridTextColumn Width="*" Header="Русское наим." Binding="{Binding RussianName}"/>
-                                    <DataGridTextColumn Width="*" Header="Краткое наим." Binding="{Binding QuickName}"></DataGridTextColumn>
-                                    <DataGridTextColumn Width="*" Header="Англ. наим." Binding="{Binding EnglishName}"></DataGridTextColumn>
-                                </DataGrid.Columns>-->
+                                    <DataGridTextColumn Width="*" Header="Русское наименование" Binding="{Binding RussianName}"/>
+                                    <DataGridTextColumn Width="*" Header="Краткое наименование." Binding="{Binding QuickName}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="*" Header="Английское наименование" Binding="{Binding EnglishName}"></DataGridTextColumn>
+                                </DataGrid.Columns>
                             </DataGrid>
                         </DockPanel>
                     </DockPanel>
@@ -217,6 +217,12 @@
                                 <TextBlock Width="70" Text="Название: "></TextBlock>
                                 <TextBox Text="{Binding UsefulProductVm.ChangingModel.Name}"></TextBox>
                             </DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <TextBlock Width="70" Text="Рецептура: "></TextBlock>
+                                <ComboBox ItemsSource="{Binding UsefulProductVm.Recipes }" 
+                                          SelectedItem="{Binding UsefulProductVm.ChangingModel.Recipe}"
+                                          DisplayMemberPath="Id"></ComboBox>
+                            </DockPanel>
                             <StackPanel>
                                 <Button Content="Добавить" Command="{Binding UsefulProductVm.AddCommand}"></Button>
                                 <Button Content="Удалить" Command="{Binding UsefulProductVm.RemoveCommand}"></Button>
@@ -227,13 +233,12 @@
                             <DataGrid ItemsSource ="{Binding UsefulProductVm.Models}"
                                       SelectedItem="{Binding UsefulProductVm.SelectedModel}"
                                       CanUserDeleteRows="False" CanUserAddRows="False" 
-                                      IsReadOnly="True" AutoGenerateColumns="True">
-                                <!--<DataGrid.Columns>
+                                      IsReadOnly="True" AutoGenerateColumns="False">
+                                <DataGrid.Columns>
                                     <DataGridTextColumn Width="40" Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
-                                    <DataGridTextColumn Width="*" Header="Логин" Binding="{Binding Login}"/>
-                                    <DataGridTextColumn Width="*" Header="Пароль" Binding="{Binding Password}"></DataGridTextColumn>
-                                    <DataGridTextColumn Width="*" Header="Роль" Binding="{Binding Role}"></DataGridTextColumn>
-                                </DataGrid.Columns>-->
+                                    <DataGridTextColumn Width="*" Header="Название" Binding="{Binding Name}"/>
+                                    <DataGridTextColumn Width="*" Header="Рецептура" Binding="{Binding Recipe.Id}"></DataGridTextColumn>
+                                </DataGrid.Columns>
                             </DataGrid>
                         </DockPanel>
                     </DockPanel>
@@ -255,13 +260,11 @@
                             <DataGrid ItemsSource ="{Binding UnitsVM.Models}"
                                       SelectedItem="{Binding UnitsVM.SelectedModel}"
                                       CanUserDeleteRows="False" CanUserAddRows="False" 
-                                      IsReadOnly="True" AutoGenerateColumns="True">
-                                <!--<DataGrid.Columns>
+                                      IsReadOnly="True" AutoGenerateColumns="False">
+                                <DataGrid.Columns>
                                     <DataGridTextColumn Width="40" Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
-                                    <DataGridTextColumn Width="*" Header="Логин" Binding="{Binding Login}"/>
-                                    <DataGridTextColumn Width="*" Header="Пароль" Binding="{Binding Password}"></DataGridTextColumn>
-                                    <DataGridTextColumn Width="*" Header="Роль" Binding="{Binding Role}"></DataGridTextColumn>
-                                </DataGrid.Columns>-->
+                                    <DataGridTextColumn Width="*" Header="Обозначение" Binding="{Binding Name}"/>
+                                </DataGrid.Columns>
                             </DataGrid>
                         </DockPanel>
                     </DockPanel>
@@ -274,7 +277,7 @@
                                 <TextBox Text="{Binding PropertiesVM.ChangingModel.Name}"></TextBox>
                             </DockPanel>
                             <DockPanel DockPanel.Dock="Top">
-                                <TextBlock  Width="73" Text="Ед. изм.: "></TextBlock>
+                                <TextBlock  Width="120" Text="Единица измерения: "></TextBlock>
                                 <ComboBox ItemsSource="{Binding PropertiesVM.Units}" 
                                               SelectedItem="{Binding PropertiesVM.ChangingModel.Unit}"
                                               DisplayMemberPath="Name">
@@ -294,7 +297,7 @@
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Width="40" Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
                                     <DataGridTextColumn Width="*" Header="Название" Binding="{Binding Name}"/>
-                                    <DataGridTextColumn Width="*" Header="Ед.измерения" Binding="{Binding Unit.Name}"/>
+                                    <DataGridTextColumn Width="*" Header="Единица измерения" Binding="{Binding Unit.Name}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </DockPanel>
@@ -408,16 +411,20 @@
                                 <TextBlock  Width="90" Text="Добавка: "></TextBlock>
                                 <ComboBox ItemsSource="{Binding RecipesVM.Additives}" 
                                           SelectedItem="{Binding RecipesVM.ChangingModel.Additive}"
-                                          DisplayMemberPath="Name">
+                                          DisplayMemberPath="QuickName">
                                 </ComboBox>
                             </DockPanel>
                             <DockPanel DockPanel.Dock="Top">
-                                <TextBlock Width="128" Text="Значение 1ого мат-ла: "></TextBlock>
+                                <TextBlock Text="Значение 1-ого материала: "></TextBlock>
+                            </DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
                                 <wpfx:DoubleUpDown Value= "{Binding RecipesVM.ChangingModel.ContentMaterialFirst}">
                                 </wpfx:DoubleUpDown>
                             </DockPanel>
                             <DockPanel DockPanel.Dock="Top">
-                                <TextBlock Width="128" Text="Значение 1ого мат-ла: "></TextBlock>
+                                <TextBlock Text="Значение 2-ого материала: "></TextBlock>
+                            </DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
                                 <wpfx:DoubleUpDown Value= "{Binding RecipesVM.ChangingModel.ContentMaterialSecond}">
                                 </wpfx:DoubleUpDown>
                             </DockPanel>
@@ -442,8 +449,8 @@
                                     <DataGridTextColumn Width="60" Header="Добавка" Binding="{Binding Additive.QuickName}"/>
                                     <DataGridTextColumn Width="130" Header="Первый материал" Binding="{Binding CompatibilityMaterial.FirstMaterial.QuickName}"></DataGridTextColumn>
                                     <DataGridTextColumn Width="130" Header="Второй материал" Binding="{Binding CompatibilityMaterial.SecondMaterial.QuickName}"/>
-                                    <DataGridTextColumn Width="115" Header="Значение 1 мат-ла" Binding="{Binding ContentMaterialFirst}"/>
-                                    <DataGridTextColumn Width="115" Header="Значение 2 мат-ла" Binding="{Binding ContentMaterialSecond}"/>
+                                    <DataGridTextColumn Width="115" Header="Значение 1-ого материала" Binding="{Binding ContentMaterialFirst}"/>
+                                    <DataGridTextColumn Width="115" Header="Значение 2ого материала" Binding="{Binding ContentMaterialSecond}"/>
                                     <DataGridTextColumn Width="110" Header="Значение добавки" Binding="{Binding ContentAdditive}"/>
                                 </DataGrid.Columns>
                             </DataGrid>

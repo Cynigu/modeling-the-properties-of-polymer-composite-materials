@@ -51,16 +51,30 @@ namespace Polimer.App.Services
         #region Растворимость
 
         /// <summary>
-        /// Получить растворимость
+        /// Получить растворимость 
         /// </summary>
-        /// <param name="dE">необходимая энерегия для полного испарения вещества</param>
-        /// <param name="v">объем вещества</param>
+        /// <param name="constMolElements">мольные константы</param>
+        /// <param name="massMolec">мономерная молекулярная масса</param>
+        /// <param name="p">плотность (смеси?)</param>
         /// <returns></returns>
-        private static double GetSolubility(double dE, double v)
+        private static double GetSolubility(double[] constMolElements, double massMolec, double p)
         {
-            return Math.Pow((dE/v), 0.5);
+            var y = constMolElements.Sum();
+            return y*p/massMolec;
         }
 
+        public static double GetSolubility(double[] constMolElements, double[] molecMass, double p, double[] percents, double totalVolume, double[] densities )
+        {
+            //1. находим общую молекулярную массу ???
+            var m = GetTotalMolecMass(percents, molecMass) / 1000; // переводим г/моль в кг/моль
+
+
+            //2. находим плотность смеси 
+            var pS = GetDensity(percents, totalVolume, densities) / Math.Pow(100, 3); // переводим из кг/(м)^3  в кг/(см)^3
+
+            //3. находим растворисомсть
+            return GetSolubility(constMolElements, m, pS);
+        }
         #endregion
 
         #region Число фаз 
@@ -104,7 +118,7 @@ namespace Polimer.App.Services
 
             var n = Math.Pow(10, lnN);
 
-            return Math.Round( n, 1);
+            return n;
         }
 
         /// <summary>
@@ -140,7 +154,7 @@ namespace Polimer.App.Services
         /// <returns></returns>
         private static double GetDensity(double totslMass, double totalVolume)
         {
-            return Math.Round( totslMass / totalVolume, 1);
+            return totslMass / totalVolume;
         }
 
         /// <summary>
@@ -165,13 +179,29 @@ namespace Polimer.App.Services
             var totalMass = mass.Sum();
 
             // 4. Найти плонтность смеси
-            return Math.Round(GetDensity(totalMass, totalVolume), 3);
+            return GetDensity(totalMass, totalVolume);
         }
 
         #endregion
 
 
         #region Доп методы
+
+        /// <summary>
+        /// Нахождение молекулярной массы
+        /// </summary>
+        /// <param name="percents">проценты содержания элементов</param>
+        /// <param name="modelMass">молек масса элементов</param>
+        /// <returns></returns>
+        private static double GetTotalMolecMass(double[] percents, double[] modelMass)
+        {
+            double m = 0;
+            for (int i=0; i < percents.Length; i++)
+            {
+                m += percents[i]/10 * modelMass[i];
+            }
+            return m;
+        }
 
         /// <summary>
         /// Получть массовую долю элемента

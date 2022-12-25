@@ -4,6 +4,7 @@ public class UsefulProductModel : ViewModelBase, IModelAsEntity
 {
     private string? _name;
     private int? _id;
+    private RecipeModel _recipe;
 
     public int? Id
     {
@@ -16,5 +17,11 @@ public class UsefulProductModel : ViewModelBase, IModelAsEntity
     {
         get => _name;
         set => SetField(ref _name, value);
+    }
+
+    public RecipeModel Recipe
+    {
+        get => _recipe;
+        set => SetField(ref _recipe, value);
     }
 }

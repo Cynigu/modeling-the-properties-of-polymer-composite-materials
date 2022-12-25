@@ -20,6 +20,12 @@ namespace Polimer.Data.Models
         [Column("name")]
         [Required]
         public string? Name { get; init; }
+
+        [Column("id_recipe")]
+        [Required]
+        public int IdRecipe { get; init; }
+        [ForeignKey("IdRecipe")]
+        public RecipeEntity Recipe { get; init; }
         
         public virtual ICollection<PropertyUsefulProductEntity>? UsefulProductProperties { get; init; }
     }

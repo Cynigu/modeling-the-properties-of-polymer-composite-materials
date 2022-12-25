@@ -25,7 +25,7 @@ public class AdminViewModel : ViewModelBase
         )
     {
         _usefulProductVm = UsefulProductViewModel
-            .CreateInstance(repositoriesFactory.CreateUsefulProductRepository(), mapper);
+            .CreateInstance(repositoriesFactory.CreateUsefulProductRepository(), mapper, repositoriesFactory.CreateRecipeRepository());
         _usersVm = UsersViewModel
             .CreateInstance(repositoriesFactory.CreateUserRepository(), mapper);
         _materialsVm = MaterialsViewModel

@@ -32,4 +32,6 @@ public record RecipeEntity : IEntity
 
     [Column("content_additive")]
     public double ContentAdditive { get; init; }
+
+    public  ICollection<UsefulProductEntity> UsefulProducts { get; init; }
 }

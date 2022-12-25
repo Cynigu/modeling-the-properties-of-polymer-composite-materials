@@ -16,7 +16,7 @@ public class UnitViewModel : TabAdminBaseViewModel<UnitEntity, UnitModel>
         IMapper mapper) :
         base(repository, mapper)
     {
-        NameTab = "Ед. измерения";
+        NameTab = "Единицы измерения";
         ChangingModel = new UnitModel();
     }
 

@@ -43,10 +43,12 @@ public class TechnologyViewModel : ViewModelBase
     private PropertyElement? _propertyFirst;
     private PropertyElement? _propertySecond;
     private PropertyElement? _propertyAdditive;
-    private bool _useResearch;
     private double _percentResearchFirst;
     private double _percentResearchSecond;
     private double _percentResearchAdditive;
+    private bool _isComputed;
+    private ObservableCollection<CompatibilityMaterialModel> _compatibilityMaterialsForSecondMaterial;
+    private CompatibilityMaterialModel? _selectedSCompatibilityMaterialSecond;
 
     public TechnologyViewModel(IMapper mapper, RepositoriesFactory repositories)
     {
@@ -78,22 +80,38 @@ public class TechnologyViewModel : ViewModelBase
         PercentResearchFirst = 100;
         PercentResearchSecond = 10;
         PercentResearchAdditive = 10;
+        IsComputed = false;
 
         ComputeRecipeParametersModel = new ComputeRecipeParametersModel();
 
-        ComputeCommand = new AsyncCommand(() => ComputeParametersAsync(false), () => 
-            SelectedAdditive != null && SelectedCompatibilityMaterial != null
-            && SelectedUsefulProductModel != null
-            && PropertyAdditive != null
-            && PropertyFirst != null
-            && PropertySecond != null);
+        ComputeCommand = new AsyncCommand(() => ComputeParametersAsync(false), CanCompute);
 
-        ResearchCommand = new AsyncCommand(() => ComputeParametersAsync(true), () =>
-            SelectedAdditive != null && SelectedCompatibilityMaterial != null
-                                     && SelectedUsefulProductModel != null
-                                     && PropertyAdditive != null
-                                     && PropertyFirst != null
-                                     && PropertySecond != null);
+        ResearchCommand = new AsyncCommand(() => ComputeParametersAsync(true), CanCompute);
+    }
+
+    public bool CanCompute()
+    {
+        var b = SelectedAdditive != null && SelectedCompatibilityMaterial != null
+                                        && SelectedUsefulProductModel != null
+                                        && PropertyAdditive != null
+                                        && PropertyFirst != null
+                                        && PropertySecond != null
+                                        && SelectedSCompatibilityMaterialSecond != null;
+        if (!b)
+        {
+            IsComputed = false;
+        }
+
+        return b;
+    }
+
+    public bool IsComputed
+    {
+        get
+        {
+            return _isComputed;
+        }
+        set => SetField(ref _isComputed, value);
     }
 
     #region Properties
@@ -139,7 +157,16 @@ public class TechnologyViewModel : ViewModelBase
     public ObservableCollection<CompatibilityMaterialModel> CompatibilityMaterials
     {
         get => _compatibilityMaterials;
-        set => SetField(ref _compatibilityMaterials, value);
+        set
+        {
+            SetField(ref _compatibilityMaterials, value);
+        }
+    }
+
+    public ObservableCollection<CompatibilityMaterialModel> CompatibilityMaterialsForSecondMaterial
+    {
+        get => _compatibilityMaterialsForSecondMaterial;
+        set => SetField(ref _compatibilityMaterialsForSecondMaterial, value);
     }
 
     public ObservableCollection<AdditiveModel>? Additives
@@ -172,8 +199,22 @@ public class TechnologyViewModel : ViewModelBase
             {
                 InitializeAdditivesByCompatabilitiesAsync(_compatibilityMaterial).Wait();
                 InizializePropertyMaterialsAsync(_compatibilityMaterial).Wait();
+                UsefulProducts = _mapper.Map<ObservableCollection<UsefulProductModel>>(_usefulProductRepository
+                    .GetEntitiesByFilterAsync(x =>
+                        x.Recipe.CompatibilityMaterial.Id == _compatibilityMaterial.Id).Result);
+                
+                CompatibilityMaterialsForSecondMaterial = _mapper
+                    .Map<ObservableCollection<CompatibilityMaterialModel>>(
+                        _compatibilityMaterialRepository.GetEntitiesByFilterAsync(x =>
+                            x.Id == _compatibilityMaterial.Id).Result);
             }
         }
+    }
+
+    public CompatibilityMaterialModel? SelectedSCompatibilityMaterialSecond
+    {
+        get => _selectedSCompatibilityMaterialSecond;
+        set => SetField(ref _selectedSCompatibilityMaterialSecond, value);
     }
 
     public UsefulProductModel? SelectedUsefulProductModel
@@ -245,9 +286,7 @@ public class TechnologyViewModel : ViewModelBase
 
     #endregion
 
-
     #region Methods
-
 
     private async Task ComputeParametersAsync(bool useResearch)
     {
@@ -276,7 +315,7 @@ public class TechnologyViewModel : ViewModelBase
         var densities = new[] {PropertyFirst!.Density, PropertySecond!.Density, PropertyAdditive!.Density};
 
         // Получение плотности смеси
-        ComputeRecipeParametersModel.Density = CalculatePhysicsService.GetDensity( percents, ComputeRecipeParametersModel.TotalVolume, densities);
+        ComputeRecipeParametersModel.Density = Math.Round( CalculatePhysicsService.GetDensity( percents, ComputeRecipeParametersModel.TotalVolume, densities), 2);
 
         var viscosities = new[]
         {
@@ -284,8 +323,8 @@ public class TechnologyViewModel : ViewModelBase
         };
 
         // Получение вязкости смеси
-        ComputeRecipeParametersModel.Viscosity = CalculatePhysicsService.GetViscosity(percents, viscosities,
-            densities, ComputeRecipeParametersModel.TotalVolume);
+        ComputeRecipeParametersModel.Viscosity = Math.Round( CalculatePhysicsService.GetViscosity(percents, viscosities,
+            densities, ComputeRecipeParametersModel.TotalVolume), 2);
 
         // Получение количества фаз смеси
         ComputeRecipeParametersModel.NumberOfPhases = CalculatePhysicsService.GetNumberOfPhases();
@@ -293,16 +332,29 @@ public class TechnologyViewModel : ViewModelBase
         // Получение ПТР 
         var t = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Время")!.Value;
         var k = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Количество зон")!.Value;
-        ComputeRecipeParametersModel.Ptr = CalculatePhysicsService.GetPtr(t, k, ComputeRecipeParametersModel.TotalVolume, percents, densities);
+        ComputeRecipeParametersModel.Ptr = Math.Round( CalculatePhysicsService.GetPtr(t, k, ComputeRecipeParametersModel.TotalVolume, percents, densities), 2);
 
         // Получение растворимости
+        var constMolec = new[]
+        {
+            PropertyFirst.ConstMol, PropertySecond.ConstMol, PropertyAdditive.ConstMol
+        };
+
+        double[] molecMass = new[]
+        {
+            PropertyFirst.MolecMass, PropertySecond.MolecMass, PropertyAdditive.MolecMass
+        };
+
+        ComputeRecipeParametersModel.Solubility = Math.Round(CalculatePhysicsService.GetSolubility(constMolec, molecMass,
+            ComputeRecipeParametersModel.Density, percents, ComputeRecipeParametersModel.TotalVolume, densities), 5);
 
         // Получение насыпной плотности
 
-        MessageBox.Show("Расчёт выполнен!");
-    }
 
-   
+        MessageBox.Show("Расчёт выполнен!");
+
+        IsComputed = true;
+    }
 
     private async Task InitializeAdditivesByCompatabilitiesAsync(CompatibilityMaterialModel compatibilityMaterial)
     {
@@ -337,6 +389,7 @@ public class TechnologyViewModel : ViewModelBase
         PropertyFirst.Density = PropertiesFirstMaterial!.FirstOrDefault(x => x.Property.Name == "Плотность при 20 С")!.Value;
         PropertyFirst.Viscosity = PropertiesFirstMaterial!.FirstOrDefault(x => x.Property.Name == "Вязкость")!.Value;
         PropertyFirst.MolecMass = PropertiesFirstMaterial!.FirstOrDefault(x => x.Property.Name == "Средняя молекулярная масса")!.Value;
+        PropertyFirst.ConstMol = PropertiesFirstMaterial!.FirstOrDefault(x => x.Property.Name == "Мольная константа")!.Value;
 
         PropertySecond = new PropertyElement();
         PropertySecond.QuickName = compatibilityMaterial.SecondMaterial.QuickName;
@@ -345,6 +398,7 @@ public class TechnologyViewModel : ViewModelBase
         PropertySecond.Density = PropertiesSecondMaterial!.FirstOrDefault(x => x.Property.Name == "Плотность при 20 С")!.Value;
         PropertySecond.Viscosity = PropertiesSecondMaterial!.FirstOrDefault(x => x.Property.Name == "Вязкость")!.Value;
         PropertySecond.MolecMass = PropertiesSecondMaterial!.FirstOrDefault(x => x.Property.Name == "Средняя молекулярная масса")!.Value;
+        PropertySecond.ConstMol = PropertiesSecondMaterial!.FirstOrDefault(x => x.Property.Name == "Мольная константа")!.Value;
 
     }
 
@@ -362,6 +416,7 @@ public class TechnologyViewModel : ViewModelBase
         PropertyAdditive.Density = PropertiesAdditive!.FirstOrDefault(x => x.Property.Name == "Плотность при 20 С")!.Value;
         PropertyAdditive.Viscosity = PropertiesAdditive!.FirstOrDefault(x => x.Property.Name == "Вязкость")!.Value;
         PropertyAdditive.MolecMass = PropertiesAdditive!.FirstOrDefault(x => x.Property.Name == "Средняя молекулярная масса")!.Value;
+        PropertyAdditive.ConstMol = PropertiesAdditive!.FirstOrDefault(x => x.Property.Name == "Мольная константа")!.Value;
 
     }
     #endregion

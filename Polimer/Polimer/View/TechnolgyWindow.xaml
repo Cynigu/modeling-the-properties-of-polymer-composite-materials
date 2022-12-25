@@ -7,7 +7,7 @@
         xmlns:technology="clr-namespace:Polimer.App.ViewModel.Technology"
         d:DataContext="{d:DesignInstance Type=technology:TechnologyViewModel}"
         mc:Ignorable="d"
-        Title="Окно технолога" Margin="0" Height="480" Width="800" ResizeMode="NoResize" Background="#FF86A186"
+        Title="Окно технолога" Margin="0" Height="510" Width="800" ResizeMode="NoResize" Background="#FF86A186"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style TargetType="DockPanel">
@@ -64,15 +64,30 @@
                     <DockPanel Dock="Top">
                         <DockPanel>
                             <DockPanel DockPanel.Dock="Top">
-                                <TextBlock Text="Совместимые полимеры" />
+                                <TextBlock Text="Первый материал" />
                                 <ComboBox ItemsSource="{Binding CompatibilityMaterials}"
                                           SelectedItem="{Binding SelectedCompatibilityMaterial}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Margin="1" Text="{Binding FirstMaterial.QuickName}" />
-                                                <TextBlock Margin="1" Text="+" />
-                                                <TextBlock Margin="1" Text="{Binding SecondMaterial.QuickName}" />
+                                                <!--<TextBlock Margin="1" Text="+" />
+                                                <TextBlock Margin="1" Text="{Binding SecondMaterial.QuickName}" />-->
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DockPanel>
+                            <DockPanel Dock="Top">
+                                <TextBlock Text="Второй материал"></TextBlock>
+                                <ComboBox ItemsSource="{Binding CompatibilityMaterialsForSecondMaterial}"
+                                          SelectedItem="{Binding SelectedSCompatibilityMaterialSecond}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Margin="1" Text="{Binding  SecondMaterial.QuickName}" />
+                                                <!--<TextBlock Margin="1" Text="+" />
+                                                <TextBlock Margin="1" Text="{Binding SecondMaterial.QuickName}" />-->
                                             </StackPanel>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
@@ -124,6 +139,10 @@
                                         <TabItem Header="Первый полимер">
                                             <DockPanel>
                                                 <DockPanel DockPanel.Dock="Top">
+                                                    <Label Content="Краткое название" />
+                                                    <Label Content="{Binding PropertyFirst.QuickName}" />
+                                                </DockPanel>
+                                                <DockPanel DockPanel.Dock="Top">
                                                     <Label Content="Английское название" />
                                                     <Label Content="{Binding PropertyFirst.EnglishName}" />
                                                 </DockPanel>
@@ -151,6 +170,10 @@
                                         <TabItem Header="Второй полимер">
                                             <DockPanel>
                                                 <DockPanel DockPanel.Dock="Top">
+                                                    <Label Content="Краткое название" />
+                                                    <Label Content="{Binding PropertySecond.QuickName}" />
+                                                </DockPanel>
+                                                <DockPanel DockPanel.Dock="Top">
                                                     <Label Content="Английское название" />
                                                     <Label Content="{Binding PropertySecond.EnglishName}" />
                                                 </DockPanel>
@@ -177,6 +200,10 @@
                                         </TabItem>
                                         <TabItem Header="Добавка">
                                             <DockPanel>
+                                                <DockPanel DockPanel.Dock="Top">
+                                                    <Label Content="Краткое название" />
+                                                    <Label Content="{Binding PropertyAdditive.QuickName}" />
+                                                </DockPanel>
                                                 <DockPanel DockPanel.Dock="Top">
                                                     <Label Content="Английское название" />
                                                     <Label Content="{Binding PropertyAdditive.EnglishName}" />
@@ -215,7 +242,7 @@
                     </DockPanel>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Выходные параметры">
+            <TabItem Header="Выходные параметры" IsEnabled="{Binding IsComputed}">
                 <DockPanel DockPanel.Dock="Top">
                     <DockPanel>
                         <DockPanel DockPanel.Dock="Top">
@@ -276,6 +303,8 @@
                                                 <Label Width="95" DockPanel.Dock="Left" Content="Растворимость:" />
                                                 <TextBlock DockPanel.Dock="Left" Width="auto"
                                                            Text="{Binding ComputeRecipeParametersModel.Solubility}"
+                                                           HorizontalAlignment="Left" />
+                                                <TextBlock Width="auto" DockPanel.Dock="Left" Text="(кал/см3)^0,5"
                                                            HorizontalAlignment="Left" />
                                             </DockPanel>
                                         </DockPanel>
@@ -359,6 +388,9 @@
                                     </DockPanel>
                                 </DockPanel>
                             </GroupBox>
+                            <DockPanel Dock="Top">
+                                <Button Content="Отчет"></Button>
+                            </DockPanel>
                         </DockPanel>
                     </DockPanel>
                 </DockPanel>
