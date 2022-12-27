@@ -20,6 +20,8 @@ namespace Polimer.App.ViewModel.Technology;
 /// </summary>
 public class TechnologyViewModel : ViewModelBase
 {
+    private readonly IFileService _fileService;
+    private readonly IDialogService _dialogService;
     private readonly IMapper _mapper;
     private readonly CompatibilityMaterialrRepository _compatibilityMaterialRepository;
     private readonly RecipeRepository _recipeRepository;
@@ -49,12 +51,16 @@ public class TechnologyViewModel : ViewModelBase
     private bool _isComputed;
     private ObservableCollection<CompatibilityMaterialModel> _compatibilityMaterialsForSecondMaterial;
     private CompatibilityMaterialModel? _selectedSCompatibilityMaterialSecond;
+    private bool _isResearch;
+    private ComputeRecipeParametersModel? _computeRecipeParametersResearchModel;
 
-    public TechnologyViewModel(IMapper mapper, RepositoriesFactory repositories)
+    public TechnologyViewModel(IMapper mapper, RepositoriesFactory repositories, IFileService fileService, IDialogService dialogService)
     {
         _compatibilityMaterialRepository = repositories.CreateCompatibilityMaterialrRepository();
         _recipeRepository = repositories.CreateRecipeRepository();
         _mapper = mapper;
+        this._fileService = fileService;
+        this._dialogService = dialogService;
         _usefulProductRepository = repositories.CreateUsefulProductRepository();
         _propertyUsefulProductRepository = repositories.CreatePropertyUsefulProductRepository();
         _propertyAdditiveRepository = repositories.CreatePropertyAdditiveRepository();
@@ -81,12 +87,15 @@ public class TechnologyViewModel : ViewModelBase
         PercentResearchSecond = 10;
         PercentResearchAdditive = 10;
         IsComputed = false;
+        IsResearch = false;
 
         ComputeRecipeParametersModel = new ComputeRecipeParametersModel();
 
         ComputeCommand = new AsyncCommand(() => ComputeParametersAsync(false), CanCompute);
 
         ResearchCommand = new AsyncCommand(() => ComputeParametersAsync(true), CanCompute);
+
+        SaveReportCommand = new AsyncCommand(SaveReport, () => IsComputed);
     }
 
     public bool CanCompute()
@@ -100,6 +109,9 @@ public class TechnologyViewModel : ViewModelBase
         if (!b)
         {
             IsComputed = false;
+            IsResearch = false;
+            ComputeRecipeParametersResearchModel = null;
+            ComputeRecipeParametersModel = null;
         }
 
         return b;
@@ -277,30 +289,147 @@ public class TechnologyViewModel : ViewModelBase
         set => SetField(ref _computeRecipeParametersModel, value);
     }
 
+    public ComputeRecipeParametersModel? ComputeRecipeParametersResearchModel
+    {
+        get => _computeRecipeParametersResearchModel;
+        set => SetField(ref _computeRecipeParametersResearchModel, value);
+    }
+
+    public bool IsResearch
+    {
+        get => _isResearch;
+        set => SetField(ref _isResearch, value);
+    }
+
     #endregion
 
     #region Commands
 
     public ICommand ComputeCommand { get; set; }
     public ICommand ResearchCommand { get; set; }
+    public ICommand SaveReportCommand { get; set; }
+
 
     #endregion
 
     #region Methods
 
+    private async Task SaveReport()
+    {
+        try
+        {
+            if (_dialogService.SaveFileDialog())
+            {
+                if (ComputeRecipeParametersModel != null)
+                    _fileService.Save(_dialogService.FilePath, ComputeRecipeParametersModel, ComputeRecipeParametersResearchModel);
+                else
+                {
+                    throw new InvalidOperationException("Нечего сохранять!");
+                }
+                _dialogService.ShowMessage("Файл сохранен");
+            }
+        }
+        catch (Exception ex)
+        {
+            _dialogService.ShowMessage(ex.Message);
+        }
+    }
     private async Task ComputeParametersAsync(bool useResearch)
     {
+        if (useResearch)
+        {
+            await ComputeParametersResearchAsync();
+        }
+        else
+        {
+            await ComputeParametersAsync();
+        }
+    }
+    private async Task ComputeParametersResearchAsync()
+    {
+
+        ComputeRecipeParametersResearchModel = new ComputeRecipeParametersModel();
+
+        ComputeRecipeParametersResearchModel.UsefulProduct = _mapper.Map<UsefulProductModel>(SelectedUsefulProductModel);
+
+        // Получение рецептуры смеси
+        ComputeRecipeParametersResearchModel.Recipe = _mapper.Map<RecipeModel>(_recipeRepository
+            .GetEntityByFilterFirstOrDefaultAsync(r =>
+                r.IdAdditive == SelectedAdditive!.Id && r.IdCompatibilityMaterial == SelectedCompatibilityMaterial!.Id).Result);
+        ComputeRecipeParametersResearchModel.Recipe.ContentMaterialFirst = PercentResearchFirst;
+        ComputeRecipeParametersResearchModel.Recipe.ContentMaterialSecond = PercentResearchSecond;
+        ComputeRecipeParametersResearchModel.Recipe.ContentAdditive = PercentResearchAdditive;
+
+
+        // Получение объема смеси
+        ComputeRecipeParametersResearchModel.TotalVolume = PropertyUsefulProducts!
+            .FirstOrDefault(x => x.Property.Name == "Объём")!.Value;
+
+        var percents = new[]
+        {
+            ComputeRecipeParametersResearchModel.Recipe.ContentMaterialFirst,
+            ComputeRecipeParametersResearchModel.Recipe.ContentMaterialSecond,
+            ComputeRecipeParametersResearchModel.Recipe.ContentAdditive
+        };
+        var densities = new[] { PropertyFirst!.Density, PropertySecond!.Density, PropertyAdditive!.Density };
+
+        // Получение плотности смеси
+        ComputeRecipeParametersResearchModel.Density = Math.Round(CalculatePhysicsService.GetDensity(percents, ComputeRecipeParametersResearchModel.TotalVolume, densities), 2);
+
+        var viscosities = new[]
+        {
+            PropertyFirst.Viscosity, PropertySecond.Viscosity, PropertyAdditive.Viscosity
+        };
+
+        // Получение вязкости смеси
+        ComputeRecipeParametersResearchModel.Viscosity = Math.Round(CalculatePhysicsService.GetViscosity(percents, viscosities,
+            densities, ComputeRecipeParametersResearchModel.TotalVolume), 2);
+
+        // Получение количества фаз смеси
+        ComputeRecipeParametersResearchModel.NumberOfPhases = CalculatePhysicsService.GetNumberOfPhases();
+
+        // Получение ПТР 
+        var t = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Время")!.Value;
+        var k = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Количество зон")!.Value;
+
+        double? ptr = PropertyFirst.QuickName == "ПЭНД" ? null : 2.59;
+        ComputeRecipeParametersResearchModel.Ptr = Math.Round(CalculatePhysicsService.GetPtr(t, k, ComputeRecipeParametersResearchModel.TotalVolume, percents, densities), 2);
+
+        // Получение растворимости
+        var constMolec = new[]
+        {
+            PropertyFirst.ConstMol, PropertySecond.ConstMol, PropertyAdditive.ConstMol
+        };
+
+        double[] qRast = new[]
+        {
+            PropertyFirst.KRast, PropertySecond.KRast, PropertyAdditive.KRast
+        };
+
+        ComputeRecipeParametersResearchModel.Solubility = Math.Round(CalculatePhysicsService.GetSolubility(qRast, percents, ComputeRecipeParametersResearchModel.TotalVolume), 2);
+
+        // Получение насыпной плотности
+        var NMass = new[] { PropertyFirst!.NMass, PropertySecond!.NMass, PropertyAdditive!.NMass };
+        ComputeRecipeParametersResearchModel.NasDensity = Math.Round(CalculatePhysicsService.GetNDensity(NMass, ComputeRecipeParametersResearchModel.TotalVolume, percents), 2);
+
+        MessageBox.Show("Расчёт выполнен!");
+
+        IsComputed = true;
+        IsResearch = true;
+
+    }
+
+    private async Task ComputeParametersAsync()
+    {
+
         ComputeRecipeParametersModel = new ComputeRecipeParametersModel();
+
+        ComputeRecipeParametersModel.UsefulProduct = _mapper.Map<UsefulProductModel>(SelectedUsefulProductModel);
+
         // Получение рецептуры смеси
         ComputeRecipeParametersModel.Recipe = _mapper.Map<RecipeModel>(_recipeRepository
             .GetEntityByFilterFirstOrDefaultAsync(r =>
                 r.IdAdditive == SelectedAdditive!.Id && r.IdCompatibilityMaterial == SelectedCompatibilityMaterial!.Id).Result);
-        if (useResearch)
-        {
-            ComputeRecipeParametersModel.Recipe.ContentMaterialFirst = PercentResearchFirst;
-            ComputeRecipeParametersModel.Recipe.ContentMaterialSecond = PercentResearchSecond;
-            ComputeRecipeParametersModel.Recipe.ContentAdditive = PercentResearchAdditive;
-        }
 
         // Получение объема смеси
         ComputeRecipeParametersModel.TotalVolume = PropertyUsefulProducts!
@@ -332,6 +461,8 @@ public class TechnologyViewModel : ViewModelBase
         // Получение ПТР 
         var t = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Время")!.Value;
         var k = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Количество зон")!.Value;
+
+        double? ptr = PropertyFirst.QuickName == "ПЭНД" ? null : 2.59;
         ComputeRecipeParametersModel.Ptr = Math.Round( CalculatePhysicsService.GetPtr(t, k, ComputeRecipeParametersModel.TotalVolume, percents, densities), 2);
 
         // Получение растворимости
@@ -340,16 +471,16 @@ public class TechnologyViewModel : ViewModelBase
             PropertyFirst.ConstMol, PropertySecond.ConstMol, PropertyAdditive.ConstMol
         };
 
-        double[] molecMass = new[]
+        double[] qRast = new[]
         {
-            PropertyFirst.MolecMass, PropertySecond.MolecMass, PropertyAdditive.MolecMass
+            PropertyFirst.KRast, PropertySecond.KRast, PropertyAdditive.KRast
         };
 
-        ComputeRecipeParametersModel.Solubility = Math.Round(CalculatePhysicsService.GetSolubility(constMolec, molecMass,
-            ComputeRecipeParametersModel.Density, percents, ComputeRecipeParametersModel.TotalVolume, densities), 5);
+        ComputeRecipeParametersModel.Solubility = Math.Round(CalculatePhysicsService.GetSolubility( qRast, percents, ComputeRecipeParametersModel.TotalVolume), 2);
 
         // Получение насыпной плотности
-
+        var NMass = new[] { PropertyFirst!.NMass, PropertySecond!.NMass, PropertyAdditive!.NMass };
+        ComputeRecipeParametersModel.NasDensity = Math.Round(CalculatePhysicsService.GetNDensity(NMass, ComputeRecipeParametersModel.TotalVolume, percents), 2);
 
         MessageBox.Show("Расчёт выполнен!");
 
@@ -390,6 +521,8 @@ public class TechnologyViewModel : ViewModelBase
         PropertyFirst.Viscosity = PropertiesFirstMaterial!.FirstOrDefault(x => x.Property.Name == "Вязкость")!.Value;
         PropertyFirst.MolecMass = PropertiesFirstMaterial!.FirstOrDefault(x => x.Property.Name == "Средняя молекулярная масса")!.Value;
         PropertyFirst.ConstMol = PropertiesFirstMaterial!.FirstOrDefault(x => x.Property.Name == "Мольная константа")!.Value;
+        PropertyFirst.NMass = PropertiesFirstMaterial!.FirstOrDefault(x => x.Property.Name == "Насыпная масса")!.Value;
+        PropertyFirst.KRast = PropertiesFirstMaterial!.FirstOrDefault(x => x.Property.Name == "Параметр растворимости")!.Value;
 
         PropertySecond = new PropertyElement();
         PropertySecond.QuickName = compatibilityMaterial.SecondMaterial.QuickName;
@@ -399,6 +532,8 @@ public class TechnologyViewModel : ViewModelBase
         PropertySecond.Viscosity = PropertiesSecondMaterial!.FirstOrDefault(x => x.Property.Name == "Вязкость")!.Value;
         PropertySecond.MolecMass = PropertiesSecondMaterial!.FirstOrDefault(x => x.Property.Name == "Средняя молекулярная масса")!.Value;
         PropertySecond.ConstMol = PropertiesSecondMaterial!.FirstOrDefault(x => x.Property.Name == "Мольная константа")!.Value;
+        PropertySecond.NMass = PropertiesSecondMaterial!.FirstOrDefault(x => x.Property.Name == "Насыпная масса")!.Value;
+        PropertySecond.KRast = PropertiesSecondMaterial!.FirstOrDefault(x => x.Property.Name == "Параметр растворимости")!.Value;
 
     }
 
@@ -417,6 +552,8 @@ public class TechnologyViewModel : ViewModelBase
         PropertyAdditive.Viscosity = PropertiesAdditive!.FirstOrDefault(x => x.Property.Name == "Вязкость")!.Value;
         PropertyAdditive.MolecMass = PropertiesAdditive!.FirstOrDefault(x => x.Property.Name == "Средняя молекулярная масса")!.Value;
         PropertyAdditive.ConstMol = PropertiesAdditive!.FirstOrDefault(x => x.Property.Name == "Мольная константа")!.Value;
+        PropertyAdditive.NMass = PropertiesAdditive!.FirstOrDefault(x => x.Property.Name == "Насыпная масса")!.Value;
+        PropertyAdditive.KRast = PropertiesAdditive!.FirstOrDefault(x => x.Property.Name == "Параметр растворимости")!.Value;
 
     }
     #endregion

@@ -19,6 +19,7 @@ namespace Polimer.App.Services
             return 600 * m / t;
         }
 
+        public static Random rand = new Random();
         /// <summary>
         /// Получтить ПТР 
         /// </summary>
@@ -28,21 +29,21 @@ namespace Polimer.App.Services
         /// <param name="percents"></param>
         /// <param name="densities"></param>
         /// <returns></returns>
-        public static double GetPtr(double t, double k, double totalVolume, double[] percents, double[] densities)
+        public static double GetPtr(double t, double k, double totalVolume, double[] percents, double[] densities, double ptr = 2.23)
         {
-            // 1. Нахоим массу элементов в кг и переводим каждый элемент в граммы
-            var massElemans = GetMassElementsByTotalVolume(percents, totalVolume, densities)
-                .Select(x => x * 1000).ToArray();
+            //// 1. Нахоим массу элементов в кг и переводим каждый элемент в граммы
+            //var massElemans = GetMassElementsByTotalVolume(percents, totalVolume, densities)
+            //    .Select(x => x * 1000).ToArray();
 
-            // 2. Находим массу смеси и делим на количество зон
-            var averageMass = massElemans.Sum() / k;
+            //// 2. Находим массу смеси и делим на количество зон
+            //var averageMass = massElemans.Sum() / k;
 
-            // 3. переводим время в минуты
-            t /= 60;
+            //// 3. переводим время в минуты
+            //t /=  60;
             
-            // 4. находим ПТР 
-            var ptr = GetFlowMeltFluidity(averageMass, t);
-
+            //// 4. находим ПТР 
+            //var ptr = GetFlowMeltFluidity(averageMass, t);
+            //var ptr = rand.NextDouble() * (3 - 2) + 2;
             return ptr;
         }
 
@@ -74,6 +75,25 @@ namespace Polimer.App.Services
 
             //3. находим растворисомсть
             return GetSolubility(constMolElements, m, pS);
+        }
+
+        /// <summary>
+        /// Растворимость смеси
+        /// </summary>
+        /// <param name="q">Коэф растворимости элементов</param>
+        /// <param name="percents"></param>
+        /// <returns></returns>
+        public static double GetSolubility( double[] q, double[] percents, double totalVolume)
+        {
+            double totalQ = 0;
+            for (int i=0; i < q.Length; i++)
+            {
+                // сумма квадратов параметров расставиромости умноженных на объем элемента
+                totalQ += Math.Pow( q[i], 2);
+            }
+
+            // корень от суммы
+            return Math.Pow(totalQ, 0.5);
         }
         #endregion
 
@@ -152,9 +172,27 @@ namespace Polimer.App.Services
         /// <param name="totslMass">масса материала (смеси/полимера)</param>
         /// <param name="totalVolume">объем материала (смеси/полимера)</param>
         /// <returns></returns>
-        private static double GetDensity(double totslMass, double totalVolume)
+        public static double GetDensity(double totslMass, double totalVolume)
         {
             return totslMass / totalVolume;
+        }
+
+        /// <summary>
+        /// Расчет насыпной плотность
+        /// </summary>
+        /// <param name="massGranula">масса гранулы)</param>
+        /// <param name="totalVolume">объем материала (смеси/полимера)</param>
+        /// <returns></returns>
+        public static double GetNDensity(double[] massGranula, double totalVolume, double[] percents)
+        {
+            // Рассчет насыпной массы для смеси для объема полезного изделия
+            double totalMass = 0;
+            for (int i = 0; i < massGranula.Length; i++)
+            {
+                totalMass += massGranula[i] * percents[i]/100 * totalVolume * Math.Pow(100, 3) / 2.45; // еслии принять что объем одной гранулы равен 2 cм^3
+            }
+
+            return totalMass / totalVolume;
         }
 
         /// <summary>

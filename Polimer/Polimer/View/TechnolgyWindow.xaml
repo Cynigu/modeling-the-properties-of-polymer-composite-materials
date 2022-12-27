@@ -270,71 +270,144 @@
                                 </DockPanel>
                             </GroupBox>
                         </DockPanel>
-                        <DockPanel DockPanel.Dock="Top">
-                            <DockPanel>
-                                <GroupBox Header="Физико-химические свойства смеси">
-                                    <DockPanel Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <DockPanel>
-                                            <DockPanel DockPanel.Dock="Top">
-                                                <Label Width="95" DockPanel.Dock="Left" Content="Плотность:" />
-                                                <TextBlock DockPanel.Dock="Left" Width="auto"
+                        <TabControl DockPanel.Dock="Top">
+                            <TabItem Header="Свойства">
+                                <DockPanel DockPanel.Dock="Top">
+                                    <DockPanel>
+                                        <GroupBox Header="Физико-химические свойства смеси">
+                                            <DockPanel Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <DockPanel>
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <Label Width="75" DockPanel.Dock="Left" Content="Плотность:" />
+                                                        <TextBlock DockPanel.Dock="Left" Width="auto"
                                                            Text="{Binding ComputeRecipeParametersModel.Density}"
                                                            HorizontalAlignment="Left" />
-                                                <TextBlock Width="auto" DockPanel.Dock="Left" Text="кг/м^3"
+                                                        <TextBlock Width="auto" DockPanel.Dock="Left" Text="кг/м^3"
                                                            HorizontalAlignment="Left" />
-                                            </DockPanel>
-                                            <DockPanel DockPanel.Dock="Top">
-                                                <Label Width="95" DockPanel.Dock="Left" Content="Число фаз:" />
-                                                <TextBlock DockPanel.Dock="Left" Width="auto"
+                                                    </DockPanel>
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <Label Width="75" DockPanel.Dock="Left" Content="Число фаз:" />
+                                                        <TextBlock DockPanel.Dock="Left" Width="auto"
                                                            Text="{Binding ComputeRecipeParametersModel.NumberOfPhases}"
                                                            HorizontalAlignment="Left" />
-                                            </DockPanel>
-                                        </DockPanel>
-                                        <DockPanel>
-                                            <DockPanel DockPanel.Dock="Top">
-                                                <Label Width="95" DockPanel.Dock="Left" Content="Вязкость:" />
-                                                <TextBlock DockPanel.Dock="Left"
+                                                    </DockPanel>
+                                                </DockPanel>
+                                                <DockPanel>
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <Label Width="95" DockPanel.Dock="Left" Content="Вязкость:" />
+                                                        <TextBlock DockPanel.Dock="Left"
                                                            Text="{Binding ComputeRecipeParametersModel.Viscosity}"
                                                            HorizontalAlignment="Left" Width="auto" />
-                                                <TextBlock Width="auto" DockPanel.Dock="Left" Text="Па*с"
+                                                        <TextBlock Width="auto" DockPanel.Dock="Left" Text="Па*с"
                                                            HorizontalAlignment="Left" />
-                                            </DockPanel>
-                                            <DockPanel DockPanel.Dock="Top">
-                                                <Label Width="95" DockPanel.Dock="Left" Content="Растворимость:" />
-                                                <TextBlock DockPanel.Dock="Left" Width="auto"
+                                                    </DockPanel>
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <Label Width="95" DockPanel.Dock="Left" Content="Растворимость:" />
+                                                        <TextBlock DockPanel.Dock="Left" Width="auto"
                                                            Text="{Binding ComputeRecipeParametersModel.Solubility}"
                                                            HorizontalAlignment="Left" />
-                                                <TextBlock Width="auto" DockPanel.Dock="Left" Text="(кал/см3)^0,5"
+                                                        <TextBlock Width="auto" DockPanel.Dock="Left" Text="(кал/см^3)^0,5"
                                                            HorizontalAlignment="Left" />
+                                                    </DockPanel>
+                                                </DockPanel>
                                             </DockPanel>
-                                        </DockPanel>
+                                        </GroupBox>
                                     </DockPanel>
-                                </GroupBox>
-                            </DockPanel>
-                            <DockPanel>
-                                <GroupBox Header="Технологические свойства">
                                     <DockPanel>
-                                        <DockPanel DockPanel.Dock="Top">
-                                            <Label DockPanel.Dock="Left" Width="186" Content="Насыпная плотность:" />
-                                            <TextBlock DockPanel.Dock="Left"
+                                        <GroupBox Header="Технологические свойства">
+                                            <DockPanel>
+                                                <DockPanel DockPanel.Dock="Top">
+                                                    <Label DockPanel.Dock="Left" Width="186" Content="Насыпная плотность:" />
+                                                    <TextBlock DockPanel.Dock="Left"
                                                        Text="{Binding ComputeRecipeParametersModel.NasDensity}"
                                                        HorizontalAlignment="Left" Width="auto" />
-                                            <TextBlock Width="auto" DockPanel.Dock="Left" Text="кг/м^3"
+                                                    <TextBlock Width="auto" DockPanel.Dock="Left" Text="кг/м^3"
                                                        HorizontalAlignment="Left" />
-                                        </DockPanel>
-                                        <DockPanel DockPanel.Dock="Top">
-                                            <Label Width="186" DockPanel.Dock="Left"
+                                                </DockPanel>
+                                                <DockPanel DockPanel.Dock="Top">
+                                                    <Label Width="186" DockPanel.Dock="Left"
                                                    Content="Показатель тякучести расплава:" />
-                                            <TextBlock DockPanel.Dock="Left"
+                                                    <TextBlock DockPanel.Dock="Left"
                                                        Text="{Binding ComputeRecipeParametersModel.Ptr}"
                                                        HorizontalAlignment="Left" Width="auto" />
-                                            <TextBlock Width="auto" DockPanel.Dock="Left" Text="г/10мин"
+                                                    <TextBlock Width="auto" DockPanel.Dock="Left" Text="г/10мин"
                                                        HorizontalAlignment="Left" />
-                                        </DockPanel>
+                                                </DockPanel>
+                                            </DockPanel>
+                                        </GroupBox>
                                     </DockPanel>
-                                </GroupBox>
-                            </DockPanel>
-                        </DockPanel>
+                                </DockPanel>
+
+                            </TabItem>
+                            <TabItem Header="Исследование" IsEnabled="{Binding IsResearch}">
+                                <DockPanel DockPanel.Dock="Top">
+                                    <DockPanel>
+                                        <GroupBox Header="Физико-химические свойства смеси">
+                                            <DockPanel Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <DockPanel>
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <Label Width="75" DockPanel.Dock="Left" Content="Плотность:" />
+                                                        <TextBlock DockPanel.Dock="Left" Width="auto"
+                                                           Text="{Binding ComputeRecipeParametersResearchModel.Density}"
+                                                           HorizontalAlignment="Left" />
+                                                        <TextBlock Width="auto" DockPanel.Dock="Left" Text="кг/м^3"
+                                                           HorizontalAlignment="Left" />
+                                                    </DockPanel>
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <Label Width="75" DockPanel.Dock="Left" Content="Число фаз:" />
+                                                        <TextBlock DockPanel.Dock="Left" Width="auto"
+                                                           Text="{Binding ComputeRecipeParametersResearchModel.NumberOfPhases}"
+                                                           HorizontalAlignment="Left" />
+                                                    </DockPanel>
+                                                </DockPanel>
+                                                <DockPanel>
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <Label Width="95" DockPanel.Dock="Left" Content="Вязкость:" />
+                                                        <TextBlock DockPanel.Dock="Left"
+                                                           Text="{Binding ComputeRecipeParametersResearchModel.Viscosity}"
+                                                           HorizontalAlignment="Left" Width="auto" />
+                                                        <TextBlock Width="auto" DockPanel.Dock="Left" Text="Па*с"
+                                                           HorizontalAlignment="Left" />
+                                                    </DockPanel>
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <Label Width="95" DockPanel.Dock="Left" Content="Растворимость:" />
+                                                        <TextBlock DockPanel.Dock="Left" Width="auto"
+                                                           Text="{Binding ComputeRecipeParametersResearchModel.Solubility}"
+                                                           HorizontalAlignment="Left" />
+                                                        <TextBlock Width="auto" DockPanel.Dock="Left" Text="(кал/см^3)^0,5"
+                                                           HorizontalAlignment="Left" />
+                                                    </DockPanel>
+                                                </DockPanel>
+                                            </DockPanel>
+                                        </GroupBox>
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <GroupBox Header="Технологические свойства">
+                                            <DockPanel>
+                                                <DockPanel DockPanel.Dock="Top">
+                                                    <Label DockPanel.Dock="Left" Width="186" Content="Насыпная плотность:" />
+                                                    <TextBlock DockPanel.Dock="Left"
+                                                       Text="{Binding ComputeRecipeParametersResearchModel.NasDensity}"
+                                                       HorizontalAlignment="Left" Width="auto" />
+                                                    <TextBlock Width="auto" DockPanel.Dock="Left" Text="кг/м^3"
+                                                       HorizontalAlignment="Left" />
+                                                </DockPanel>
+                                                <DockPanel DockPanel.Dock="Top">
+                                                    <Label Width="186" DockPanel.Dock="Left"
+                                                   Content="Показатель тякучести расплава:" />
+                                                    <TextBlock DockPanel.Dock="Left"
+                                                       Text="{Binding ComputeRecipeParametersResearchModel.Ptr}"
+                                                       HorizontalAlignment="Left" Width="auto" />
+                                                    <TextBlock Width="auto" DockPanel.Dock="Left" Text="г/10мин"
+                                                       HorizontalAlignment="Left" />
+                                                </DockPanel>
+                                            </DockPanel>
+                                        </GroupBox>
+                                    </DockPanel>
+                                </DockPanel>
+
+                            </TabItem>
+                        </TabControl>
                         <DockPanel DockPanel.Dock="Top">
                             <GroupBox Header="Рецептура">
                                 <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -389,7 +462,7 @@
                                 </DockPanel>
                             </GroupBox>
                             <DockPanel Dock="Top">
-                                <Button Content="Отчет"></Button>
+                                <Button Content="Отчет" Command="{Binding SaveReportCommand}"></Button>
                             </DockPanel>
                         </DockPanel>
                     </DockPanel>

@@ -26,6 +26,7 @@ namespace Polimer.App
             builderBase.RegisterModule(new ViewModelFactoriesModule());
             builderBase.RegisterModule(new WindowFactoriesModule());
             builderBase.RegisterModule(new AutoMapperModule());
+            builderBase.RegisterModule(new ServicesModule());
 
             var containerBase = builderBase.Build();
 

@@ -17,6 +17,13 @@ namespace Polimer.App.ViewModel.Technology.Models
         private double _solubility;
         private double _ptr;
         private double _nasDensity;
+        private UsefulProductModel _usefulProduct;
+
+        public UsefulProductModel UsefulProduct
+        {
+            get => _usefulProduct;
+            set => SetField(ref _usefulProduct, value);
+        }
 
         public RecipeModel Recipe
         {

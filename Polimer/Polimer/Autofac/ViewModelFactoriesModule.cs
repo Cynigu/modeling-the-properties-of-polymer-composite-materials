@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Polimer.App.Services;
 using Polimer.App.ViewModel;
 using Polimer.App.ViewModel.Admin;
 using Polimer.App.ViewModel.Admin.Factory;
@@ -11,6 +12,7 @@ namespace Polimer.App.Autofac;
 
 internal class ViewModelFactoriesModule : Module
 {
+
     protected override void Load(ContainerBuilder builder)
     {
         builder
@@ -24,5 +26,22 @@ internal class ViewModelFactoriesModule : Module
         builder
             .RegisterType<TcnologyViewModelFactory>()
             .As<IViewModelFactory<TechnologyViewModel>>();
+    }
+}
+
+
+internal class ServicesModule : Module
+{
+
+    protected override void Load(ContainerBuilder builder)
+    {
+        builder
+            .RegisterType<ReportService>()
+            .As<IFileService>();
+
+        builder
+            .RegisterType<DefaultDialogService>()
+            .As<IDialogService>();
+
     }
 }

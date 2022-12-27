@@ -16,6 +16,8 @@ namespace Polimer.App.ViewModel.Technology.Models
         private double _molecMass;
         private double _viscosity;
         private double _constMol;
+        private double _nMass;
+        private double _nDensity;
 
         public string? RussianName
         {
@@ -57,6 +59,18 @@ namespace Polimer.App.ViewModel.Technology.Models
         {
             get => _constMol;
             set => SetField(ref _constMol, value);
+        }
+
+        public double KRast
+        {
+            get => _nDensity;
+            set => SetField(ref _nDensity, value);
+        }
+
+        public double NMass
+        {
+            get => _nMass;
+            set => SetField(ref _nMass, value);
         }
     }
 }
