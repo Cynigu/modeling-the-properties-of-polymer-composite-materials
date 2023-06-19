@@ -83,7 +83,7 @@ public class TechnologyViewModel : ViewModelBase
         SelectedAdditive = null;
         SelectedCompatibilityMaterial = null;
         SelectedUsefulProductModel = null;
-        PercentResearchFirst = 100;
+        PercentResearchFirst = 80;
         PercentResearchSecond = 10;
         PercentResearchAdditive = 10;
         IsComputed = false;
@@ -390,16 +390,16 @@ public class TechnologyViewModel : ViewModelBase
 
         // Получение ПТР 
         var t = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Время")!.Value;
-        var k = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Количество зон")!.Value;
+        //var k = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Количество зон")!.Value;
 
-        double? ptr = PropertyFirst.QuickName == "ПЭНД" ? null : 2.59;
-        ComputeRecipeParametersResearchModel.Ptr = Math.Round(CalculatePhysicsService.GetPtr(t, k, ComputeRecipeParametersResearchModel.TotalVolume, percents, densities), 2);
+        //double? ptr = PropertyFirst.QuickName == "ПЭНД" ? null : 2.59;
+        ComputeRecipeParametersResearchModel.Ptr = Math.Round(CalculatePhysicsService.GetPtr(t, 0, ComputeRecipeParametersResearchModel.TotalVolume, percents, densities), 2);
 
         // Получение растворимости
-        var constMolec = new[]
-        {
-            PropertyFirst.ConstMol, PropertySecond.ConstMol, PropertyAdditive.ConstMol
-        };
+        //var constMolec = new[]
+        //{
+        //    PropertyFirst.ConstMol, PropertySecond.ConstMol, PropertyAdditive.ConstMol
+        //};
 
         double[] qRast = new[]
         {
@@ -421,6 +421,7 @@ public class TechnologyViewModel : ViewModelBase
 
     private async Task ComputeParametersAsync()
     {
+        
 
         ComputeRecipeParametersModel = new ComputeRecipeParametersModel();
 
@@ -430,6 +431,11 @@ public class TechnologyViewModel : ViewModelBase
         ComputeRecipeParametersModel.Recipe = _mapper.Map<RecipeModel>(_recipeRepository
             .GetEntityByFilterFirstOrDefaultAsync(r =>
                 r.IdAdditive == SelectedAdditive!.Id && r.IdCompatibilityMaterial == SelectedCompatibilityMaterial!.Id).Result);
+
+        // Устанавливаем проценты для исследования
+        PercentResearchFirst = ComputeRecipeParametersModel.Recipe.ContentMaterialFirst;
+        PercentResearchSecond = ComputeRecipeParametersModel.Recipe.ContentMaterialSecond;
+        PercentResearchAdditive = ComputeRecipeParametersModel.Recipe.ContentAdditive;
 
         // Получение объема смеси
         ComputeRecipeParametersModel.TotalVolume = PropertyUsefulProducts!
@@ -460,16 +466,16 @@ public class TechnologyViewModel : ViewModelBase
 
         // Получение ПТР 
         var t = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Время")!.Value;
-        var k = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Количество зон")!.Value;
+        //var k = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Количество зон")!.Value;
 
-        double? ptr = PropertyFirst.QuickName == "ПЭНД" ? null : 2.59;
-        ComputeRecipeParametersModel.Ptr = Math.Round( CalculatePhysicsService.GetPtr(t, k, ComputeRecipeParametersModel.TotalVolume, percents, densities), 2);
+        //double? ptr = PropertyFirst.QuickName == "ПЭНД" ? null : 2.59;
+        ComputeRecipeParametersModel.Ptr = Math.Round( CalculatePhysicsService.GetPtr(t, 0, ComputeRecipeParametersModel.TotalVolume, percents, densities), 2);
 
         // Получение растворимости
-        var constMolec = new[]
-        {
-            PropertyFirst.ConstMol, PropertySecond.ConstMol, PropertyAdditive.ConstMol
-        };
+        //var constMolec = new[]
+        //{
+        //    PropertyFirst.ConstMol, PropertySecond.ConstMol, PropertyAdditive.ConstMol
+        //};
 
         double[] qRast = new[]
         {
@@ -519,8 +525,8 @@ public class TechnologyViewModel : ViewModelBase
         PropertyFirst.RussianName = compatibilityMaterial.FirstMaterial.RussianName;;
         PropertyFirst.Density = PropertiesFirstMaterial!.FirstOrDefault(x => x.Property.Name == "Плотность при 20 С")!.Value;
         PropertyFirst.Viscosity = PropertiesFirstMaterial!.FirstOrDefault(x => x.Property.Name == "Вязкость")!.Value;
-        PropertyFirst.MolecMass = PropertiesFirstMaterial!.FirstOrDefault(x => x.Property.Name == "Средняя молекулярная масса")!.Value;
-        PropertyFirst.ConstMol = PropertiesFirstMaterial!.FirstOrDefault(x => x.Property.Name == "Мольная константа")!.Value;
+        //PropertyFirst.MolecMass = PropertiesFirstMaterial!.FirstOrDefault(x => x.Property.Name == "Средняя молекулярная масса")!.Value;
+        //PropertyFirst.ConstMol = PropertiesFirstMaterial!.FirstOrDefault(x => x.Property.Name == "Мольная константа")!.Value;
         PropertyFirst.NMass = PropertiesFirstMaterial!.FirstOrDefault(x => x.Property.Name == "Насыпная масса")!.Value;
         PropertyFirst.KRast = PropertiesFirstMaterial!.FirstOrDefault(x => x.Property.Name == "Параметр растворимости")!.Value;
 
@@ -530,8 +536,8 @@ public class TechnologyViewModel : ViewModelBase
         PropertySecond.RussianName = compatibilityMaterial.SecondMaterial.RussianName;
         PropertySecond.Density = PropertiesSecondMaterial!.FirstOrDefault(x => x.Property.Name == "Плотность при 20 С")!.Value;
         PropertySecond.Viscosity = PropertiesSecondMaterial!.FirstOrDefault(x => x.Property.Name == "Вязкость")!.Value;
-        PropertySecond.MolecMass = PropertiesSecondMaterial!.FirstOrDefault(x => x.Property.Name == "Средняя молекулярная масса")!.Value;
-        PropertySecond.ConstMol = PropertiesSecondMaterial!.FirstOrDefault(x => x.Property.Name == "Мольная константа")!.Value;
+        //PropertySecond.MolecMass = PropertiesSecondMaterial!.FirstOrDefault(x => x.Property.Name == "Средняя молекулярная масса")!.Value;
+        //PropertySecond.ConstMol = PropertiesSecondMaterial!.FirstOrDefault(x => x.Property.Name == "Мольная константа")!.Value;
         PropertySecond.NMass = PropertiesSecondMaterial!.FirstOrDefault(x => x.Property.Name == "Насыпная масса")!.Value;
         PropertySecond.KRast = PropertiesSecondMaterial!.FirstOrDefault(x => x.Property.Name == "Параметр растворимости")!.Value;
 
@@ -550,8 +556,8 @@ public class TechnologyViewModel : ViewModelBase
         PropertyAdditive.EnglishName = additiveModel.EnglishName;
         PropertyAdditive.Density = PropertiesAdditive!.FirstOrDefault(x => x.Property.Name == "Плотность при 20 С")!.Value;
         PropertyAdditive.Viscosity = PropertiesAdditive!.FirstOrDefault(x => x.Property.Name == "Вязкость")!.Value;
-        PropertyAdditive.MolecMass = PropertiesAdditive!.FirstOrDefault(x => x.Property.Name == "Средняя молекулярная масса")!.Value;
-        PropertyAdditive.ConstMol = PropertiesAdditive!.FirstOrDefault(x => x.Property.Name == "Мольная константа")!.Value;
+        //PropertyAdditive.MolecMass = PropertiesAdditive!.FirstOrDefault(x => x.Property.Name == "Средняя молекулярная масса")!.Value;
+        //PropertyAdditive.ConstMol = PropertiesAdditive!.FirstOrDefault(x => x.Property.Name == "Мольная константа")!.Value;
         PropertyAdditive.NMass = PropertiesAdditive!.FirstOrDefault(x => x.Property.Name == "Насыпная масса")!.Value;
         PropertyAdditive.KRast = PropertiesAdditive!.FirstOrDefault(x => x.Property.Name == "Параметр растворимости")!.Value;
 

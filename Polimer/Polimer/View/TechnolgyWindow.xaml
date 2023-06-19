@@ -70,7 +70,7 @@
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Margin="1" Text="{Binding FirstMaterial.QuickName}" />
+                                                <TextBlock Margin="1" Text="{Binding FirstMaterial.RussianName}" />
                                                 <!--<TextBlock Margin="1" Text="+" />
                                                 <TextBlock Margin="1" Text="{Binding SecondMaterial.QuickName}" />-->
                                             </StackPanel>
@@ -85,7 +85,7 @@
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Margin="1" Text="{Binding  SecondMaterial.QuickName}" />
+                                                <TextBlock Margin="1" Text="{Binding  SecondMaterial.RussianName}" />
                                                 <!--<TextBlock Margin="1" Text="+" />
                                                 <TextBlock Margin="1" Text="{Binding SecondMaterial.QuickName}" />-->
                                             </StackPanel>
@@ -97,7 +97,7 @@
                                 <TextBlock Text="Добавка" />
                                 <ComboBox ItemsSource="{Binding Additives}"
                                           SelectedItem="{Binding SelectedAdditive}"
-                                          DisplayMemberPath="QuickName" />
+                                          DisplayMemberPath="RussianName" />
                             </DockPanel>
                             <DockPanel Dock="Top">
                                 <TextBlock Text="Полезное изделие" />
@@ -298,7 +298,7 @@
                                                         <TextBlock DockPanel.Dock="Left"
                                                            Text="{Binding ComputeRecipeParametersModel.Viscosity}"
                                                            HorizontalAlignment="Left" Width="auto" />
-                                                        <TextBlock Width="auto" DockPanel.Dock="Left" Text="Па*с"
+                                                        <TextBlock Width="auto" DockPanel.Dock="Left" Text="Па•с"
                                                            HorizontalAlignment="Left" />
                                                     </DockPanel>
                                                     <DockPanel DockPanel.Dock="Top">
@@ -306,7 +306,7 @@
                                                         <TextBlock DockPanel.Dock="Left" Width="auto"
                                                            Text="{Binding ComputeRecipeParametersModel.Solubility}"
                                                            HorizontalAlignment="Left" />
-                                                        <TextBlock Width="auto" DockPanel.Dock="Left" Text="(кал/см^3)^0,5"
+                                                        <TextBlock Width="auto" DockPanel.Dock="Left" Text="Дж/м^3"
                                                            HorizontalAlignment="Left" />
                                                     </DockPanel>
                                                 </DockPanel>
@@ -326,7 +326,7 @@
                                                 </DockPanel>
                                                 <DockPanel DockPanel.Dock="Top">
                                                     <Label Width="186" DockPanel.Dock="Left"
-                                                   Content="Показатель тякучести расплава:" />
+                                                   Content="Показатель текучести расплава:" />
                                                     <TextBlock DockPanel.Dock="Left"
                                                        Text="{Binding ComputeRecipeParametersModel.Ptr}"
                                                        HorizontalAlignment="Left" Width="auto" />
@@ -366,7 +366,7 @@
                                                         <TextBlock DockPanel.Dock="Left"
                                                            Text="{Binding ComputeRecipeParametersResearchModel.Viscosity}"
                                                            HorizontalAlignment="Left" Width="auto" />
-                                                        <TextBlock Width="auto" DockPanel.Dock="Left" Text="Па*с"
+                                                        <TextBlock Width="auto" DockPanel.Dock="Left" Text="Па•с"
                                                            HorizontalAlignment="Left" />
                                                     </DockPanel>
                                                     <DockPanel DockPanel.Dock="Top">
@@ -374,7 +374,7 @@
                                                         <TextBlock DockPanel.Dock="Left" Width="auto"
                                                            Text="{Binding ComputeRecipeParametersResearchModel.Solubility}"
                                                            HorizontalAlignment="Left" />
-                                                        <TextBlock Width="auto" DockPanel.Dock="Left" Text="(кал/см^3)^0,5"
+                                                        <TextBlock Width="auto" DockPanel.Dock="Left" Text="Дж/м^3"
                                                            HorizontalAlignment="Left" />
                                                     </DockPanel>
                                                 </DockPanel>
@@ -394,7 +394,7 @@
                                                 </DockPanel>
                                                 <DockPanel DockPanel.Dock="Top">
                                                     <Label Width="186" DockPanel.Dock="Left"
-                                                   Content="Показатель тякучести расплава:" />
+                                                   Content="Показатель текучести расплава:" />
                                                     <TextBlock DockPanel.Dock="Left"
                                                        Text="{Binding ComputeRecipeParametersResearchModel.Ptr}"
                                                        HorizontalAlignment="Left" Width="auto" />
@@ -446,15 +446,15 @@
                                     <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <TextBlock Width="auto"
                                                    Text="{Binding ComputeRecipeParametersModel.Recipe.CompatibilityMaterial.FirstMaterial.QuickName, StringFormat=' {0}: '}" />
-                                        <wpfx:DoubleUpDown Minimum="0.001" Value="{Binding PercentResearchFirst}" />
+                                        <wpfx:DoubleUpDown Minimum="0.001" Maximum="100" Value="{Binding PercentResearchFirst}" />
                                         <TextBlock Width="auto" Text="%" />
                                         <TextBlock Width="auto"
                                                    Text="{Binding ComputeRecipeParametersModel.Recipe.CompatibilityMaterial.SecondMaterial.QuickName, StringFormat=' {0}: '}" />
-                                        <wpfx:DoubleUpDown Minimum="0.001" Value="{Binding PercentResearchSecond}" />
+                                        <wpfx:DoubleUpDown Minimum="0.001"  Maximum="100" Value="{Binding PercentResearchSecond}" />
                                         <TextBlock Width="auto" Text="%" />
                                         <TextBlock Width="auto"
                                                    Text="{Binding ComputeRecipeParametersModel.Recipe.Additive.QuickName, StringFormat=' {0}: '}" />
-                                        <wpfx:DoubleUpDown Minimum="0.001" Value="{Binding PercentResearchAdditive}" />
+                                        <wpfx:DoubleUpDown Minimum="0.001" Maximum="100" Value="{Binding PercentResearchAdditive}" />
                                         <TextBlock Width="auto" Text="%" />
                                         <Button Width="200" Content="Провести исследование"
                                                 Command="{Binding ResearchCommand}" />

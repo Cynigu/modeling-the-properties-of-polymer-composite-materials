@@ -12,6 +12,7 @@ namespace Polimer.App.Services;
 
 public class ReportService : IFileService
 {
+    private const string WordTemplateResearch = "ReportTemplateResearch.docx";
     private const string WordTemplate = "ReportTemplate.docx";
 
     private static string ReplaceFunc(string findStr, Dictionary<string, string> _replacePatterns)
@@ -26,7 +27,7 @@ public class ReportService : IFileService
     public void Save(string filename, ComputeRecipeParametersModel data, ComputeRecipeParametersModel? dataI = null)
     {
         //Xceed.Document.NET.Licenser.LicenseKey = "";
-        using (var document = DocX.Load(WordTemplate))
+        using (var document = DocX.Load(dataI != null ? WordTemplateResearch : WordTemplate))
         {
             InputDataTable(data, document);
 
@@ -36,10 +37,13 @@ public class ReportService : IFileService
 
             var _replacePatterns = new Dictionary<string, string>()
             {
-                { "DATE", DateTime.Now.ToString(CultureInfo.InvariantCulture) },
-                { "NAME_P1", data.Recipe.CompatibilityMaterial.FirstMaterial.QuickName },
-                { "NAME_P2",  data.Recipe.CompatibilityMaterial.SecondMaterial.QuickName },
-                { "NAME_P3", data.Recipe.Additive.QuickName },
+                { "DATE", DateTime.Now.ToString() },
+                { "NAME_P1", data.Recipe.CompatibilityMaterial.FirstMaterial.RussianName },
+                { "NAME_P2",  data.Recipe.CompatibilityMaterial.SecondMaterial.RussianName },
+                { "NAME_P3", data.Recipe.Additive.RussianName },
+                { "QNAME_P1", data.Recipe.CompatibilityMaterial.FirstMaterial.QuickName },
+                { "QNAME_P2",  data.Recipe.CompatibilityMaterial.SecondMaterial.QuickName },
+                { "QNAME_P3", data.Recipe.Additive.QuickName },
                 { "V_P1", data.Recipe.ContentMaterialFirst.ToString(CultureInfo.InvariantCulture) },
                 { "V_P2", data.Recipe.ContentMaterialSecond.ToString(CultureInfo.InvariantCulture) },
                 { "V_P3", data.Recipe.ContentAdditive.ToString(CultureInfo.InvariantCulture) },
@@ -90,25 +94,29 @@ public class ReportService : IFileService
             rowPattern.Remove();
         }
 
-        var resaerchTableList = document.Tables.FirstOrDefault(t => t.TableCaption == "RESEARCH_LIST");
-        if (resaerchTableList == null)
+        if (dataI != null)
         {
-            throw new ArgumentException("Error, couldn't find table with caption GROCERY_LIST in current document.");
+            var resaerchTableList = document.Tables.FirstOrDefault(t => t.TableCaption == "RESEARCH_LIST");
+            if (resaerchTableList == null)
+            {
+                throw new ArgumentException("Error, couldn't find table with caption GROCERY_LIST in current document.");
+            }
+
+            if (resaerchTableList.RowCount > 1)
+            {
+                // Get the row pattern of the second row.
+                var rowPattern = resaerchTableList.Rows[1];
+
+                // Add items (rows) to the grocery list.
+
+                AddIOutPutDataIItemToTable(resaerchTableList, rowPattern, dataI);
+
+
+                // Remove the pattern row.
+                rowPattern.Remove();
+            }
         }
-
-        if (resaerchTableList.RowCount > 1)
-        {
-            // Get the row pattern of the second row.
-            var rowPattern = resaerchTableList.Rows[1];
-
-            // Add items (rows) to the grocery list.
-
-            AddIOutPutDataIItemToTable(resaerchTableList, rowPattern, dataI);
-
-
-            // Remove the pattern row.
-            rowPattern.Remove();
-        }
+        
     }
 
     private static void InputDataTable(ComputeRecipeParametersModel data, DocX document)
