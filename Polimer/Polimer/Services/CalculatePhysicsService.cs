@@ -8,42 +8,21 @@ namespace Polimer.App.Services
     {
         #region Показатель текучести расплава
 
-        /// <summary>
-        /// Показатель текучести расплава
-        /// </summary>
-        /// <param name="m">средняя масса эструдируемых отрезков (?)</param>
-        /// <param name="t">промежуток времени между двумя последовательными срезами отрезков (?), с</param>
-        /// <returns></returns>
-        private static double GetFlowMeltFluidity(double m, double t)
-        {
-            return 600 * m / t;
-        }
-
         public static Random rand = new Random();
         /// <summary>
         /// Получтить ПТР 
         /// </summary>
-        /// <param name="t">время в с</param>
-        /// <param name="k">колиество зон</param>
-        /// <param name="totalVolume"></param>
-        /// <param name="percents"></param>
-        /// <param name="densities"></param>
+        /// <param name="t">Время (в характеристиках полезного изделия)</param>
+        /// <param name="totalP">плотность смеси (рассчитываемый параметр)</param>
+        /// <param name="totalV">объем полезного изделия</param>
+        /// <param name="z">количество зон</param>
         /// <returns></returns>
-        public static double GetPtr(double t, double k, double totalVolume, double[] percents, double[] densities, double ptr = 2.23)
+        public static double GetPtr(double totalP, double totalV, double z, double t)
         {
-            //// 1. Нахоим массу элементов в кг и переводим каждый элемент в граммы
-            //var massElemans = GetMassElementsByTotalVolume(percents, totalVolume, densities)
-            //    .Select(x => x * 1000).ToArray();
+            var m = totalP * totalV * 1000;// Масса смеси = плотность смеси (это то, что в выходных параметрах) * объем полезного изделия
+            var avarageM = m / z; // cреднюю массу = масса смеси / количество зон
 
-            //// 2. Находим массу смеси и делим на количество зон
-            //var averageMass = massElemans.Sum() / k;
-
-            //// 3. переводим время в минуты
-            //t /=  60;
-            
-            //// 4. находим ПТР 
-            //var ptr = GetFlowMeltFluidity(averageMass, t);
-            //var ptr = rand.NextDouble() * (3 - 2) + 2;
+            var ptr = avarageM / (10 * t) / 60; // Птр= средняя масса / время (это то, что в характеристиках полезного изделия )
             return ptr;
         }
 

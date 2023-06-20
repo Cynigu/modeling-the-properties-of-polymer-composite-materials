@@ -390,10 +390,11 @@ public class TechnologyViewModel : ViewModelBase
 
         // Получение ПТР 
         var t = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Время")!.Value;
-        //var k = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Количество зон")!.Value;
+        var k = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Количество зон")!.Value;
 
         //double? ptr = PropertyFirst.QuickName == "ПЭНД" ? null : 2.59;
-        ComputeRecipeParametersResearchModel.Ptr = Math.Round(CalculatePhysicsService.GetPtr(t, 0, ComputeRecipeParametersResearchModel.TotalVolume, percents, densities), 2);
+        ComputeRecipeParametersResearchModel.Ptr = Math.Round(CalculatePhysicsService.GetPtr(ComputeRecipeParametersResearchModel.Density, 
+            ComputeRecipeParametersResearchModel.TotalVolume, k, t), 2);
 
         // Получение растворимости
         //var constMolec = new[]
@@ -466,10 +467,12 @@ public class TechnologyViewModel : ViewModelBase
 
         // Получение ПТР 
         var t = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Время")!.Value;
-        //var k = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Количество зон")!.Value;
+        var k = PropertyUsefulProducts!.FirstOrDefault(x => x.Property.Name == "Количество зон")!.Value;
 
         //double? ptr = PropertyFirst.QuickName == "ПЭНД" ? null : 2.59;
-        ComputeRecipeParametersModel.Ptr = Math.Round( CalculatePhysicsService.GetPtr(t, 0, ComputeRecipeParametersModel.TotalVolume, percents, densities), 2);
+        ComputeRecipeParametersModel.Ptr = Math
+            .Round(CalculatePhysicsService
+                .GetPtr(ComputeRecipeParametersModel.Density, ComputeRecipeParametersModel.TotalVolume, k, t), 2);
 
         // Получение растворимости
         //var constMolec = new[]
